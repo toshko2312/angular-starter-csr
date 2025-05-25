@@ -1,0 +1,4 @@
+export class CONSTANTS {
+  static LANGUAGE_BG = 'bg'
+  static DEFAULT_WEBSITE_TITLE = 'DEFAULT_WEBSITE_TITLE'
+}
