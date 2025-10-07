@@ -1,3 +1,10 @@
 {
-  "DEFAULT_WEBSITE_TITLE": "Тест"
+  "NAVBAR": {
+    "HOME": "Начало",
+    "MENU": "Меню",
+    "CONTACT": "Контакти"
+  },
+  "PRODUCTS_LIST": {
+    "TITLE" : "Реализирани събития"
+  }
 }

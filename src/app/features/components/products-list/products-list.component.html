@@ -1,0 +1,44 @@
+@if (projects()) {
+<div class="flex justify-content-center">
+  <h1 class="text-center">{{ CONSTANTS.PRODUCTS_LIST_TITLE | translate }}</h1>
+</div>
+<div class="products-container">
+  @for (project of projects(); track $index) {
+  <div class="products-wrapper glass">
+    <div class="flex justify-content-center items-center">
+      <div class="product-title">
+        {{ project.title }}
+      </div>
+    </div>
+    <p-carousel
+      [value]="project.image"
+      [numVisible]="1"
+      [numScroll]="1"
+      [showIndicators]="true"
+    >
+      >
+      <ng-template let-imagePath pTemplate="item">
+        <div
+          class="border border-surface-200 dark:border-surface-700 rounded m-2 p-0 mb-0"
+        >
+          <div class="mb-2 flex justify-content-center items-center">
+            <div class="relative mx-auto">
+              <img
+                src="{{ imagePath.image_path }}"
+                [alt]="project.title"
+                class="product-image"
+              />
+            </div>
+          </div>
+          <div class="flex justify-content-center items-center">
+            <div class="product-description">
+              {{ imagePath.description }}
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-carousel>
+  </div>
+  }
+</div>
+}

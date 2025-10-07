@@ -1,11 +1,13 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
 import { routes } from './app.routes';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { CONSTANTS } from './shared/constants';
+import { providePrimeNG } from 'primeng/config';
+import Material from '@primeng/themes/aura';
+
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient
@@ -26,5 +28,10 @@ export const appConfig: ApplicationConfig = {
         deps: [HttpClient],
       },
     }),
+    providePrimeNG({
+      theme: {
+        preset: Material,
+      }
+    })
   ],
 };
