@@ -3,6 +3,8 @@ import { RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CONSTANTS } from './shared/constants';
 import { NavbarComponent } from './core/components/navbar/navbar.component';
+import { injectSpeedInsights } from '@vercel/speed-insights';
+
 
 @Component({
   selector: 'app-root',
@@ -22,6 +24,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    injectSpeedInsights();
     this.translateService.get(CONSTANTS.DEFAULT_WEBSITE_TITLE).subscribe(() => {
       this.isTranslationLoaded = true
     })
