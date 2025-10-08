@@ -256,7 +256,9 @@ body {
 }
 
 .products-wrapper {
-  width: 30%;
+  width: 26%;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
   padding-top: 0.5rem;
   margin-bottom: 2rem;
   backdrop-filter: blur(10px) saturate(180%) !important;
