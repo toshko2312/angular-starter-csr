@@ -129,9 +129,33 @@ body {
   border-radius: 50px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 821px) {
   .p-menubar-button {
-    background: #484848a3 !important;
+    color: black !important;
+    position: relative !important;
+    background: rgba(255, 255, 255, 0.046) !important;
+    backdrop-filter: blur(2px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    border-radius: 2rem !important;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2),
+      inset 0 4px 20px rgba(255, 255, 255, 0.3) !important;
+  }
+
+  .p-menubar-button::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 2rem !important;
+    backdrop-filter: blur(1px) !important;
+    box-shadow: inset -10px -8px 0px -11px rgba(255, 255, 255, 1),
+      inset 0px -9px 0px -8px rgba(255, 255, 255, 1) !important;
+    opacity: 0.6 !important;
+    z-index: -1 !important;
+    filter: blur(1px) drop-shadow(10px 4px 6px black) brightness(115%) !important;
   }
 
   .social-wrapper {
@@ -256,17 +280,23 @@ body {
   border-radius: 0.5rem;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 440px) and (max-width: 821px) {
+  .products-container {
+    margin-top: 4rem;
+  }
+}
+
+@media (max-width: 821px) {
   .p-menubar-root-list {
     background: #e3e3e3e4 !important;
     border-color: white !important;
     border-radius: 2rem !important;
-    z-index: 9999 !important;        
+    margin-bottom: 1rem !important;
   }
 
   .product-image {
-  max-height: 13rem !important;
-}
+    max-height: 13rem !important;
+  }
 
   .product-description {
     font-size: 1rem;
