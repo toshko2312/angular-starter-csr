@@ -261,8 +261,8 @@ body {
     background: #e3e3e3e4 !important;
     border-color: white !important;
     border-radius: 2rem !important;
-    position: relative;
-    z-index: 9999;        
+    position: relative !important;
+    z-index: 9999 !important;        
   }
 
   .product-image {
