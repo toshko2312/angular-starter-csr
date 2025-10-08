@@ -19,9 +19,8 @@ if (!fs.existsSync(envDir)) {
 // ✅ Write the environment file
 const envConfigFile = `
 export const environment = {
-  production: ${isProd},
-  apiUrl: '${process.env.API_URL || ''}',
-  firebaseApiKey: '${process.env.FIREBASE_API_KEY || ''}',
+  SUPABASE_URL: '${process.env.SUPABASE_URL || ''}',
+  SUPABASE_ANON_KEY: '${process.env.SUPABASE_ANON_KEY || ''}',
 };
 `;
 
