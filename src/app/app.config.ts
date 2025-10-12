@@ -7,7 +7,8 @@ import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { CONSTANTS } from './shared/constants';
 import { providePrimeNG } from 'primeng/config';
 import Material from '@primeng/themes/aura';
-
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { DialogService } from 'primeng/dynamicdialog';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient
@@ -31,7 +32,9 @@ export const appConfig: ApplicationConfig = {
     providePrimeNG({
       theme: {
         preset: Material,
-      }
-    })
+      },
+    }),
+    provideAnimations(),
+    DialogService
   ],
 };

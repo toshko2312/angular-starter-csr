@@ -261,7 +261,7 @@ body {
   padding-right: 0.5rem;
   padding-top: 0.5rem;
   margin-bottom: 2rem;
-  backdrop-filter: blur(10px) saturate(180%) !important;
+  backdrop-filter: blur(10px) saturate(180%) brightness(0.9) !important;
 }
 
 .product-title {
@@ -334,4 +334,19 @@ body {
 .p-carousel-next-button button,
 .p-carousel-prev-button button {
   transition: unset;
+}
+
+.p-dialog {
+  background: rgba(0, 0, 0, 0.322) !important;
+  border: none !important;
+  border-radius: 2rem !important;
+}
+
+.p-dialog-header {
+  padding-bottom: 0.5vh !important;
+}
+
+.dialog-image {
+  max-height: 75vh;
+  max-width: 57vw;
 }

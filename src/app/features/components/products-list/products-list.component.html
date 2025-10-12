@@ -14,7 +14,7 @@
       [value]="project.image"
       [numVisible]="1"
       [numScroll]="1"
-      [showIndicators]="true"
+      [showIndicators]="false"
     >
       >
       <ng-template let-imagePath pTemplate="item">
@@ -27,11 +27,18 @@
                 src="{{ imagePath.image_path }}"
                 [alt]="project.title"
                 class="product-image"
+                (click)="
+                  handleViewImage(
+                    project.image,
+                    project.title,
+                    project.image.indexOf(imagePath)
+                  )
+                "
               />
             </div>
           </div>
           <div class="flex justify-content-center items-center">
-            <div class="product-description">
+            <div class="product-description mb-1">
               {{ imagePath.description }}
             </div>
           </div>

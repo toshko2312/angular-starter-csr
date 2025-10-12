@@ -1,0 +1,23 @@
+<p-carousel
+  [value]="image"
+  [numVisible]="1"
+  [numScroll]="1"
+  [showIndicators]="false"
+  [page]="currentIndex ?? 0"
+>
+  >
+  <ng-template let-imagePath pTemplate="item">
+    <div class="flex justify-content-center">
+      <img
+        src="{{ imagePath.image_path }}"
+        alt="{{ imagePath.description }}"
+        class="dialog-image"
+      />
+    </div>
+    <div class="flex justify-content-center items-center">
+      <div class="product-description mb-1 mt-1">
+        {{ imagePath.description }}
+      </div>
+    </div>
+  </ng-template>
+</p-carousel>
