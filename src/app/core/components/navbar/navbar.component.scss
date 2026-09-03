@@ -1,0 +1,134 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 6px 18px;
+  margin: 0.7rem 0.5rem 1.6rem;
+  border-radius: 2rem;
+  flex-wrap: nowrap;
+}
+
+.navbar-logo {
+  display: flex;
+  flex: none;
+
+  img {
+    width: 74px;
+    height: 74px;
+    object-fit: contain;
+  }
+}
+
+.navbar-links {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+}
+
+.nav-pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  box-sizing: border-box;
+  padding: 9px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.05rem;
+  overflow: hidden;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.45);
+    color: var(--ink);
+  }
+}
+
+.nav-pill--active,
+.nav-pill--active:hover {
+  background: rgba(168, 65, 42, 0.92);
+  border-color: rgba(168, 65, 42, 0.95);
+  color: #fff;
+}
+
+.nav-pill-icon {
+  font-size: 1rem;
+}
+
+.cart-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex: none;
+  padding: 10px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.28);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1rem;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.55);
+  }
+
+  i {
+    font-size: 1.15rem;
+  }
+}
+
+/* Mobile: no hamburger. The bar wraps — logo and cart stay on row one, the
+   links become a full-width three-column grid on row two. */
+@media (max-width: 759px) {
+  .navbar {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 12px;
+    margin: 0.5rem 0.25rem 1rem;
+  }
+
+  .navbar-logo img {
+    width: 52px;
+    height: 52px;
+  }
+
+  .navbar-links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* flex-basis must be 100% to force the wrap — the desktop `flex: 1`
+       sets basis 0, which would keep the links on the first row. */
+    flex: 1 0 100%;
+    width: 100%;
+    order: 3;
+  }
+
+  .nav-pill {
+    justify-content: center;
+    min-width: 0;
+    padding: 12px 16px;
+    min-height: 44px;
+    font-size: 0.92rem;
+  }
+
+  .nav-pill-icon {
+    display: none;
+  }
+
+  .cart-button {
+    padding: 9px 14px;
+    min-height: 44px;
+  }
+
+  .cart-button-label {
+    display: none;
+  }
+}

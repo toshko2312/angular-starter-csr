@@ -1,0 +1,93 @@
+<div class="dialog">
+  <div class="dialog-scrim" (click)="!busy() && cancelled.emit()"></div>
+
+  <div class="dialog-panel glass">
+    <div class="dialog-title">
+      {{ (isEdit ? CONSTANTS.ADMIN_EDIT_ITEM : CONSTANTS.ADMIN_ADD_ITEM) | translate }}
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="dialog-grid">
+        <div class="field">
+          <label for="mi-id">{{ 'ADMIN.FIELD_ID' | translate }}</label>
+          <input id="mi-id" formControlName="id" />
+          @if (invalid('id')) {
+          <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="mi-name">{{ 'ADMIN.FIELD_NAME' | translate }}</label>
+          <input id="mi-name" formControlName="name" />
+          @if (invalid('name')) {
+          <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="mi-category">{{ 'ADMIN.FIELD_CATEGORY' | translate }}</label>
+          <input id="mi-category" formControlName="category" />
+          @if (invalid('category')) {
+          <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="mi-price">{{ 'ADMIN.FIELD_PRICE' | translate }}</label>
+          <input id="mi-price" type="number" step="0.01" formControlName="price" />
+          @if (invalid('price')) {
+          <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="mi-unit">{{ 'ADMIN.FIELD_UNIT' | translate }}</label>
+          <input id="mi-unit" formControlName="unit" placeholder="€/бр." />
+          @if (invalid('unit')) {
+          <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
+          }
+        </div>
+
+        <div class="field field--full">
+          <label for="mi-description">{{ 'ADMIN.FIELD_DESCRIPTION' | translate }}</label>
+          <textarea id="mi-description" rows="3" formControlName="description"></textarea>
+        </div>
+
+        <div class="field field--full">
+          <label>{{ 'ADMIN.FIELD_IMAGE' | translate }}</label>
+          <div class="image-row">
+            <div class="image-thumb">
+              @if (imagePath()) {
+              <img [src]="imagePath()" alt="" />
+              }
+            </div>
+            <div class="image-actions">
+              <input type="file" accept="image/*" (change)="onFile($event)" [disabled]="uploading()" />
+              @if (imagePath()) {
+              <button type="button" class="btn-ghost btn-small" (click)="clearImage()">
+                {{ CONSTANTS.ADMIN_REMOVE | translate }}
+              </button>
+              }
+              @if (uploading()) {
+              <span class="hint">{{ CONSTANTS.ADMIN_UPLOADING | translate }}</span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      @if (error()) {
+      <div class="dialog-error">{{ error() }}</div>
+      }
+
+      <div class="dialog-actions">
+        <button type="button" class="btn-ghost" [disabled]="busy()" (click)="cancelled.emit()">
+          {{ CONSTANTS.ADMIN_CANCEL | translate }}
+        </button>
+        <button type="submit" class="btn-accent" [disabled]="busy() || uploading()">
+          {{ CONSTANTS.ADMIN_SAVE | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

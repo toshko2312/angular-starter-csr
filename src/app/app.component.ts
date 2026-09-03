@@ -3,12 +3,13 @@ import { RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CONSTANTS } from './shared/constants';
 import { NavbarComponent } from './core/components/navbar/navbar.component';
+import { CartDrawerComponent } from './features/components/cart-drawer/cart-drawer.component';
 import { injectSpeedInsights } from '@vercel/speed-insights';
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent],
+  imports: [RouterOutlet, NavbarComponent, CartDrawerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

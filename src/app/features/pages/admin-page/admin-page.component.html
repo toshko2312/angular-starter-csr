@@ -1,0 +1,164 @@
+<div class="page">
+  <div class="page-inner--narrow">
+
+    @if (!auth.isReady()) {
+    <div class="admin-loading">…</div>
+    }
+
+    @else if (!auth.isAuthenticated()) {
+    <div class="login-wrap">
+      <div class="login-panel glass">
+        <div class="dialog-title">{{ CONSTANTS.ADMIN_LOGIN_TITLE | translate }}</div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="signIn()">
+          <div class="field">
+            <label for="ad-username">{{ 'ADMIN.USERNAME' | translate }}</label>
+            <input id="ad-username" formControlName="username" autocomplete="username" />
+          </div>
+
+          <div class="field login-field">
+            <label for="ad-password">{{ 'ADMIN.PASSWORD' | translate }}</label>
+            <input
+              id="ad-password"
+              type="password"
+              formControlName="password"
+              autocomplete="current-password"
+            />
+          </div>
+
+          @if (loginError()) {
+          <div class="dialog-error">{{ loginError() }}</div>
+          }
+
+          <button type="submit" class="btn-accent login-submit" [disabled]="signingIn()">
+            {{ CONSTANTS.ADMIN_SIGN_IN | translate }}
+          </button>
+        </form>
+      </div>
+    </div>
+    }
+
+    @else {
+    <div class="page-head admin-head">
+      <div>
+        <div class="kicker">{{ CONSTANTS.ADMIN_KICKER | translate }}</div>
+        <h1>{{ CONSTANTS.ADMIN_TITLE | translate }}</h1>
+      </div>
+      <button type="button" class="btn-ghost" (click)="signOut()">
+        {{ CONSTANTS.ADMIN_SIGN_OUT | translate }}
+      </button>
+    </div>
+
+    <!-- Menu items -->
+    <section class="admin-section glass">
+      <header class="section-head">
+        <h2>{{ CONSTANTS.ADMIN_MENU_SECTION | translate }}</h2>
+        <button type="button" class="btn-accent btn-small" (click)="menuDialog.set({ item: null })">
+          {{ CONSTANTS.ADMIN_ADD_ITEM | translate }}
+        </button>
+      </header>
+
+      <div class="rows">
+        @for (item of menuItems(); track item.id) {
+        <div class="row">
+          <div class="row-thumb">
+            @if (item.image_path) {
+            <img [src]="item.image_path" [alt]="item.name" />
+            }
+          </div>
+          <div class="row-text">
+            <div class="row-title">{{ item.name }}</div>
+            <div class="row-meta">{{ item.category }} · {{ priceLabel(item) }} {{ item.unit }}</div>
+          </div>
+          <div class="row-actions">
+            <button type="button" class="icon-btn tiny" (click)="menuDialog.set({ item })">
+              <i class="pi pi-pencil"></i>
+            </button>
+            <button
+              type="button"
+              class="icon-btn tiny danger"
+              (click)="pendingDelete.set({ kind: 'menu', item })"
+            >
+              <i class="pi pi-trash"></i>
+            </button>
+          </div>
+        </div>
+        } @empty {
+        <div class="rows-empty">{{ CONSTANTS.ADMIN_NO_ROWS | translate }}</div>
+        }
+      </div>
+    </section>
+
+    <!-- Landing page projects -->
+    <section class="admin-section glass">
+      <header class="section-head">
+        <h2>{{ CONSTANTS.ADMIN_PROJECTS_SECTION | translate }}</h2>
+        <button
+          type="button"
+          class="btn-accent btn-small"
+          (click)="projectDialog.set({ project: null })"
+        >
+          {{ CONSTANTS.ADMIN_ADD_PROJECT | translate }}
+        </button>
+      </header>
+
+      <div class="rows">
+        @for (project of projects(); track project.id) {
+        <div class="row">
+          <div class="row-thumb">
+            @if (project.image[0]; as cover) {
+            <img [src]="cover.image_path" [alt]="project.title" />
+            }
+          </div>
+          <div class="row-text">
+            <div class="row-title">{{ project.title }}</div>
+            <div class="row-meta">
+              {{ CONSTANTS.PRODUCTS_LIST_GALLERY | translate: { count: imageCount(project) } }}
+            </div>
+          </div>
+          <div class="row-actions">
+            <button type="button" class="icon-btn tiny" (click)="projectDialog.set({ project })">
+              <i class="pi pi-pencil"></i>
+            </button>
+            <button
+              type="button"
+              class="icon-btn tiny danger"
+              (click)="pendingDelete.set({ kind: 'project', project })"
+            >
+              <i class="pi pi-trash"></i>
+            </button>
+          </div>
+        </div>
+        } @empty {
+        <div class="rows-empty">{{ CONSTANTS.ADMIN_NO_ROWS | translate }}</div>
+        }
+      </div>
+    </section>
+    }
+  </div>
+</div>
+
+@if (menuDialog(); as open) {
+<app-menu-item-dialog
+  [item]="open.item"
+  (saved)="onDialogSaved()"
+  (cancelled)="menuDialog.set(null)"
+/>
+}
+
+@if (projectDialog(); as open) {
+<app-project-dialog
+  [project]="open.project"
+  (saved)="onDialogSaved()"
+  (cancelled)="projectDialog.set(null)"
+/>
+}
+
+@if (pendingDelete()) {
+<app-confirm-dialog
+  [message]="deleteMessage()"
+  [busy]="deleting()"
+  (confirmed)="confirmDelete()"
+  (cancelled)="pendingDelete.set(null)"
+/>
+}

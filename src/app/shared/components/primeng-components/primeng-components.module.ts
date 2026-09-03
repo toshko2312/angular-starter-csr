@@ -1,19 +1,10 @@
 import { NgModule } from "@angular/core";
-import { ButtonModule } from "primeng/button";
-import { MenubarModule } from 'primeng/menubar';
-import { TabViewModule } from 'primeng/tabview';
-import { CarouselModule } from 'primeng/carousel';
-import { Tag } from 'primeng/tag';
 
-
-
-const PrimeNgModules = [
-  ButtonModule,
-  MenubarModule,
-  TabViewModule,
-  CarouselModule,
-  Tag
-]
+/**
+ * The UI is now custom markup matching the design system, so no PrimeNG
+ * components are imported. Kept as the seam for reintroducing any.
+ */
+const PrimeNgModules: never[] = []
 
 @NgModule({
   declarations: [],

@@ -1,0 +1,15 @@
+<div class="dialog">
+  <div class="dialog-scrim" (click)="!busy && cancelled.emit()"></div>
+  <div class="dialog-panel dialog-panel--narrow glass">
+    <div class="dialog-title">{{ CONSTANTS.ADMIN_CONFIRM_TITLE | translate }}</div>
+    <p class="dialog-message">{{ message }}</p>
+    <div class="dialog-actions">
+      <button type="button" class="btn-ghost" [disabled]="busy" (click)="cancelled.emit()">
+        {{ CONSTANTS.ADMIN_CANCEL | translate }}
+      </button>
+      <button type="button" class="btn-accent btn-danger" [disabled]="busy" (click)="confirmed.emit()">
+        {{ CONSTANTS.ADMIN_DELETE | translate }}
+      </button>
+    </div>
+  </div>
+</div>

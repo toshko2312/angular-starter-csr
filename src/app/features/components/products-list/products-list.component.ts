@@ -8,28 +8,36 @@ import {
 import { CONSTANTS } from '@shared/constants';
 import { SharedModule } from '@shared/shared.module';
 import { ProductsService } from '../../services/products.service';
-import { ProjectModel } from '@shared/models/project.model';
+import { ProjectImage, ProjectModel } from '@shared/models/project.model';
 import { Subject, takeUntil } from 'rxjs';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ImageViewerDialogComponent } from '../image-viewer-dialog/image-viewer-dialog.component';
+import { ImageViewerComponent } from '../image-viewer/image-viewer.component';
+
+interface ViewerState {
+  project: ProjectModel;
+  index: number;
+}
 
 @Component({
   selector: 'app-products-list',
-  imports: [SharedModule],
+  imports: [SharedModule, ImageViewerComponent],
   templateUrl: './products-list.component.html',
   styleUrl: './products-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductsListComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  CONSTANTS = CONSTANTS;
-  projects = signal<ProjectModel[] | null>(null);
-  ref: DynamicDialogRef | undefined;
+  readonly CONSTANTS = CONSTANTS;
+  readonly projects = signal<ProjectModel[] | null>(null);
+  readonly viewer = signal<ViewerState | null>(null);
+  /** Per-card carousel position, keyed by project id. */
+  private readonly slideIndex = signal<Record<number, number>>({});
 
-  constructor(
-    private productsService: ProductsService,
-    private dialogService: DialogService
-  ) {}
+  private readonly monthYear = new Intl.DateTimeFormat('bg-BG', {
+    month: 'long',
+    year: 'numeric',
+  });
+
+  constructor(private productsService: ProductsService) {}
 
   ngOnInit(): void {
     this.initProducts();
@@ -49,25 +57,40 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  handleViewImage(image: any, imageTitle: string, currentIndex: any) {
-    const minWidthQuery = window.matchMedia('(min-width: 760px)');
-    if (!minWidthQuery.matches) {
-      return;
-    }
+  /** "юни 2025" — the design's date badge. */
+  dateLabel(project: ProjectModel): string {
+    if (!project.date) return '';
+    const date = new Date(project.date);
+    return isNaN(date.getTime()) ? '' : this.monthYear.format(date);
+  }
 
-    this.ref = this.dialogService.open(ImageViewerDialogComponent, {
-      header: imageTitle,
-      closable: true,
-      modal: true,
-      closeOnEscape: true,
-      dismissableMask: true,
-      width: '80%',
-      styleClass: 'glass',
-      data: {
-        image,
-        imageTitle,
-        currentIndex,
-      },
-    });
+  /** Falls back to the shown image's caption when the row has no description. */
+  descriptionOf(project: ProjectModel): string {
+    return project.description || this.currentImage(project)?.description || '';
+  }
+
+  indexOf(project: ProjectModel): number {
+    return this.slideIndex()[project.id] ?? 0;
+  }
+
+  currentImage(project: ProjectModel): ProjectImage | undefined {
+    return project.image?.[this.indexOf(project)];
+  }
+
+  /** Arrows sit inside the card, which itself opens the viewer on click. */
+  step(project: ProjectModel, delta: number, event: Event): void {
+    event.stopPropagation();
+    const len = project.image?.length ?? 0;
+    if (len < 2) return;
+    const next = (this.indexOf(project) + delta + len) % len;
+    this.slideIndex.update((state) => ({ ...state, [project.id]: next }));
+  }
+
+  openViewer(project: ProjectModel): void {
+    this.viewer.set({ project, index: this.indexOf(project) });
+  }
+
+  closeViewer(): void {
+    this.viewer.set(null);
   }
 }

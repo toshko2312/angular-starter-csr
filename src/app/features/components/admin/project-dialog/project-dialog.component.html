@@ -1,0 +1,98 @@
+<div class="dialog">
+  <div class="dialog-scrim" (click)="!busy() && cancelled.emit()"></div>
+
+  <div class="dialog-panel glass">
+    <div class="dialog-title">
+      {{ (isEdit ? CONSTANTS.ADMIN_EDIT_PROJECT : CONSTANTS.ADMIN_ADD_PROJECT) | translate }}
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="dialog-grid">
+        <div class="field">
+          <label for="pr-title">{{ 'ADMIN.FIELD_TITLE' | translate }}</label>
+          <input id="pr-title" formControlName="title" />
+          @if (invalid('title')) {
+          <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="pr-date">{{ 'ADMIN.FIELD_DATE' | translate }}</label>
+          <input id="pr-date" type="date" formControlName="date" />
+        </div>
+
+        <div class="field field--full">
+          <label for="pr-description">{{ 'ADMIN.FIELD_DESCRIPTION' | translate }}</label>
+          <textarea id="pr-description" rows="3" formControlName="description"></textarea>
+        </div>
+
+        <div class="field field--full">
+          <label for="pr-tags">{{ 'ADMIN.FIELD_TAGS' | translate }}</label>
+          <input id="pr-tags" formControlName="tags" placeholder="120 гости, Коктейл" />
+          <span class="hint">{{ 'ADMIN.TAGS_HINT' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="gallery">
+        <div class="gallery-head">
+          <span class="gallery-title">{{ 'ADMIN.GALLERY' | translate }}</span>
+          <span class="hint">{{ images().length }}</span>
+        </div>
+
+        <div class="gallery-list">
+          @for (image of images(); track $index) {
+          <div class="gallery-row">
+            <div class="image-thumb">
+              <img [src]="image.image_path" alt="" />
+            </div>
+            <input
+              class="gallery-caption"
+              [value]="image.description"
+              [placeholder]="'ADMIN.CAPTION_PLACEHOLDER' | translate"
+              (input)="setCaption($index, $event)"
+            />
+            <div class="gallery-actions">
+              <button type="button" class="icon-btn tiny" [disabled]="$index === 0" (click)="move($index, -1)">
+                <i class="pi pi-chevron-up"></i>
+              </button>
+              <button
+                type="button"
+                class="icon-btn tiny"
+                [disabled]="$index === images().length - 1"
+                (click)="move($index, 1)"
+              >
+                <i class="pi pi-chevron-down"></i>
+              </button>
+              <button type="button" class="icon-btn tiny danger" (click)="removeImage($index)">
+                <i class="pi pi-trash"></i>
+              </button>
+            </div>
+          </div>
+          } @empty {
+          <div class="gallery-empty">{{ 'ADMIN.NO_IMAGES' | translate }}</div>
+          }
+        </div>
+
+        <div class="image-actions">
+          <input type="file" accept="image/*" (change)="onFile($event)" [disabled]="uploading()" />
+          @if (uploading()) {
+          <span class="hint">{{ CONSTANTS.ADMIN_UPLOADING | translate }}</span>
+          }
+        </div>
+      </div>
+
+      @if (error()) {
+      <div class="dialog-error">{{ error() }}</div>
+      }
+
+      <div class="dialog-actions">
+        <button type="button" class="btn-ghost" [disabled]="busy()" (click)="cancelled.emit()">
+          {{ CONSTANTS.ADMIN_CANCEL | translate }}
+        </button>
+        <button type="submit" class="btn-accent" [disabled]="busy() || uploading()">
+          {{ CONSTANTS.ADMIN_SAVE | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

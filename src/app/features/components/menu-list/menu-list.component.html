@@ -1,0 +1,55 @@
+<div class="menu-categories">
+  @for (name of categories(); track name) {
+  <button
+    type="button"
+    class="menu-chip"
+    [class.menu-chip--active]="name === category()"
+    (click)="category.set(name)"
+  >
+    @if (name === CONSTANTS.ALL_CATEGORIES) {
+    {{ CONSTANTS.MENU_ALL_CATEGORIES | translate }}
+    } @else {
+    {{ name }}
+    }
+  </button>
+  }
+</div>
+
+<div class="card-grid card-grid--menu">
+  @for (item of visibleItems(); track item.id) {
+  <article class="menu-card glass">
+    <div class="menu-media">
+      @if (item.image_path) {
+      <img [src]="item.image_path" [alt]="item.name" />
+      }
+      <div class="menu-category">{{ item.category }}</div>
+    </div>
+
+    <div class="menu-body">
+      <div class="menu-name">{{ item.name }}</div>
+      <div class="menu-description">{{ item.description }}</div>
+
+      <div class="menu-foot">
+        <div class="menu-price">
+          <span class="menu-price-value">{{ priceLabel(item) }}</span>
+          <span class="menu-price-unit">{{ item.unit }}</span>
+        </div>
+
+        @if (cart.qtyOf(item.id) > 0) {
+        <div class="stepper">
+          <button type="button" (click)="cart.decrement(item.id)" aria-label="-">−</button>
+          <span class="stepper-qty">{{ cart.qtyOf(item.id) }}</span>
+          <button type="button" (click)="cart.increment(item.id)" aria-label="+">+</button>
+        </div>
+        } @else {
+        <button type="button" class="btn-accent menu-add" (click)="cart.add(item)">
+          {{ CONSTANTS.MENU_ADD | translate }}
+        </button>
+        }
+      </div>
+    </div>
+  </article>
+  } @empty {
+  <div class="menu-empty">{{ CONSTANTS.MENU_EMPTY | translate }}</div>
+  }
+</div>

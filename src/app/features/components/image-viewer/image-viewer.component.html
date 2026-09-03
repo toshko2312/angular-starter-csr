@@ -1,0 +1,62 @@
+<div class="viewer">
+  <div class="viewer-scrim" (click)="close()"></div>
+
+  <div class="viewer-panel glass">
+    <div class="viewer-head">
+      <div>
+        <div class="viewer-title">{{ title }}</div>
+        @if (dateLabel) {
+        <div class="viewer-date">{{ dateLabel }}</div>
+        }
+      </div>
+      <button
+        type="button"
+        class="icon-btn viewer-close"
+        (click)="close()"
+        [attr.aria-label]="CONSTANTS.VIEWER_CLOSE | translate"
+      >
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+
+    <div class="viewer-stage">
+      @if (current) {
+      <img [src]="current.image_path" [alt]="current.description || title" />
+      }
+      <button
+        type="button"
+        class="icon-btn viewer-arrow viewer-arrow--prev"
+        (click)="step(-1)"
+        [attr.aria-label]="CONSTANTS.VIEWER_PREV | translate"
+      >
+        <i class="pi pi-chevron-left"></i>
+      </button>
+      <button
+        type="button"
+        class="icon-btn viewer-arrow viewer-arrow--next"
+        (click)="step(1)"
+        [attr.aria-label]="CONSTANTS.VIEWER_NEXT | translate"
+      >
+        <i class="pi pi-chevron-right"></i>
+      </button>
+      <div class="viewer-counter">{{ counter }}</div>
+    </div>
+
+    @if (current?.description) {
+    <div class="viewer-description">{{ current?.description }}</div>
+    }
+
+    <div class="viewer-thumbs">
+      @for (image of images; track $index) {
+      <button
+        type="button"
+        class="viewer-thumb"
+        [class.viewer-thumb--active]="$index === index()"
+        (click)="select($index)"
+      >
+        <img [src]="image.image_path" [alt]="image.description || title" />
+      </button>
+      }
+    </div>
+  </div>
+</div>

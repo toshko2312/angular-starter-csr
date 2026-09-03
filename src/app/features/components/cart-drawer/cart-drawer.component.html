@@ -1,0 +1,56 @@
+@if (cart.drawerOpen()) {
+<div class="drawer-root">
+  <div class="drawer-scrim" (click)="cart.closeDrawer()"></div>
+
+  <aside class="drawer glass">
+    <header class="drawer-head">
+      <div class="drawer-title">{{ CONSTANTS.CART_TITLE | translate }}</div>
+      <button type="button" class="icon-btn drawer-close" (click)="cart.closeDrawer()">
+        <i class="pi pi-times"></i>
+      </button>
+    </header>
+
+    <div class="drawer-lines">
+      @for (line of cart.lines(); track line.item.id) {
+      <div class="cart-line">
+        <div class="cart-line-thumb">
+          @if (line.item.image_path) {
+          <img [src]="line.item.image_path" [alt]="line.item.name" />
+          }
+        </div>
+        <div class="cart-line-text">
+          <div class="cart-line-name">{{ line.item.name }}</div>
+          <div class="cart-line-detail">{{ detailOf(line) }}</div>
+        </div>
+        <div class="stepper">
+          <button type="button" (click)="cart.decrement(line.item.id)" aria-label="-">−</button>
+          <span class="stepper-qty">{{ line.qty }}</span>
+          <button type="button" (click)="cart.increment(line.item.id)" aria-label="+">+</button>
+        </div>
+      </div>
+      } @empty {
+      <div class="cart-empty">
+        {{ CONSTANTS.CART_EMPTY | translate }}<br />
+        <a [routerLink]="CONSTANTS.MENU_PAGE" (click)="cart.closeDrawer()">
+          {{ CONSTANTS.CART_BROWSE_MENU | translate }}
+        </a>
+      </div>
+      }
+    </div>
+
+    <footer class="drawer-foot">
+      <div class="cart-total">
+        <span class="cart-total-label">{{ CONSTANTS.CART_ESTIMATE | translate }}</span>
+        <span class="cart-total-value">{{ cart.totalLabel() }}</span>
+      </div>
+      <a
+        class="btn-accent drawer-continue"
+        [routerLink]="CONSTANTS.CONTACTS_PAGE"
+        (click)="cart.closeDrawer()"
+      >
+        {{ CONSTANTS.CART_CONTINUE | translate }}
+      </a>
+    </footer>
+  </aside>
+</div>
+}

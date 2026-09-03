@@ -20,4 +20,14 @@ export const routes: Routes = [
     component: MenuPageComponent,
     canActivate: [TranslationLoaderGuard],
   },
+  {
+    // Hidden: no navbar link, and the page sets robots noindex itself.
+    // Lazy so the admin bundle never reaches ordinary visitors.
+    path: 'admin',
+    loadComponent: () =>
+      import('./features/pages/admin-page/admin-page.component').then(
+        (m) => m.AdminPageComponent
+      ),
+    canActivate: [TranslationLoaderGuard],
+  },
 ];

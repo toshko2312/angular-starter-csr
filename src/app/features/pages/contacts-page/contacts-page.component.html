@@ -1,1 +1,161 @@
-<p>contacts-page works!</p>
+<div class="page">
+  <div class="page-inner--narrow">
+    <div class="page-head">
+      <div class="kicker">{{ CONSTANTS.CONTACTS_KICKER | translate }}</div>
+      <h1>{{ CONSTANTS.CONTACTS_TITLE | translate }}</h1>
+      <p>{{ CONSTANTS.CONTACTS_SUBTITLE | translate }}</p>
+    </div>
+
+    <div class="contacts-grid">
+      <section class="contacts-panel glass">
+        @if (!sent()) {
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <div class="form-grid">
+            <div class="field">
+              <label for="name">{{ 'CONTACTS.NAME' | translate }}</label>
+              <input
+                id="name"
+                formControlName="name"
+                [placeholder]="'CONTACTS.NAME_PLACEHOLDER' | translate"
+              />
+              @if (invalid('name')) {
+              <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
+              }
+            </div>
+
+            <div class="field">
+              <label for="email">{{ 'CONTACTS.EMAIL' | translate }}</label>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                [placeholder]="'CONTACTS.EMAIL_PLACEHOLDER' | translate"
+              />
+              @if (invalid('email')) {
+              <span class="field-error">{{ CONSTANTS.CONTACTS_INVALID_EMAIL | translate }}</span>
+              }
+            </div>
+
+            <div class="field">
+              <label for="phone">{{ 'CONTACTS.PHONE' | translate }}</label>
+              <input
+                id="phone"
+                formControlName="phone"
+                [placeholder]="'CONTACTS.PHONE_PLACEHOLDER' | translate"
+              />
+            </div>
+
+            <div class="field">
+              <label for="event_date">{{ 'CONTACTS.EVENT_DATE' | translate }}</label>
+              <input id="event_date" type="date" formControlName="event_date" />
+            </div>
+
+            <div class="field">
+              <label for="guests">{{ 'CONTACTS.GUESTS' | translate }}</label>
+              <input
+                id="guests"
+                type="number"
+                formControlName="guests"
+                [placeholder]="'CONTACTS.GUESTS_PLACEHOLDER' | translate"
+              />
+            </div>
+
+            <div class="field">
+              <label for="event_type">{{ 'CONTACTS.EVENT_TYPE' | translate }}</label>
+              <select id="event_type" formControlName="event_type">
+                @for (type of eventTypes; track type) {
+                <option [value]="type">{{ type | translate }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="field field--full">
+              <label for="location">{{ 'CONTACTS.LOCATION' | translate }}</label>
+              <input
+                id="location"
+                formControlName="location"
+                [placeholder]="'CONTACTS.LOCATION_PLACEHOLDER' | translate"
+              />
+            </div>
+
+            <div class="field field--full">
+              <label for="message">{{ 'CONTACTS.MESSAGE' | translate }}</label>
+              <textarea
+                id="message"
+                rows="5"
+                formControlName="message"
+                [placeholder]="'CONTACTS.MESSAGE_PLACEHOLDER' | translate"
+              ></textarea>
+              @if (invalid('message')) {
+              <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
+              }
+            </div>
+          </div>
+
+          <div class="form-foot">
+            <div class="attach-label">
+              <i class="pi pi-paperclip"></i>{{ attachLabel() }}
+            </div>
+            <button type="submit" class="btn-accent" [disabled]="submitting()">
+              {{ CONSTANTS.CONTACTS_SUBMIT | translate }}
+            </button>
+          </div>
+
+          @if (error()) {
+          <div class="form-error">{{ CONSTANTS.CONTACTS_ERROR | translate }}</div>
+          }
+        </form>
+        } @else {
+        <div class="sent-state">
+          <div class="sent-mark"><i class="pi pi-check"></i></div>
+          <div class="sent-title">{{ CONSTANTS.CONTACTS_SENT_TITLE | translate }}</div>
+          <div class="sent-note">{{ sentNote() }}</div>
+          <button type="button" class="btn-ghost" (click)="reset()">
+            {{ CONSTANTS.CONTACTS_RESET | translate }}
+          </button>
+        </div>
+        }
+      </section>
+
+      <aside class="cart-panel glass">
+        <div class="cart-panel-head">
+          <div class="cart-panel-title">{{ CONSTANTS.CART_ATTACHED_TITLE | translate }}</div>
+          <div class="cart-panel-count">
+            {{ CONSTANTS.CART_UNITS | translate: { count: cart.count() } }}
+          </div>
+        </div>
+
+        <div class="cart-panel-lines">
+          @for (line of cart.lines(); track line.item.id) {
+          <div class="cart-line">
+            <div class="cart-line-thumb">
+              @if (line.item.image_path) {
+              <img [src]="line.item.image_path" [alt]="line.item.name" />
+              }
+            </div>
+            <div class="cart-line-text">
+              <div class="cart-line-name">{{ line.item.name }}</div>
+              <div class="cart-line-detail">{{ detailOf(line) }}</div>
+            </div>
+            <div class="stepper">
+              <button type="button" (click)="cart.decrement(line.item.id)" aria-label="-">−</button>
+              <span class="stepper-qty">{{ line.qty }}</span>
+              <button type="button" (click)="cart.increment(line.item.id)" aria-label="+">+</button>
+            </div>
+          </div>
+          } @empty {
+          <div class="cart-empty">
+            {{ CONSTANTS.CART_EMPTY | translate }}<br />
+            <a [routerLink]="CONSTANTS.MENU_PAGE">{{ CONSTANTS.CART_BROWSE_MENU | translate }}</a>
+          </div>
+          }
+        </div>
+
+        <div class="cart-total">
+          <span class="cart-total-label">{{ CONSTANTS.CART_ESTIMATE | translate }}</span>
+          <span class="cart-total-value">{{ cart.totalLabel() }}</span>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
