@@ -17,12 +17,30 @@ export class EnquiriesService {
   readonly openCount = computed(() => this.rowsState().filter((row) => !row.handled).length);
 
   submit(enquiry: EnquiryModel): Observable<boolean> {
-    return from(supabase.from('enquiries').insert(enquiry)).pipe(
+    // Minted here rather than read back: insert().select() compiles to a
+    // RETURNING, which RLS judges as a SELECT, and anon deliberately has no
+    // select policy on this table. The column default covers every other
+    // insert path, so nothing else has to change.
+    const id = crypto.randomUUID();
+
+    return from(supabase.from('enquiries').insert({ ...enquiry, id })).pipe(
       map((result) => {
         if (result.error) throw result.error;
         return true;
-      })
+      }),
+      tap(() => this.notify(id))
     );
+  }
+
+  /**
+   * Fire-and-forget: the row is already saved by the time this runs, so a
+   * failed notification is the admin's problem and must never turn a
+   * successful submission into an error on the visitor's screen.
+   */
+  private notify(id: string): void {
+    supabase.functions
+      .invoke('notify-enquiry', { body: { id } })
+      .catch((err) => console.error('Enquiry notification failed:', err));
   }
 
   /**

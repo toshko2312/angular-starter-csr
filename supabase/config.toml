@@ -373,6 +373,14 @@ authorization_url_path = "/oauth/consent"
 # Allow dynamic client registration
 allow_dynamic_registration = false
 
+# The enquiry notification email. JWT verification stays ON: functions.invoke
+# sends the anon key as a bearer token and the anon key is a valid JWT, so
+# visitors pass, while keyless scanners do not. It is not real protection --
+# the anon key ships in the bundle -- but the abuse ceiling is low, because the
+# mail body is read from the database, never taken from the request.
+[functions.notify-enquiry]
+verify_jwt = true
+
 [edge_runtime]
 enabled = true
 # Supported request policies: `oneshot`, `per_worker`.
