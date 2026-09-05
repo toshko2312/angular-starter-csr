@@ -4,7 +4,9 @@
     "MENU": "Menu",
     "CONTACT": "Contact",
     "CART": "Cart",
-    "LANGUAGE": "Language"
+    "LANGUAGE": "Language",
+    "THEME_DARK": "Dark theme",
+    "THEME_LIGHT": "Light theme"
   },
   "PRODUCTS_LIST": {
     "KICKER": "Catering for your occasion",

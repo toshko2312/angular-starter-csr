@@ -4,7 +4,9 @@
     "MENU": "Меню",
     "CONTACT": "Контакти",
     "CART": "Количка",
-    "LANGUAGE": "Език"
+    "LANGUAGE": "Език",
+    "THEME_DARK": "Тъмна тема",
+    "THEME_LIGHT": "Светла тема"
   },
   "PRODUCTS_LIST": {
     "KICKER": "Кетъринг за вашия повод",

@@ -59,8 +59,8 @@
   gap: 12px;
   padding: 12px;
   border-radius: 1.1rem;
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--border-soft);
+  background: var(--surface-1);
 }
 
 .cart-line-thumb {
@@ -109,7 +109,7 @@
 .drawer-foot {
   padding-top: 16px;
   margin-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.7);
+  border-top: 1px solid var(--border-soft);
 }
 
 .cart-total {

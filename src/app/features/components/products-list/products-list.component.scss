@@ -29,7 +29,7 @@
   top: 14px;
   padding: 6px 14px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--surface-3);
   backdrop-filter: blur(6px);
   font-size: 0.75rem;
   font-weight: 700;
@@ -77,11 +77,11 @@
   width: 7px;
   height: 7px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--surface-2);
 }
 
 .project-dot--active {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--surface-4);
 }
 
 .project-arrow {
@@ -92,7 +92,7 @@
   width: 36px;
   height: 36px;
   font-size: 0.95rem;
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--surface-2);
   backdrop-filter: blur(8px);
 }
 
@@ -138,8 +138,8 @@
 .project-tag {
   padding: 5px 12px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.22);
+  border: 1px solid var(--border-soft);
+  background: var(--surface-1);
   font-size: 0.76rem;
   letter-spacing: 0.04em;
 }

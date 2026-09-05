@@ -5,6 +5,17 @@
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <!-- Runs before the first paint, which is the whole point: the prerendered
+         HTML is light, so a reader who chose dark would otherwise get a white
+         frame while Angular boots. ThemeService owns the value from then on. -->
+    <script>
+      try {
+        if (localStorage.getItem('theme') === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+    </script>
+
     <!-- Per-page title, description, canonical, Open Graph and hreflang are
          written by SeoService and baked into each prerendered page. These are
          the defaults for anything it does not reach. -->

@@ -17,7 +17,7 @@ export class ProductsService {
 
     if (cachedRaw) {
       const cached = JSON.parse(cachedRaw) as ProjectModel[];
-      return of(cached);
+      return of(newestFirst(cached));
     }
 
     return this.fetch();
@@ -33,7 +33,7 @@ export class ProductsService {
     ).pipe(
       map((result) => {
         if (result.error) throw result.error;
-        const projects = (result.data || []) as ProjectModel[];
+        const projects = newestFirst((result.data || []) as ProjectModel[]);
         if (this.isBrowser) sessionStorage.setItem(this.projectsStorageKey, JSON.stringify(projects));
         return projects;
       }),
@@ -76,4 +76,22 @@ export class ProductsService {
     if (!this.isBrowser) return;
     sessionStorage.removeItem(this.projectsStorageKey);
   }
+}
+
+/**
+ * Newest event first, undated ones last.
+ *
+ * The query orders too, but a tab that cached the rows before this existed
+ * keeps that array for the life of the tab — sessionStorage survives reloads —
+ * so the order has to hold whichever path the rows arrived by.
+ */
+function newestFirst(projects: ProjectModel[]): ProjectModel[] {
+  return [...projects].sort((a, b) => time(b.date) - time(a.date));
+}
+
+/** Missing or unparseable dates sort to the end. */
+function time(date: Date | string | null | undefined): number {
+  if (!date) return -Infinity;
+  const parsed = new Date(date).getTime();
+  return isNaN(parsed) ? -Infinity : parsed;
 }

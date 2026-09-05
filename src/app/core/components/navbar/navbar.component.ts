@@ -12,6 +12,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { LanguageService } from '@core/services/language.service';
+import { ThemeService } from '@core/services/theme.service';
 import { CONSTANTS } from '@shared/constants';
 import { SharedModule } from '@shared/shared.module';
 import { filter, map } from 'rxjs';
@@ -33,6 +34,7 @@ export class NavbarComponent {
   readonly cart = inject(CartService);
   readonly auth = inject(AuthService);
   readonly language = inject(LanguageService);
+  readonly theme = inject(ThemeService);
   private readonly enquiries = inject(EnquiriesService);
 
   /** Unhandled requests, badged on the admin menu. Zero renders nothing. */

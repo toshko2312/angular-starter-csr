@@ -167,6 +167,19 @@
     </button>
   </div>
 
+  <button
+    type="button"
+    class="icon-btn theme-button"
+    [attr.aria-pressed]="theme.isDark()"
+    [title]="(theme.isDark() ? CONSTANTS.NAVBAR_THEME_LIGHT : CONSTANTS.NAVBAR_THEME_DARK) | translate"
+    [attr.aria-label]="
+      (theme.isDark() ? CONSTANTS.NAVBAR_THEME_LIGHT : CONSTANTS.NAVBAR_THEME_DARK) | translate
+    "
+    (click)="theme.toggle()"
+  >
+    <i class="pi" [class.pi-moon]="theme.isDark()" [class.pi-sun]="!theme.isDark()"></i>
+  </button>
+
   @if (auth.isAuthenticated()) {
   <button
     type="button"

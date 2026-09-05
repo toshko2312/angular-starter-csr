@@ -23,6 +23,18 @@
   --field-bg: rgba(255, 255, 255, 0.45);
   --field-border: 1px solid rgba(255, 255, 255, 0.85);
 
+  /* Surfaces and borders that used to be written out in full in a dozen
+     stylesheets. Named here so a theme can move all of them at once. */
+  --surface-0: rgba(255, 255, 255, 0.16);
+  --surface-1: rgba(255, 255, 255, 0.24);
+  --surface-2: rgba(255, 255, 255, 0.5);
+  --surface-3: rgba(255, 255, 255, 0.75);
+  --surface-4: rgba(255, 255, 255, 0.9);
+  --border-soft: rgba(255, 255, 255, 0.7);
+  --border-strong: rgba(255, 255, 255, 0.85);
+  /* Overlays that cover page content: opaque in both themes. */
+  --panel-bg: #fff;
+
   --radius-card: 1.75rem;
   --radius-media: 1.35rem;
   --radius-field: 0.9rem;
@@ -38,6 +50,43 @@
   );
 }
 
+/* ---------------------------------------------------------------------------
+   Dark theme. Set by ThemeService on <html>, and by the inline script in
+   index.html before first paint so a returning reader gets no white frame.
+   Light is the default: nothing here applies until the attribute is present.
+
+   The accent is deliberately unchanged — it is the brand colour and still
+   clears contrast on both grounds.
+   --------------------------------------------------------------------------- */
+:root[data-theme='dark'] {
+  --ink: #f2efe9;
+  --ink-soft: rgba(242, 239, 233, 0.6);
+  --paper: #14120f;
+
+  --glass-bg: rgba(24, 21, 18, 0.52);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.12);
+  --glass-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  --hairline: 1px solid rgba(255, 255, 255, 0.12);
+
+  --field-bg: rgba(255, 255, 255, 0.08);
+  --field-border: 1px solid rgba(255, 255, 255, 0.16);
+
+  --surface-0: rgba(255, 255, 255, 0.06);
+  --surface-1: rgba(255, 255, 255, 0.09);
+  --surface-2: rgba(255, 255, 255, 0.16);
+  --surface-3: rgba(255, 255, 255, 0.22);
+  --surface-4: rgba(255, 255, 255, 0.28);
+  --border-soft: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.2);
+  --panel-bg: #1c1916;
+
+  --placeholder: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.07) 0 12px,
+    rgba(255, 255, 255, 0.03) 12px 24px
+  );
+}
+
 /* --------------------------------------------------------------------------- Base */
 
 html {
@@ -46,15 +95,15 @@ html {
 }
 
 body {
-  /* WebP where supported, JPEG otherwise. Both are 1920px wide — the source
-     was a 5644px 8.5 MB camera original. */
+  /* WebP where supported, JPEG otherwise. Both are the 1672px sources, run
+     through scripts/optimize-images.py --themes. */
   background-image: image-set(
-    url("../public/background-1.webp") type("image/webp"),
-    url("../public/background-1.jpg") type("image/jpeg")
+    url("../public/bg-white.webp") type("image/webp"),
+    url("../public/bg-white.jpg") type("image/jpeg")
   );
   background-image: -webkit-image-set(
-    url("../public/background-1.webp") type("image/webp"),
-    url("../public/background-1.jpg") type("image/jpeg")
+    url("../public/bg-white.webp") type("image/webp"),
+    url("../public/bg-white.jpg") type("image/jpeg")
   );
   background-size: cover;
   background-position: center;
@@ -66,6 +115,17 @@ body {
   min-height: 100vh;
   color: var(--ink);
   font-family: var(--font-body);
+}
+
+:root[data-theme='dark'] body {
+  background-image: image-set(
+    url("../public/bg-dark.webp") type("image/webp"),
+    url("../public/bg-dark.jpg") type("image/jpeg")
+  );
+  background-image: -webkit-image-set(
+    url("../public/bg-dark.webp") type("image/webp"),
+    url("../public/bg-dark.jpg") type("image/jpeg")
+  );
 }
 
 h1,
@@ -233,13 +293,13 @@ select:focus {
   font-family: inherit;
   font-size: 1rem;
   font-weight: 700;
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
   color: var(--ink);
   transition: background 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.7);
+    background: var(--surface-3);
   }
 }
 
@@ -249,13 +309,13 @@ select:focus {
   justify-content: center;
   border-radius: 999px;
   cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
   color: var(--ink);
   transition: background 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--surface-4);
   }
 }
 
@@ -288,8 +348,8 @@ select:focus {
   align-items: center;
   gap: 2px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
   padding: 3px;
 
   button {
@@ -306,7 +366,7 @@ select:focus {
     color: var(--ink);
 
     &:hover {
-      background: rgba(255, 255, 255, 0.7);
+      background: var(--surface-2);
     }
   }
 
@@ -425,8 +485,9 @@ select:focus {
   gap: 2px;
   /* Opaque, not the .glass tint (0.34 alpha) meant for large panels over the
      photo background: an overlay lands on page text, other fields or the
-     background photo, and has to stay readable over all of them. */
-  background: #fff;
+     background photo, and has to stay readable over all of them. Themed, or
+     it would stay white under light text in dark mode. */
+  background: var(--panel-bg);
   border: var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
@@ -454,7 +515,7 @@ select:focus {
   transition: background 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.5);
+    background: var(--surface-2);
     color: var(--ink);
   }
 
@@ -619,8 +680,8 @@ select:focus {
   height: var(--navbar-control, 42px);
   border-radius: 999px;
   transition: 0.25s;
-  background: rgba(255, 255, 255, 0.28);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: var(--surface-1);
+  border: 1px solid var(--border-soft);
 }
 
 .social-wrapper svg {
@@ -727,12 +788,12 @@ select:focus {
   font-weight: 600;
   font-size: 0.85rem;
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.24);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: var(--surface-1);
+  border: 1px solid var(--border-soft);
   transition: background 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.5);
+    background: var(--surface-2);
   }
 }
 
@@ -789,8 +850,8 @@ select:focus {
   gap: 12px;
   padding: 10px 12px;
   border-radius: 1.1rem;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.24);
+  border: 1px solid var(--border-soft);
+  background: var(--surface-1);
 }
 
 .row-thumb {
@@ -897,7 +958,7 @@ select:focus {
 .p-datepicker-panel {
   /* Same reasoning as .dropdown-panel: the 0.34 --glass-bg tint is unreadable
      once the overlay sits on top of page text. */
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--panel-bg);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: var(--glass-border);
@@ -918,13 +979,31 @@ select:focus {
   font-weight: 600;
 }
 
+/* PrimeNG colours the cells themselves, so inheriting from the panel is not
+   enough — in dark mode the digits stayed its own slate and vanished. */
+.p-datepicker-day,
+.p-datepicker-weekday,
+.p-datepicker-title,
+.p-datepicker-prev-button,
+.p-datepicker-next-button,
+.p-datepicker-buttonbar .p-button {
+  color: var(--ink);
+}
+
 .p-datepicker-day {
   border-radius: 0.7rem;
   font-weight: 600;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.6);
+    background: var(--surface-2);
+    color: var(--ink);
   }
+}
+
+/* Outside the shown month, and disabled by min/max — dimmed, not invisible. */
+.p-datepicker-other-month .p-datepicker-day,
+.p-datepicker-day:disabled {
+  color: var(--ink-soft);
 }
 
 /* The accent treatment shared with .nav-pill--active and .dropdown-option--active. */
@@ -949,6 +1028,6 @@ select:focus {
   border-radius: 999px;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.6);
+    background: var(--surface-2);
   }
 }

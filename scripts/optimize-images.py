@@ -7,6 +7,10 @@ a 1.5 MB 1024x1024 PNG logo rendered at 74px. Both are recoverable from git
 history (commit bfeedc9) if the masters are ever needed again.
 
 Run:  python3 scripts/optimize-images.py <source-background.jpg> <source-logo.png>
+
+The theme backgrounds go through the same mill:
+
+Run:  python3 scripts/optimize-images.py --themes <bg-white.png> <bg-dark.png>
 """
 import sys
 from PIL import Image
@@ -43,6 +47,21 @@ def cover(img, size):
     return img.crop(box).resize(size, Image.LANCZOS)
 
 
+def themes(white_src, dark_src):
+    """
+    The two theme backgrounds, kept at their own width — they arrive at
+    1672px, and upscaling to the 1920 above would only add bytes.
+    """
+    # The dark slate is far noisier than the pale plaster and costs ~2.5x the
+    # bytes at equal quality; 75 is where its texture still holds without
+    # banding.
+    for src, name, quality in ((white_src, "bg-white", 82), (dark_src, "bg-dark", 75)):
+        img = strip(Image.open(src).convert("RGB"))
+        img.save(f"public/{name}.webp", "WEBP", quality=quality, method=6)
+        img.save(f"public/{name}.jpg", "JPEG", quality=quality, optimize=True, progressive=True)
+        print(f"{name}: {img.width}x{img.height} q{quality}")
+
+
 def main(bg_src, logo_src):
     bg = Image.open(bg_src).convert("RGB")
     wide = strip(resized(bg, BACKGROUND_WIDTH))
@@ -59,4 +78,7 @@ def main(bg_src, logo_src):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2])
+    if sys.argv[1] == "--themes":
+        themes(sys.argv[2], sys.argv[3])
+    else:
+        main(sys.argv[1], sys.argv[2])

@@ -20,6 +20,8 @@ export class CONSTANTS {
   static NAVBAR_CONTACT = 'NAVBAR.CONTACT'
   static NAVBAR_CART = 'NAVBAR.CART'
   static NAVBAR_LANGUAGE = 'NAVBAR.LANGUAGE'
+  static NAVBAR_THEME_DARK = 'NAVBAR.THEME_DARK'
+  static NAVBAR_THEME_LIGHT = 'NAVBAR.THEME_LIGHT'
   static PRODUCTS_LIST_TITLE = 'PRODUCTS_LIST.TITLE'
   static PRODUCTS_LIST_KICKER = 'PRODUCTS_LIST.KICKER'
   static PRODUCTS_LIST_GALLERY = 'PRODUCTS_LIST.GALLERY'
@@ -127,6 +129,9 @@ export class CONSTANTS {
   static ADMIN_REQUESTS_OPEN_BADGE = 'ADMIN.REQUESTS_OPEN_BADGE'
   /** Used when ADMIN_EMAIL is not set in the environment. */
   static ADMIN_EMAIL_FALLBACK = 'admin@centralcatering.bg'
+
+  /** Remembers the light/dark choice; read by the inline script in index.html. */
+  static THEME_KEY = 'theme'
 
   /** Timestamp of the last successful sign-in, used for the 30-day cap below. */
   static SESSION_STARTED_AT_KEY = 'admin_session_started_at'

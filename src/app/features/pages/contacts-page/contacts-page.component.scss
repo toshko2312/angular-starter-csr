@@ -47,12 +47,12 @@
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.24);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: var(--surface-1);
+  border: 1px solid var(--border-soft);
   transition: background 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.5);
+    background: var(--surface-2);
   }
 }
 
@@ -107,8 +107,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
   font-size: 1.7rem;
 }
 
@@ -149,7 +149,7 @@
 .cart-panel-count {
   padding: 5px 12px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--surface-2);
   font-size: 0.8rem;
   font-weight: 700;
   white-space: nowrap;
@@ -167,8 +167,8 @@
   gap: 12px;
   padding: 12px;
   border-radius: 1.1rem;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.24);
+  border: 1px solid var(--border-soft);
+  background: var(--surface-1);
 }
 
 .cart-line-thumb {
