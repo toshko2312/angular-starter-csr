@@ -7,6 +7,8 @@ import { CONSTANTS } from './shared/constants';
 import { NavbarComponent } from './core/components/navbar/navbar.component';
 import { CartDrawerComponent } from './features/components/cart-drawer/cart-drawer.component';
 import { injectSpeedInsights } from '@vercel/speed-insights';
+// Aliased: the bare name collides with Angular's own inject().
+import { inject as injectAnalytics } from '@vercel/analytics';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +34,12 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     // Analytics needs a real browser; prerendering runs this in Node.
-    if (this.isBrowser) injectSpeedInsights();
+    // Web Analytics auto-tracks SPA route changes on its own — the script it
+    // loads patches history — so the router needs no wiring here.
+    if (this.isBrowser) {
+      injectSpeedInsights();
+      injectAnalytics();
+    }
 
     this.translateService.get(CONSTANTS.DEFAULT_WEBSITE_TITLE).subscribe(() => {
       this.isTranslationLoaded = true;
