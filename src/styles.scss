@@ -12,6 +12,9 @@
   --ink-soft: rgba(27, 26, 23, 0.55);
   --accent: #a8412a;
   --accent-hover: #8f351f;
+  /* The accent's channels on their own, so a rule can pick its own alpha:
+     rgba() cannot take a hex custom property. */
+  --accent-rgb: 168, 65, 42;
   --paper: #efece6;
 
   --glass-bg: rgba(255, 255, 255, 0.34);
@@ -32,6 +35,9 @@
   --surface-4: rgba(255, 255, 255, 0.9);
   --border-soft: rgba(255, 255, 255, 0.7);
   --border-strong: rgba(255, 255, 255, 0.85);
+  /* Hover wash on dropdown rows — the accent at low alpha, so it reads as the
+     same colour family as the selected row without competing with it. */
+  --option-hover: rgba(var(--accent-rgb), 0.1);
   /* Overlays that cover page content: opaque in both themes. */
   --panel-bg: #fff;
 
@@ -78,6 +84,10 @@
   --surface-4: rgba(255, 255, 255, 0.28);
   --border-soft: rgba(255, 255, 255, 0.14);
   --border-strong: rgba(255, 255, 255, 0.2);
+  /* The accent is deliberately not re-themed (see the note above), so the
+     alpha is what has to change: 10% of a mid-tone terracotta all but
+     disappears against the panel below. */
+  --option-hover: rgba(var(--accent-rgb), 0.22);
   --panel-bg: #1c1916;
 
   --placeholder: repeating-linear-gradient(
@@ -532,10 +542,12 @@ select:focus {
   font-weight: 600;
   font-size: 0.95rem;
   color: var(--ink);
-  transition: background 0.2s ease;
+  /* No transition, unlike the pills and chips elsewhere: a pointer sweeps
+     down a list of these, and a 0.2s fade leaves a trail of half-lit rows
+     behind the cursor. Arrow-key navigation has the same problem. */
 
   &:hover {
-    background: var(--surface-2);
+    background: var(--option-hover);
     color: var(--ink);
   }
 
@@ -740,7 +752,8 @@ select:focus {
 
 @media (max-width: 759px) {
   .page {
-    padding: 10px 12px 60px;
+    /* Bottom clears the fixed tab bar: 12 offset + 6 + 56 row + 6 + 12 gap. */
+    padding: 10px 12px 92px;
   }
 
   .page-head {
@@ -768,10 +781,6 @@ select:focus {
   .stepper button {
     width: 44px;
     height: 44px;
-  }
-
-  .social-wrapper {
-    display: none;
   }
 }
 

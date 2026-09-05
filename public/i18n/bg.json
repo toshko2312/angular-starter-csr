@@ -70,7 +70,8 @@
     "EVENT_TIME": "Час на събитието",
     "EVENT_TIME_UNKNOWN": "Още не зная",
     "TIME_HOURS": "Часове",
-    "TIME_MINUTES": "Минути"
+    "TIME_MINUTES": "Минути",
+    "FOLLOW_US": "Последвайте ни"
   },
   "VIEWER": {
     "CLOSE": "Затвори",

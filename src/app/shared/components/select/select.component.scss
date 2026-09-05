@@ -14,7 +14,9 @@
   overflow-y: auto;
 }
 
-/* Keyboard focus, kept distinct from the selected row. */
+/* Keyboard focus, kept distinct from the selected row. Same wash as :hover --
+   arrowing to a row and pointing at it are the same affordance, and mouseenter
+   sets this class anyway, so the two must not disagree. */
 .dropdown-option--highlighted:not(.dropdown-option--active) {
-  background: var(--surface-2);
+  background: var(--option-hover);
 }

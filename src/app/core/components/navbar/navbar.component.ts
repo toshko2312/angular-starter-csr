@@ -14,6 +14,7 @@ import { AuthService } from '@core/services/auth.service';
 import { LanguageService } from '@core/services/language.service';
 import { ThemeService } from '@core/services/theme.service';
 import { CONSTANTS } from '@shared/constants';
+import { SocialLinksComponent } from '@shared/components/social-links/social-links.component';
 import { SharedModule } from '@shared/shared.module';
 import { filter, map } from 'rxjs';
 import { CartService } from '../../../features/services/cart.service';
@@ -21,7 +22,7 @@ import { EnquiriesService } from '../../../features/services/enquiries.service';
 
 @Component({
   selector: 'app-navbar',
-  imports: [SharedModule],
+  imports: [SharedModule, SocialLinksComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

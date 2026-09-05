@@ -255,3 +255,18 @@
     min-height: 44px;
   }
 }
+
+/* Mobile only — see the media query below. The navbar owns these on desktop. */
+.contacts-social {
+  display: none;
+}
+
+@media (max-width: 759px) {
+  .contacts-social {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+  }
+}

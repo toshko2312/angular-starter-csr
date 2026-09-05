@@ -70,7 +70,8 @@
     "EVENT_TIME": "Event time",
     "EVENT_TIME_UNKNOWN": "Not sure yet",
     "TIME_HOURS": "Hours",
-    "TIME_MINUTES": "Minutes"
+    "TIME_MINUTES": "Minutes",
+    "FOLLOW_US": "Follow us"
   },
   "VIEWER": {
     "CLOSE": "Close",

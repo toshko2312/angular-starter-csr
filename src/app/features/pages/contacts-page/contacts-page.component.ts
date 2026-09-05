@@ -7,6 +7,7 @@ import { SeoService } from '@core/services/seo.service';
 import { CONSTANTS } from '@shared/constants';
 import { CartLine } from '@shared/models/cart.model';
 import { EnquiryModel } from '@shared/models/enquiry.model';
+import { SocialLinksComponent } from '@shared/components/social-links/social-links.component';
 import { SharedModule } from '@shared/shared.module';
 import { DatePicker } from 'primeng/datepicker';
 import { TimePickerComponent } from '@shared/components/time-picker/time-picker.component';
@@ -18,7 +19,7 @@ import { EnquiriesService } from '../../services/enquiries.service';
 
 @Component({
   selector: 'app-contacts-page',
-  imports: [SharedModule, DatePicker, TimePickerComponent],
+  imports: [SharedModule, DatePicker, TimePickerComponent, SocialLinksComponent],
   templateUrl: './contacts-page.component.html',
   styleUrl: './contacts-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

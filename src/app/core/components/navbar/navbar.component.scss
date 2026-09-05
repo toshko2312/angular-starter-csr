@@ -196,52 +196,43 @@
   }
 }
 
-/* Mobile: no hamburger. The bar wraps — logo and cart stay on row one, the
-   links become a full-width three-column grid on row two. */
+/* --------------------------------------------------------------- Mobile tabs
+   Markup is always rendered; the media query below is what turns it on. Kept
+   out of the bar so the top line stays one row on a narrow screen. */
+
+.mobile-tabs,
+.admin-sheet {
+  display: none;
+}
+
+/* Mobile: the three page links leave the bar for a floating tab bar at the
+   bottom of the viewport, and the top line collapses to one row. */
 @media (max-width: 759px) {
+  /* 44px is the touch-target floor the rest of the mobile styling holds to. */
+  :host {
+    --navbar-control: 44px;
+  }
+
   .navbar {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 10px;
     padding: 10px 12px;
     margin: 0.5rem 0.25rem 1rem;
   }
 
   .navbar-logo img {
-    width: 52px;
-    height: 52px;
+    width: 48px;
+    height: 48px;
   }
 
+  /* The links live in .mobile-tabs down here. */
   .navbar-links {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    /* flex-basis must be 100% to force the wrap — the desktop `flex: 1`
-       sets basis 0, which would keep the links on the first row. */
-    flex: 1 0 100%;
-    width: 100%;
-    order: 3;
-  }
-
-  .nav-pill {
-    justify-content: center;
-    min-width: 0;
-    padding: 12px 16px;
-    min-height: 44px;
-    font-size: 0.92rem;
-  }
-
-  .nav-pill-icon {
     display: none;
   }
 
-  /* Four pills in a three-column grid would leave a lone stub on row two, so
-     the admin pill deliberately spans the whole row instead. */
-  .nav-admin {
-    grid-column: 1 / -1;
-  }
-
-  .admin-dropdown {
-    left: 50%;
-    transform: translateX(-50%);
+  /* Moved to the bottom of the contacts page, where there is room for them. */
+  .navbar app-social-links {
+    display: none;
   }
 
   .cart-button {
@@ -253,17 +244,85 @@
     display: none;
   }
 
-  /* Stay on row one next to the cart; only .navbar-links is pushed down. */
-  .lang-toggle {
-    order: 2;
-  }
-
   .lang-option {
     min-width: 34px;
     padding: 8px;
   }
 
-  .logout-button {
-    order: 2;
+  /* No `order` overrides: DOM order is already the web layout's order —
+     cart, BG/EN, theme, logout — and .cart-button's margin-left:auto pushes
+     the whole cluster to the right edge. */
+
+  .mobile-tabs {
+    position: fixed;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    /* Columns size themselves, so three tabs and four both work without a
+       conditional class on the container. */
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 4px;
+    padding: 6px;
+    box-sizing: border-box;
+    border-radius: 2rem;
+    /* :host is pointer-events: none so its transparent strip does not swallow
+       clicks; anything interactive inside has to opt back in. */
+    pointer-events: auto;
+  }
+
+  .tab-link {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 56px;
+    border: none;
+    background: transparent;
+    border-radius: 1.5rem;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ink);
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .tab-link-icon {
+    font-size: 1.15rem;
+  }
+
+  /* The accent treatment shared with .nav-pill--active and
+     .dropdown-option--active. */
+  .tab-link--active {
+    background: rgba(168, 65, 42, 0.92);
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .tab-link--active .badge {
+    background: #fff;
+    color: var(--accent);
+  }
+
+  .tab-link-badge {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+  }
+
+  /* Sits directly above the tab bar: 12 offset + 6 padding + 56 row + 6
+     padding, plus 8 of breathing room. */
+  .admin-sheet {
+    display: flex;
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 96px;
+    z-index: 1;
+    pointer-events: auto;
   }
 }
