@@ -95,6 +95,33 @@ html {
 }
 
 body {
+  /* Sits under the photo, so overscroll never flashes white. */
+  background-color: var(--paper);
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+/* The backdrop is its own fixed layer rather than a background on `body`. A body
+   background is sized against the root element's box — the whole document — so
+   `cover` scaled the 1672x941 photo until it covered a page-tall column and all
+   you saw was a magnified sliver of its middle. Pinned here it is sized to the
+   viewport instead, and the page scrolls over it.
+
+   `background-attachment: fixed` would look the same and cost more: it repaints
+   the backdrop every scroll frame, where this composites on its own layer, and
+   iOS Safari has never handled it properly. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  /* Largest viewport height, so a collapsing mobile URL bar cannot open a strip
+     of bare paper colour along the bottom. */
+  height: 100lvh;
+  z-index: -1;
+  pointer-events: none;
+
   /* WebP where supported, JPEG otherwise. Both are the 1672px sources, run
      through scripts/optimize-images.py --themes. */
   background-image: image-set(
@@ -108,16 +135,9 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  /* `fixed` repaints the whole backdrop on every scroll frame, which mobile
-     browsers handle badly and INP now measures. */
-  background-color: var(--paper);
-  margin: 0;
-  min-height: 100vh;
-  color: var(--ink);
-  font-family: var(--font-body);
 }
 
-:root[data-theme='dark'] body {
+:root[data-theme='dark'] body::before {
   background-image: image-set(
     url("../public/bg-dark.webp") type("image/webp"),
     url("../public/bg-dark.jpg") type("image/jpeg")
