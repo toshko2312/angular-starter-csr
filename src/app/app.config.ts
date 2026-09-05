@@ -1,36 +1,40 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideClientHydration } from '@angular/platform-browser';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { routes } from './app.routes';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { provideHttpClient } from '@angular/common/http';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
+import { StaticTranslateLoader } from './shared/translate-loader';
 import { CONSTANTS } from './shared/constants';
 import { providePrimeNG } from 'primeng/config';
-import Material from '@primeng/themes/aura';
+import { CateringPreset } from './shared/theme/catering-preset';
 import { provideAnimations } from '@angular/platform-browser/animations';
-
-const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
-  http: HttpClient
-) => new TranslateHttpLoader(http, './i18n/', '.json');
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(
+      routes,
+      withInMemoryScrolling({ scrollPositionRestoration: 'top', anchorScrolling: 'enabled' })
+    ),
+    provideClientHydration(),
+    provideHttpClient(),
+    // One call: a second provideTranslateService() silently discards the
+    // first, and the language switch depends on this loader being the live one.
     provideTranslateService({
       defaultLanguage: CONSTANTS.LANGUAGE_BG,
-    }),
-    provideHttpClient(),
-    provideTranslateService({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpClient],
-      },
+      loader: { provide: TranslateLoader, useClass: StaticTranslateLoader },
     }),
     providePrimeNG({
       theme: {
-        preset: Material,
+        preset: CateringPreset,
+        options: {
+          // PrimeNG's rules go into a cascade layer, and unlayered CSS beats
+          // layered CSS unconditionally — so styles.scss overrides the widget
+          // styling with no !important anywhere.
+          cssLayer: true,
+          darkModeSelector: false,
+        },
       },
     }),
     provideAnimations(),

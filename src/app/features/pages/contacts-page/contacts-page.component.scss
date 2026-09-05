@@ -20,6 +20,49 @@
   grid-column: 1 / -1;
 }
 
+/* Label on the left, toggle on the right, on one line above the picker.
+   The margin mirrors the one every other label in the grid carries (PrimeNG's
+   layered base sets it on `label`, and the rule does not reach a label nested
+   in this wrapper) — without it this field's control sits 8px above the date
+   input beside it. */
+.field-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+/* Out of flow: the pill is taller than a label, and in flow it pushed this
+   field's control 4px below the date input in the cell beside it. */
+.time-unknown {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 5px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.time-unknown--on,
+.time-unknown--on:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
 .form-foot {
   display: flex;
   align-items: center;

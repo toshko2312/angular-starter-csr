@@ -49,9 +49,10 @@ create table if not exists public.enquiries (
 
 alter table public.enquiries enable row level security;
 
--- Insert-only. Deliberately no select/update/delete policy for anon: with RLS
--- on and no policy, those operations are denied. Read submissions from the
--- dashboard or with the service_role key server-side.
+-- Insert-only for anon. With RLS on and no policy, select/update/delete are
+-- denied, so visitors cannot read each other's submissions. A later migration
+-- (20260904120000_enquiry_admin.sql) grants those to `authenticated` so the
+-- admin panel can list and manage them.
 drop policy if exists "anyone may submit an enquiry" on public.enquiries;
 create policy "anyone may submit an enquiry"
   on public.enquiries for insert

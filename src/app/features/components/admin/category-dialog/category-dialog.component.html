@@ -1,0 +1,44 @@
+<div class="dialog">
+  <div class="dialog-scrim" (click)="!busy() && cancelled.emit()"></div>
+
+  <div class="dialog-panel dialog-panel--narrow glass">
+    <div class="dialog-title">
+      {{ (isEdit ? CONSTANTS.ADMIN_EDIT_CATEGORY : CONSTANTS.ADMIN_ADD_CATEGORY) | translate }}
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field">
+        <label for="cat-name">{{ 'ADMIN.FIELD_NAME' | translate }}</label>
+        <input id="cat-name" formControlName="name" />
+        @if (invalid('name')) {
+        <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
+        }
+      </div>
+
+      <div class="field dialog-field--spaced">
+        <label for="cat-name-en">{{ CONSTANTS.ADMIN_FIELD_NAME_EN | translate }}</label>
+        <input id="cat-name-en" formControlName="name_en" />
+        <span class="hint">{{ CONSTANTS.ADMIN_EN_OPTIONAL_HINT | translate }}</span>
+      </div>
+
+      <div class="field dialog-field--spaced">
+        <label for="cat-order">{{ 'ADMIN.FIELD_SORT_ORDER' | translate }}</label>
+        <input id="cat-order" type="number" step="1" formControlName="sort_order" />
+        <span class="hint">{{ CONSTANTS.ADMIN_SORT_ORDER_HINT | translate }}</span>
+      </div>
+
+      @if (error()) {
+      <div class="dialog-error">{{ error() }}</div>
+      }
+
+      <div class="dialog-actions">
+        <button type="button" class="btn-ghost" [disabled]="busy()" (click)="cancelled.emit()">
+          {{ CONSTANTS.ADMIN_CANCEL | translate }}
+        </button>
+        <button type="submit" class="btn-accent" [disabled]="busy()">
+          {{ CONSTANTS.ADMIN_SAVE | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

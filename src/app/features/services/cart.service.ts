@@ -1,3 +1,5 @@
+import { isPlatformBrowser } from '@angular/common';
+import { inject, PLATFORM_ID } from '@angular/core';
 import { computed, effect, Injectable, signal } from '@angular/core';
 import { CartEntry, CartLine } from '@shared/models/cart.model';
 import { EnquiryCartLine } from '@shared/models/enquiry.model';
@@ -10,6 +12,7 @@ type CartState = Record<string, CartEntry>;
   providedIn: 'root',
 })
 export class CartService {
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly storageKey = 'cart';
   private readonly entries = signal<CartState>(this.restore());
 
@@ -73,6 +76,7 @@ export class CartService {
       qty: line.qty,
       price: line.item.price,
       unit: line.item.unit,
+      image_path: line.item.image_path,
     }));
   }
 
@@ -90,6 +94,7 @@ export class CartService {
   }
 
   private restore(): CartState {
+    if (!this.isBrowser) return {};
     try {
       const raw = localStorage.getItem(this.storageKey);
       return raw ? (JSON.parse(raw) as CartState) : {};
@@ -99,6 +104,7 @@ export class CartService {
   }
 
   private persist(state: CartState): void {
+    if (!this.isBrowser) return;
     try {
       localStorage.setItem(this.storageKey, JSON.stringify(state));
     } catch {

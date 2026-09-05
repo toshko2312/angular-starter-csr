@@ -41,3 +41,9 @@ testem.log
 .DS_Store
 Thumbs.db
 /src/environments
+
+# Local environment files. These hold real values (and now the database
+# password), so they stay out of git. .env.example is the tracked template.
+.env
+.env.*
+!.env.example

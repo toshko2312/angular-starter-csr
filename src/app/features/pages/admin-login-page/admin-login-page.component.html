@@ -1,0 +1,40 @@
+@if (!auth.isReady()) {
+<div class="admin-loading">…</div>
+}
+
+@else {
+<div class="login-wrap">
+  <div class="login-panel glass">
+    <div class="dialog-title">{{ CONSTANTS.ADMIN_LOGIN_TITLE | translate }}</div>
+
+    @if (auth.expired()) {
+    <div class="dialog-error">{{ CONSTANTS.ADMIN_SESSION_EXPIRED | translate }}</div>
+    }
+
+    <form [formGroup]="loginForm" (ngSubmit)="signIn()">
+      <div class="field">
+        <label for="ad-username">{{ 'ADMIN.USERNAME' | translate }}</label>
+        <input id="ad-username" formControlName="username" autocomplete="username" />
+      </div>
+
+      <div class="field login-field">
+        <label for="ad-password">{{ 'ADMIN.PASSWORD' | translate }}</label>
+        <input
+          id="ad-password"
+          type="password"
+          formControlName="password"
+          autocomplete="current-password"
+        />
+      </div>
+
+      @if (loginError()) {
+      <div class="dialog-error">{{ loginError() }}</div>
+      }
+
+      <button type="submit" class="btn-accent login-submit" [disabled]="signingIn()">
+        {{ CONSTANTS.ADMIN_SIGN_IN | translate }}
+      </button>
+    </form>
+  </div>
+</div>
+}

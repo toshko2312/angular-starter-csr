@@ -1,12 +1,22 @@
 <nav class="navbar glass">
-  <a class="navbar-logo" [routerLink]="CONSTANTS.HOME_PAGE">
-    <img src="Logo.png" alt="Central Catering" />
+  <a class="navbar-logo" [routerLink]="localePath(CONSTANTS.HOME_PAGE)">
+    <picture>
+      <source srcset="logo.webp" type="image/webp" />
+      <img
+        src="logo.png"
+        alt="Central Catering"
+        width="160"
+        height="160"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </picture>
   </a>
 
   <div class="navbar-links">
     <a
       class="nav-pill"
-      [routerLink]="CONSTANTS.HOME_PAGE"
+      [routerLink]="localePath(CONSTANTS.HOME_PAGE)"
       routerLinkActive="nav-pill--active"
       [routerLinkActiveOptions]="{ exact: true }"
     >
@@ -14,18 +24,92 @@
     </a>
     <a
       class="nav-pill"
-      [routerLink]="CONSTANTS.MENU_PAGE"
+      [routerLink]="localePath(CONSTANTS.MENU_PAGE)"
       routerLinkActive="nav-pill--active"
     >
       <i class="pi pi-book nav-pill-icon"></i>{{ CONSTANTS.NAVBAR_MENU | translate }}
     </a>
     <a
       class="nav-pill"
-      [routerLink]="CONSTANTS.CONTACTS_PAGE"
+      [routerLink]="localePath(CONSTANTS.CONTACTS_PAGE)"
       routerLinkActive="nav-pill--active"
     >
       <i class="pi pi-envelope nav-pill-icon"></i>{{ CONSTANTS.NAVBAR_CONTACT | translate }}
     </a>
+
+    <!-- Admin menu. Rendered only for a signed-in admin, so /admin stays
+         unadvertised to visitors and crawlers. The dropdown sits in the
+         wrapper rather than inside the button: .nav-pill is overflow: hidden. -->
+    @if (auth.isAuthenticated()) {
+    <div class="nav-admin">
+      <button
+        type="button"
+        class="nav-pill"
+        [class.nav-pill--active]="isAdminRoute()"
+        [attr.aria-expanded]="adminMenuOpen()"
+        aria-haspopup="menu"
+        (click)="toggleAdminMenu()"
+      >
+        <i class="pi pi-cog nav-pill-icon"></i>{{ CONSTANTS.ADMIN_NAV_ADMIN | translate }}
+        @if (openRequests()) {
+        <span
+          class="badge badge--tiny"
+          [attr.aria-label]="
+            CONSTANTS.ADMIN_REQUESTS_OPEN_BADGE | translate: { count: openRequests() }
+          "
+          >{{ openRequests() }}</span
+        >
+        }
+        <i class="pi pi-chevron-down nav-pill-caret"></i>
+      </button>
+
+      @if (adminMenuOpen()) {
+      <div class="dropdown-panel admin-dropdown" role="menu">
+        <a
+          class="dropdown-option"
+          role="menuitem"
+          [routerLink]="adminPath(CONSTANTS.ADMIN_MENU_PAGE)"
+          routerLinkActive="dropdown-option--active"
+        >
+          <i class="pi pi-pencil"></i>{{ CONSTANTS.ADMIN_NAV_MENU | translate }}
+        </a>
+        <a
+          class="dropdown-option"
+          role="menuitem"
+          [routerLink]="adminPath(CONSTANTS.ADMIN_CATEGORIES_PAGE)"
+          routerLinkActive="dropdown-option--active"
+        >
+          <i class="pi pi-tags"></i>{{ CONSTANTS.ADMIN_NAV_CATEGORIES | translate }}
+        </a>
+        <a
+          class="dropdown-option"
+          role="menuitem"
+          [routerLink]="adminPath(CONSTANTS.ADMIN_LANDING_PAGE)"
+          routerLinkActive="dropdown-option--active"
+        >
+          <i class="pi pi-image"></i>{{ CONSTANTS.ADMIN_NAV_LANDING | translate }}
+        </a>
+        <a
+          class="dropdown-option"
+          role="menuitem"
+          [routerLink]="adminPath(CONSTANTS.ADMIN_REQUESTS_PAGE)"
+          routerLinkActive="dropdown-option--active"
+        >
+          <i class="pi pi-inbox"></i>{{ CONSTANTS.ADMIN_NAV_REQUESTS | translate }}
+          @if (openRequests()) {
+          <span
+            class="badge badge--tiny dropdown-badge"
+            [attr.aria-label]="
+              CONSTANTS.ADMIN_REQUESTS_OPEN_BADGE | translate: { count: openRequests() }
+            "
+            >{{ openRequests() }}</span
+          >
+          }
+        </a>
+      </div>
+      }
+    </div>
+    }
   </div>
 
   <div class="social-wrapper">
@@ -61,4 +145,37 @@
     <span class="cart-button-label">{{ CONSTANTS.NAVBAR_CART | translate }}</span>
     <span class="badge">{{ cart.count() }}</span>
   </button>
+
+  <div class="lang-toggle" role="group" [attr.aria-label]="CONSTANTS.NAVBAR_LANGUAGE | translate">
+    <button
+      type="button"
+      class="lang-option"
+      [class.lang-option--active]="language.current() === CONSTANTS.LANGUAGE_BG"
+      [attr.aria-pressed]="language.current() === CONSTANTS.LANGUAGE_BG"
+      (click)="switchLanguage(CONSTANTS.LANGUAGE_BG)"
+    >
+      BG
+    </button>
+    <button
+      type="button"
+      class="lang-option"
+      [class.lang-option--active]="language.current() === CONSTANTS.LANGUAGE_EN"
+      [attr.aria-pressed]="language.current() === CONSTANTS.LANGUAGE_EN"
+      (click)="switchLanguage(CONSTANTS.LANGUAGE_EN)"
+    >
+      EN
+    </button>
+  </div>
+
+  @if (auth.isAuthenticated()) {
+  <button
+    type="button"
+    class="icon-btn logout-button"
+    [title]="CONSTANTS.ADMIN_SIGN_OUT | translate"
+    [attr.aria-label]="CONSTANTS.ADMIN_SIGN_OUT | translate"
+    (click)="signOut()"
+  >
+    <i class="pi pi-sign-out"></i>
+  </button>
+  }
 </nav>

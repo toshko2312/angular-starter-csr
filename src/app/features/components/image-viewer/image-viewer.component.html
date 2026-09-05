@@ -21,7 +21,12 @@
 
     <div class="viewer-stage">
       @if (current) {
-      <img [src]="current.image_path" [alt]="current.description || title" />
+      <img
+        [src]="current.image_path"
+        [alt]="current.description || title"
+        fetchpriority="high"
+        decoding="async"
+      />
       }
       <button
         type="button"
@@ -54,7 +59,7 @@
         [class.viewer-thumb--active]="$index === index()"
         (click)="select($index)"
       >
-        <img [src]="image.image_path" [alt]="image.description || title" />
+        <img [src]="image.image_path" [alt]="image.description || title" loading="lazy" decoding="async" />
       </button>
       }
     </div>

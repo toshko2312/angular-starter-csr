@@ -1,0 +1,160 @@
+<section class="admin-section glass">
+  <header class="section-head">
+    <h2>
+      {{ CONSTANTS.ADMIN_REQUESTS_SECTION | translate }}
+      @if (openCount()) {
+      <span class="open-count">{{ openCount() }}</span>
+      }
+    </h2>
+
+    <div class="filter-chips">
+      <button
+        type="button"
+        class="chip"
+        [class.chip--active]="filter() === 'open'"
+        (click)="setFilter('open')"
+      >
+        {{ CONSTANTS.ADMIN_REQUESTS_FILTER_OPEN | translate }}
+      </button>
+      <button
+        type="button"
+        class="chip"
+        [class.chip--active]="filter() === 'handled'"
+        (click)="setFilter('handled')"
+      >
+        {{ CONSTANTS.ADMIN_REQUESTS_FILTER_HANDLED | translate }}
+      </button>
+      <button
+        type="button"
+        class="chip"
+        [class.chip--active]="filter() === 'all'"
+        (click)="setFilter('all')"
+      >
+        {{ CONSTANTS.ADMIN_REQUESTS_FILTER_ALL | translate }}
+      </button>
+    </div>
+  </header>
+
+  @if (loadError()) {
+  <div class="dialog-error">
+    {{ CONSTANTS.ADMIN_REQUESTS_LOAD_ERROR | translate }} — {{ loadError() }}
+  </div>
+  }
+
+  <div class="rows">
+    @for (row of visible(); track row.id) {
+    <div class="row enquiry-row" [class.enquiry-row--handled]="row.handled">
+      <div class="enquiry-summary">
+        <button type="button" class="enquiry-toggle" (click)="toggleExpanded(row.id)">
+          <i class="pi" [class.pi-chevron-right]="expandedId() !== row.id"
+             [class.pi-chevron-down]="expandedId() === row.id"></i>
+        </button>
+
+        <div class="row-text">
+          <div class="row-title">
+            {{ row.name }}
+            @if (row.handled) {
+            <span class="handled-badge">{{ CONSTANTS.ADMIN_REQUESTS_HANDLED | translate }}</span>
+            }
+          </div>
+          <div class="row-meta">
+            {{ row.created_at | date: 'dd.MM.yyyy HH:mm' }}
+            @if (row.event_date) {
+            · {{ CONSTANTS.ADMIN_REQUESTS_EVENT_DATE | translate }}:
+            {{ row.event_date | date: 'dd.MM.yyyy' }}
+            }
+            <!-- Nothing at all for the rows stored before the form asked. -->
+            @if (row.event_time) {
+            · {{ CONSTANTS.ADMIN_REQUESTS_EVENT_TIME | translate }}: {{ timeLabel(row) }}
+            } @else if (row.event_time_unknown) {
+            · {{ CONSTANTS.ADMIN_REQUESTS_EVENT_TIME | translate }}:
+            {{ CONSTANTS.ADMIN_REQUESTS_TIME_UNKNOWN | translate }}
+            }
+            @if (row.guests) {
+            · {{ CONSTANTS.ADMIN_REQUESTS_GUESTS | translate }}: {{ row.guests }}
+            }
+          </div>
+        </div>
+
+        <div class="row-actions">
+          <button
+            type="button"
+            class="icon-btn tiny"
+            [class.success]="!row.handled"
+            [disabled]="isUpdating(row.id)"
+            [title]="
+              (row.handled
+                ? CONSTANTS.ADMIN_REQUESTS_REOPEN
+                : CONSTANTS.ADMIN_REQUESTS_MARK_HANDLED
+              ) | translate
+            "
+            (click)="toggleHandled(row)"
+          >
+            <i class="pi" [class.pi-check]="!row.handled" [class.pi-undo]="row.handled"></i>
+          </button>
+          <button type="button" class="icon-btn tiny danger" (click)="pendingDelete.set(row)">
+            <i class="pi pi-trash"></i>
+          </button>
+        </div>
+      </div>
+
+      @if (expandedId() === row.id) {
+      <div class="enquiry-detail">
+        <ul class="enquiry-fields">
+          <li><i class="pi pi-envelope"></i><a [href]="'mailto:' + row.email">{{ row.email }}</a></li>
+          @if (row.phone) {
+          <li><i class="pi pi-phone"></i><a [href]="'tel:' + row.phone">{{ row.phone }}</a></li>
+          }
+          @if (row.event_type) {
+          <li><i class="pi pi-star"></i>{{ row.event_type }}</li>
+          }
+          @if (row.location) {
+          <li><i class="pi pi-map-marker"></i>{{ row.location }}</li>
+          }
+        </ul>
+
+        @if (row.message) {
+        <p class="enquiry-message">{{ row.message }}</p>
+        }
+
+        <div class="enquiry-cart">
+          <h3>{{ CONSTANTS.ADMIN_REQUESTS_CART | translate }}</h3>
+          @for (line of row.cart_lines; track line.id) {
+          <div class="cart-line">
+            <div class="cart-line-thumb">
+              @if (imageOf(line); as image) {
+              <img [src]="image" [alt]="line.name" loading="lazy" decoding="async" />
+              }
+            </div>
+            <span class="cart-line-name">{{ line.name }}</span>
+            <span class="cart-line-meta">{{ lineLabel(line) }}</span>
+          </div>
+          } @empty {
+          <div class="rows-empty">{{ CONSTANTS.ADMIN_REQUESTS_NO_CART | translate }}</div>
+          }
+
+          @if (row.cart_lines.length) {
+          <div class="cart-total">
+            {{ CONSTANTS.CART_ESTIMATE | translate }}: {{ cartTotal(row) }}
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+    } @empty {
+    <div class="rows-empty">{{ CONSTANTS.ADMIN_REQUESTS_NO_ROWS | translate }}</div>
+    }
+  </div>
+
+  <app-pagination [total]="filtered().length" [(page)]="page" />
+</section>
+
+@if (pendingDelete(); as row) {
+<app-confirm-dialog
+  [message]="row.name"
+  [busy]="deleting()"
+  (confirmed)="confirmDelete()"
+  (cancelled)="pendingDelete.set(null)"
+/>
+}

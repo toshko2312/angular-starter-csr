@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { supabase } from '@core/configs/supabase.client';
 import { MenuItemModel } from '@shared/models/menu-item.model';
 import { catchError, from, map, Observable, of } from 'rxjs';
@@ -7,10 +8,12 @@ import { catchError, from, map, Observable, of } from 'rxjs';
   providedIn: 'root',
 })
 export class MenuService {
+  /** sessionStorage does not exist while prerendering in Node. */
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly menuStorageKey = 'menu_items';
 
   getMenuItems(): Observable<MenuItemModel[]> {
-    const cachedRaw = sessionStorage.getItem(this.menuStorageKey);
+    const cachedRaw = this.isBrowser && sessionStorage.getItem(this.menuStorageKey);
 
     if (cachedRaw) {
       const cached = JSON.parse(cachedRaw) as MenuItemModel[];
@@ -26,7 +29,7 @@ export class MenuService {
       map((result) => {
         if (result.error) throw result.error;
         const items = (result.data || []) as MenuItemModel[];
-        sessionStorage.setItem(this.menuStorageKey, JSON.stringify(items));
+        if (this.isBrowser) sessionStorage.setItem(this.menuStorageKey, JSON.stringify(items));
         return items;
       }),
       catchError((err) => {
@@ -36,7 +39,8 @@ export class MenuService {
     );
   }
 
-  create(item: MenuItemModel): Observable<void> {
+  /** The id is minted by the database, so a new row does not carry one. */
+  create(item: Omit<MenuItemModel, 'id'>): Observable<void> {
     return from(supabase.from('menu_items').insert(item)).pipe(
       map((result) => {
         if (result.error) throw result.error;
@@ -65,6 +69,7 @@ export class MenuService {
 
   /** Reads are cached per tab; without this an edit would serve stale rows. */
   private clearCache(): void {
+    if (!this.isBrowser) return;
     sessionStorage.removeItem(this.menuStorageKey);
   }
 }

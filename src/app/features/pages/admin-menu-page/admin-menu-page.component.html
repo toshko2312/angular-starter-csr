@@ -1,0 +1,53 @@
+<section class="admin-section glass">
+  <header class="section-head">
+    <h2>{{ CONSTANTS.ADMIN_MENU_SECTION | translate }}</h2>
+    <button type="button" class="btn-accent btn-small" (click)="menuDialog.set({ item: null })">
+      {{ CONSTANTS.ADMIN_ADD_ITEM | translate }}
+    </button>
+  </header>
+
+  <div class="rows">
+    @for (item of visibleItems(); track item.id) {
+    <div class="row">
+      <div class="row-thumb">
+        @if (item.image_path) {
+        <img [src]="item.image_path" [alt]="item.name" loading="lazy" decoding="async" />
+        }
+      </div>
+      <div class="row-text">
+        <div class="row-title">{{ item.name }}</div>
+        <div class="row-meta">{{ item.category }} · {{ priceLabel(item) }}</div>
+      </div>
+      <div class="row-actions">
+        <button type="button" class="icon-btn tiny" (click)="menuDialog.set({ item })">
+          <i class="pi pi-pencil"></i>
+        </button>
+        <button type="button" class="icon-btn tiny danger" (click)="pendingDelete.set(item)">
+          <i class="pi pi-trash"></i>
+        </button>
+      </div>
+    </div>
+    } @empty {
+    <div class="rows-empty">{{ CONSTANTS.ADMIN_NO_ROWS | translate }}</div>
+    }
+  </div>
+
+  <app-pagination [total]="menuItems().length" [(page)]="page" />
+</section>
+
+@if (menuDialog(); as open) {
+<app-menu-item-dialog
+  [item]="open.item"
+  (saved)="onDialogSaved()"
+  (cancelled)="menuDialog.set(null)"
+/>
+}
+
+@if (pendingDelete(); as item) {
+<app-confirm-dialog
+  [message]="item.name"
+  [busy]="deleting()"
+  (confirmed)="confirmDelete()"
+  (cancelled)="pendingDelete.set(null)"
+/>
+}

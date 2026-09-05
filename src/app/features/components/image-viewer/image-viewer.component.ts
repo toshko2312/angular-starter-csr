@@ -3,12 +3,14 @@ import {
   Component,
   EventEmitter,
   HostListener,
+  inject,
   Input,
   OnDestroy,
   Output,
   signal,
   type OnInit,
 } from '@angular/core';
+import { ScrollLockService } from '@core/services/scroll-lock.service';
 import { CONSTANTS } from '@shared/constants';
 import { ProjectImage } from '@shared/models/project.model';
 import { SharedModule } from '@shared/shared.module';
@@ -27,16 +29,18 @@ export class ImageViewerComponent implements OnInit, OnDestroy {
   @Input() startIndex = 0;
   @Output() closed = new EventEmitter<void>();
 
+  private scrollLock = inject(ScrollLockService);
+
   readonly CONSTANTS = CONSTANTS;
   readonly index = signal(0);
 
   ngOnInit(): void {
     this.index.set(this.clamp(this.startIndex));
-    document.body.style.overflow = 'hidden';
+    this.scrollLock.lock();
   }
 
   ngOnDestroy(): void {
-    document.body.style.overflow = '';
+    this.scrollLock.release();
   }
 
   get current(): ProjectImage | undefined {

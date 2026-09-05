@@ -7,11 +7,17 @@
 
     @if (projects(); as list) {
     <div class="card-grid card-grid--projects">
-      @for (project of list; track project.id) {
+      @for (project of list; track project.id; let cardIndex = $index) {
       <article class="project-card glass" (click)="openViewer(project)">
         <div class="project-media">
           @if (currentImage(project); as shot) {
-          <img [src]="shot.image_path" [alt]="project.title" />
+          <img
+            [src]="shot.image_path"
+            [alt]="titleOf(project)"
+            [attr.loading]="cardIndex === 0 ? null : 'lazy'"
+            [attr.fetchpriority]="cardIndex === 0 ? 'high' : null"
+            decoding="async"
+          />
           }
           @if (project.image.length > 1) {
           <button
@@ -36,7 +42,7 @@
           }
           <div class="project-scrim"></div>
           <div class="project-media-foot">
-            <div class="project-title">{{ project.title }}</div>
+            <div class="project-title">{{ titleOf(project) }}</div>
             <div class="project-dots">
               @for (image of project.image; track $index) {
               <span class="project-dot" [class.project-dot--active]="$index === indexOf(project)"></span>
@@ -68,7 +74,7 @@
 @if (viewer(); as open) {
 <app-image-viewer
   [images]="open.project.image"
-  [title]="open.project.title"
+  [title]="titleOf(open.project)"
   [dateLabel]="dateLabel(open.project)"
   [startIndex]="open.index"
   (closed)="closeViewer()"

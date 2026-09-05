@@ -1,0 +1,27 @@
+.admin-loading {
+  text-align: center;
+  padding: 80px 0;
+  opacity: 0.6;
+  font-size: 1.5rem;
+}
+
+.login-wrap {
+  display: flex;
+  justify-content: center;
+  padding-top: 40px;
+}
+
+.login-panel {
+  width: min(400px, 100%);
+  padding: 28px;
+  border-radius: var(--radius-card);
+}
+
+.login-field {
+  margin-top: 16px;
+}
+
+.login-submit {
+  width: 100%;
+  margin-top: 22px;
+}

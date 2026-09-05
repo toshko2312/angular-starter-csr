@@ -1,0 +1,151 @@
+.open-count {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 9px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(168, 65, 42, 0.92);
+  vertical-align: middle;
+}
+
+.filter-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* The shared .row is a single flex line; a request stacks a summary line and
+   an expandable detail block instead. */
+.enquiry-row {
+  display: block;
+  padding: 0;
+}
+
+.enquiry-row--handled {
+  opacity: 0.62;
+}
+
+.enquiry-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+}
+
+.enquiry-toggle {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background: transparent;
+  color: var(--ink);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.handled-badge {
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+}
+
+.enquiry-detail {
+  padding: 4px 14px 14px 54px;
+  border-top: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.enquiry-fields {
+  list-style: none;
+  margin: 12px 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  font-size: 0.88rem;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  i {
+    opacity: 0.6;
+    font-size: 0.85rem;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+}
+
+.enquiry-message {
+  margin: 0 0 14px;
+  white-space: pre-wrap;
+  font-size: 0.92rem;
+}
+
+.enquiry-cart h3 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.cart-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+  font-size: 0.88rem;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.12);
+}
+
+/* Smaller than the drawer's 52px — the admin rows are denser. */
+.cart-line-thumb {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 0.6rem;
+  overflow: hidden;
+  background: var(--placeholder);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+/* Takes the free space justify-content used to open up. */
+.cart-line-name {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-line-meta {
+  flex: none;
+  opacity: 0.75;
+}
+
+.cart-total {
+  margin-top: 10px;
+  text-align: right;
+  font-weight: 700;
+}
+
+@media (max-width: 759px) {
+  .enquiry-detail {
+    padding-left: 14px;
+  }
+}

@@ -1,0 +1,55 @@
+<button
+  type="button"
+  class="select-trigger"
+  [class.select-trigger--placeholder]="!value()"
+  [id]="inputId"
+  [disabled]="disabled()"
+  [attr.aria-expanded]="open()"
+  aria-haspopup="dialog"
+  (click)="toggle()"
+>
+  <span class="select-label">{{ value() || placeholder }}</span>
+  <i class="pi pi-clock select-caret"></i>
+</button>
+
+@if (open()) {
+<div class="dropdown-panel time-panel">
+  <div
+    class="time-column"
+    role="listbox"
+    [attr.aria-label]="CONSTANTS.CONTACTS_TIME_HOURS | translate"
+  >
+    @for (option of hours; track option) {
+    <button
+      type="button"
+      class="dropdown-option time-cell"
+      [class.dropdown-option--active]="option === hour()"
+      role="option"
+      [attr.aria-selected]="option === hour()"
+      (click)="selectHour(option)"
+    >
+      {{ option }}
+    </button>
+    }
+  </div>
+
+  <div
+    class="time-column time-column--minutes"
+    role="listbox"
+    [attr.aria-label]="CONSTANTS.CONTACTS_TIME_MINUTES | translate"
+  >
+    @for (option of minutes; track option) {
+    <button
+      type="button"
+      class="dropdown-option time-cell"
+      [class.dropdown-option--active]="option === minute()"
+      role="option"
+      [attr.aria-selected]="option === minute()"
+      (click)="selectMinute(option)"
+    >
+      {{ option }}
+    </button>
+    }
+  </div>
+</div>
+}

@@ -1,14 +1,17 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   OnDestroy,
   signal,
   type OnInit,
 } from '@angular/core';
+import { LanguageService } from '@core/services/language.service';
 import { CONSTANTS } from '@shared/constants';
 import { SharedModule } from '@shared/shared.module';
 import { ProductsService } from '../../services/products.service';
 import { ProjectImage, ProjectModel } from '@shared/models/project.model';
+import { localized } from '@shared/utils/localized';
 import { Subject, takeUntil } from 'rxjs';
 import { ImageViewerComponent } from '../image-viewer/image-viewer.component';
 
@@ -32,12 +35,19 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   /** Per-card carousel position, keyed by project id. */
   private readonly slideIndex = signal<Record<number, number>>({});
 
-  private readonly monthYear = new Intl.DateTimeFormat('bg-BG', {
-    month: 'long',
-    year: 'numeric',
-  });
+  /** Recomputed on a language switch so the badge is not stuck in Bulgarian. */
+  private readonly monthYear = computed(
+    () =>
+      new Intl.DateTimeFormat(
+        this.language.current() === CONSTANTS.LANGUAGE_EN ? 'en-GB' : 'bg-BG',
+        { month: 'long', year: 'numeric' }
+      )
+  );
 
-  constructor(private productsService: ProductsService) {}
+  constructor(
+    private productsService: ProductsService,
+    private language: LanguageService
+  ) {}
 
   ngOnInit(): void {
     this.initProducts();
@@ -61,12 +71,20 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   dateLabel(project: ProjectModel): string {
     if (!project.date) return '';
     const date = new Date(project.date);
-    return isNaN(date.getTime()) ? '' : this.monthYear.format(date);
+    return isNaN(date.getTime()) ? '' : this.monthYear().format(date);
+  }
+
+  titleOf(project: ProjectModel): string {
+    return localized(project.title, project.title_en, this.language.current());
   }
 
   /** Falls back to the shown image's caption when the row has no description. */
   descriptionOf(project: ProjectModel): string {
-    return project.description || this.currentImage(project)?.description || '';
+    return (
+      localized(project.description, project.description_en, this.language.current()) ||
+      this.currentImage(project)?.description ||
+      ''
+    );
   }
 
   indexOf(project: ProjectModel): number {

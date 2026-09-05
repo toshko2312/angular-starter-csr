@@ -268,9 +268,12 @@ max_frequency = "5s"
 # 4152127777 = "123456"
 
 # Configure logged in session timeouts.
-# [auth.sessions]
+# 720h = 30 days. This is the local-dev counterpart of the cap AuthService
+# enforces in the browser; the hosted project's equivalent lives in the
+# dashboard under Auth -> Sessions.
+[auth.sessions]
 # Force log out after the specified duration.
-# timebox = "24h"
+timebox = "720h"
 # Force log out if the user has been inactive longer than the specified duration.
 # inactivity_timeout = "8h"
 

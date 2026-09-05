@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { supabase } from '@core/configs/supabase.client';
 import { ProjectModel } from '@shared/models/project.model';
 import { catchError, from, map, Observable, of } from 'rxjs';
@@ -7,10 +8,12 @@ import { catchError, from, map, Observable, of } from 'rxjs';
   providedIn: 'root',
 })
 export class ProductsService {
+  /** sessionStorage does not exist while prerendering in Node. */
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly projectsStorageKey = 'projects';
 
   getProjects(): Observable<ProjectModel[]> {
-    const cachedRaw = sessionStorage.getItem(this.projectsStorageKey);
+    const cachedRaw = this.isBrowser && sessionStorage.getItem(this.projectsStorageKey);
 
     if (cachedRaw) {
       const cached = JSON.parse(cachedRaw) as ProjectModel[];
@@ -22,11 +25,16 @@ export class ProductsService {
 
   /** Bypasses the cache — the admin panel always needs the live rows. */
   fetch(): Observable<ProjectModel[]> {
-    return from(supabase.from('projects').select()).pipe(
+    // Newest event first. nullsFirst: false because `date` is nullable and
+    // Postgres sorts nulls first in a descending order — an undated event
+    // would otherwise open the landing page.
+    return from(
+      supabase.from('projects').select().order('date', { ascending: false, nullsFirst: false })
+    ).pipe(
       map((result) => {
         if (result.error) throw result.error;
         const projects = (result.data || []) as ProjectModel[];
-        sessionStorage.setItem(this.projectsStorageKey, JSON.stringify(projects));
+        if (this.isBrowser) sessionStorage.setItem(this.projectsStorageKey, JSON.stringify(projects));
         return projects;
       }),
       catchError((err) => {
@@ -65,6 +73,7 @@ export class ProductsService {
 
   /** Reads are cached per tab; without this an edit would serve stale rows. */
   private clearCache(): void {
+    if (!this.isBrowser) return;
     sessionStorage.removeItem(this.projectsStorageKey);
   }
 }

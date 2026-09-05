@@ -1,0 +1,11 @@
+# The admin panel is unlinked and is a login screen, so crawlers are kept out
+# entirely. Note the trade-off: a disallowed URL is never fetched, so the
+# noindex meta the panel sets is never read — the Disallow is what does the
+# work here, and the meta tag is only a second layer.
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /en/admin
+
+Sitemap: https://centralcatering.bg/sitemap.xml

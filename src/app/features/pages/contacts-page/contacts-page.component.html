@@ -46,11 +46,6 @@
             </div>
 
             <div class="field">
-              <label for="event_date">{{ 'CONTACTS.EVENT_DATE' | translate }}</label>
-              <input id="event_date" type="date" formControlName="event_date" />
-            </div>
-
-            <div class="field">
               <label for="guests">{{ 'CONTACTS.GUESTS' | translate }}</label>
               <input
                 id="guests"
@@ -61,15 +56,48 @@
             </div>
 
             <div class="field">
-              <label for="event_type">{{ 'CONTACTS.EVENT_TYPE' | translate }}</label>
-              <select id="event_type" formControlName="event_type">
-                @for (type of eventTypes; track type) {
-                <option [value]="type">{{ type | translate }}</option>
-                }
-              </select>
+              <label for="event_date">{{ 'CONTACTS.EVENT_DATE' | translate }}</label>
+              <p-datepicker
+                inputId="event_date"
+                formControlName="event_date"
+                [minDate]="today"
+                [showIcon]="true"
+                iconDisplay="input"
+                [showClear]="true"
+                styleClass="field-datepicker"
+              />
             </div>
 
-            <div class="field field--full">
+            <div class="field">
+              <!-- The toggle rides the label row rather than sitting under the
+                   trigger: the picker panel is a translucent overlay and would
+                   let a control beneath it show through. -->
+              <div class="field-head">
+                <label for="event_time">{{ CONSTANTS.CONTACTS_EVENT_TIME | translate }}</label>
+                <button
+                  type="button"
+                  class="time-unknown"
+                  [class.time-unknown--on]="form.controls.event_time_unknown.value"
+                  [attr.aria-pressed]="form.controls.event_time_unknown.value"
+                  (click)="toggleTimeUnknown()"
+                >
+                  {{ CONSTANTS.CONTACTS_EVENT_TIME_UNKNOWN | translate }}
+                </button>
+              </div>
+              <app-time-picker inputId="event_time" formControlName="event_time" />
+            </div>
+
+            <div class="field">
+              <label for="event_type">{{ 'CONTACTS.EVENT_TYPE' | translate }}</label>
+              <app-select
+                inputId="event_type"
+                formControlName="event_type"
+                [options]="eventTypeOptions"
+                [translateLabels]="true"
+              />
+            </div>
+
+            <div class="field">
               <label for="location">{{ 'CONTACTS.LOCATION' | translate }}</label>
               <input
                 id="location"
@@ -130,11 +158,11 @@
           <div class="cart-line">
             <div class="cart-line-thumb">
               @if (line.item.image_path) {
-              <img [src]="line.item.image_path" [alt]="line.item.name" />
+              <img [src]="line.item.image_path" [alt]="nameOf(line)" loading="lazy" decoding="async" />
               }
             </div>
             <div class="cart-line-text">
-              <div class="cart-line-name">{{ line.item.name }}</div>
+              <div class="cart-line-name">{{ nameOf(line) }}</div>
               <div class="cart-line-detail">{{ detailOf(line) }}</div>
             </div>
             <div class="stepper">

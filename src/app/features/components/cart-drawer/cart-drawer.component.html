@@ -15,11 +15,11 @@
       <div class="cart-line">
         <div class="cart-line-thumb">
           @if (line.item.image_path) {
-          <img [src]="line.item.image_path" [alt]="line.item.name" />
+          <img [src]="line.item.image_path" [alt]="nameOf(line)" loading="lazy" decoding="async" />
           }
         </div>
         <div class="cart-line-text">
-          <div class="cart-line-name">{{ line.item.name }}</div>
+          <div class="cart-line-name">{{ nameOf(line) }}</div>
           <div class="cart-line-detail">{{ detailOf(line) }}</div>
         </div>
         <div class="stepper">

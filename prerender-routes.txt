@@ -1,0 +1,6 @@
+/
+/menu
+/contacts
+/en
+/en/menu
+/en/contacts

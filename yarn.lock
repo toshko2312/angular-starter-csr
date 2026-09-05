@@ -386,6 +386,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@angular/platform-server@npm:^19":
+  version: 19.2.25
+  resolution: "@angular/platform-server@npm:19.2.25"
+  dependencies:
+    tslib: "npm:^2.3.0"
+    xhr2: "npm:^0.2.0"
+  peerDependencies:
+    "@angular/common": 19.2.25
+    "@angular/compiler": 19.2.25
+    "@angular/core": 19.2.25
+    "@angular/platform-browser": 19.2.25
+    rxjs: ^6.5.3 || ^7.4.0
+  checksum: 10c0/5d82abe35e8d00733f24a5c30d93c8f11e5f394a98f13da8dae9f7b57bec0771f9e779840619b71fbe7696d53259ce277890f25972dc8f4c979de8b097e1b94d
+  languageName: node
+  linkType: hard
+
 "@angular/router@npm:^19.2.0":
   version: 19.2.13
   resolution: "@angular/router@npm:19.2.13"
@@ -397,6 +413,23 @@ __metadata:
     "@angular/platform-browser": 19.2.13
     rxjs: ^6.5.3 || ^7.4.0
   checksum: 10c0/0c264cb2ff499134eb08334a7a633bff81d0dee9e325e9c675af2185cbb8ae71adc3f1532817df1080e7480b28583370d5456df30a1fc3eb7cb6c94d600b99ca
+  languageName: node
+  linkType: hard
+
+"@angular/ssr@npm:^19":
+  version: 19.2.27
+  resolution: "@angular/ssr@npm:19.2.27"
+  dependencies:
+    tslib: "npm:^2.3.0"
+  peerDependencies:
+    "@angular/common": ^19.0.0 || ^19.2.0-next.0
+    "@angular/core": ^19.0.0 || ^19.2.0-next.0
+    "@angular/platform-server": ^19.0.0 || ^19.2.0-next.0
+    "@angular/router": ^19.0.0 || ^19.2.0-next.0
+  peerDependenciesMeta:
+    "@angular/platform-server":
+      optional: true
+  checksum: 10c0/235655adcb4e0fb3f5f84f0704bd3c10db352e1dad26d5edee8f399e6b461714154cda770bedbd8e9d13872d3edac9bdda5b53dd46f12a7fbf1719a096f4c1a1
   languageName: node
   linkType: hard
 
@@ -3939,7 +3972,9 @@ __metadata:
     "@angular/forms": "npm:^19.2.0"
     "@angular/platform-browser": "npm:^19.2.0"
     "@angular/platform-browser-dynamic": "npm:^19.2.0"
+    "@angular/platform-server": "npm:^19"
     "@angular/router": "npm:^19.2.0"
+    "@angular/ssr": "npm:^19"
     "@ngx-env/builder": "npm:20.1.1"
     "@ngx-translate/core": "npm:^16.0.4"
     "@ngx-translate/http-loader": "npm:^16.0.1"
@@ -10180,6 +10215,13 @@ __metadata:
     utf-8-validate:
       optional: true
   checksum: 10c0/f4a49064afae4500be772abdc2211c8518f39e1c959640457dcee15d4488628620625c783902a52af2dd02f68558da2868fd06e6fd0e67ebcd09e6881b1b5bfe
+  languageName: node
+  linkType: hard
+
+"xhr2@npm:^0.2.0":
+  version: 0.2.1
+  resolution: "xhr2@npm:0.2.1"
+  checksum: 10c0/eebe95bd0ae9087da9b4dda636abee1f30cf9b424fbe8ebd0c7dcfd9be5db3e4aa634cf1837fa3e82b486aace9396a2dbf6be2dc8084862c8239dccec4e16dca
   languageName: node
   linkType: hard
 

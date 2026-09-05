@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { LanguageService } from '@core/services/language.service';
 import { CONSTANTS } from '@shared/constants';
 import { SharedModule } from '@shared/shared.module';
-import { money } from '@shared/utils/money';
+import { localized } from '@shared/utils/localized';
+import { priceWithUnit } from '@shared/utils/money';
 import { CartLine } from '@shared/models/cart.model';
 import { CartService } from '../../services/cart.service';
 
@@ -15,8 +17,13 @@ import { CartService } from '../../services/cart.service';
 export class CartDrawerComponent {
   readonly CONSTANTS = CONSTANTS;
   readonly cart = inject(CartService);
+  private language = inject(LanguageService);
+
+  nameOf(line: CartLine): string {
+    return localized(line.item.name, line.item.name_en, this.language.current());
+  }
 
   detailOf(line: CartLine): string {
-    return `${money(line.lineTotal)} · ${line.item.unit}`;
+    return priceWithUnit(line.lineTotal, line.item.unit);
   }
 }

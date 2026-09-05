@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@400;600;700&display=swap");
+/* Fonts are linked from index.html: an @import here is only discovered
+   after this stylesheet downloads and parses, adding a round-trip to the
+   critical path. */
 
 /* ---------------------------------------------------------------------------
    Design tokens — from the "Landing Page Cards And Menu Design" project.
@@ -44,11 +46,21 @@ html {
 }
 
 body {
-  background-image: url("../public/background-1.jpg");
+  /* WebP where supported, JPEG otherwise. Both are 1920px wide — the source
+     was a 5644px 8.5 MB camera original. */
+  background-image: image-set(
+    url("../public/background-1.webp") type("image/webp"),
+    url("../public/background-1.jpg") type("image/jpeg")
+  );
+  background-image: -webkit-image-set(
+    url("../public/background-1.webp") type("image/webp"),
+    url("../public/background-1.jpg") type("image/jpeg")
+  );
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  /* `fixed` repaints the whole backdrop on every scroll frame, which mobile
+     browsers handle badly and INP now measures. */
   background-color: var(--paper);
   margin: 0;
   min-height: 100vh;
@@ -189,8 +201,10 @@ select:focus {
 /* --------------------------------------------------------------------------- Controls */
 
 .btn-accent {
-  padding: 14px 30px;
-  border: none;
+  padding: 12px 26px;
+  /* Transparent rather than none: .btn-ghost has a 1px border, and without a
+     matching one the pair differs by 2px in height. */
+  border: 1px solid transparent;
   border-radius: 999px;
   cursor: pointer;
   font-weight: 700;
@@ -210,10 +224,14 @@ select:focus {
   }
 }
 
+/* Matches .btn-accent above in everything but colour — same padding, same
+   type. Without font-family a button falls back to the browser's own. */
 .btn-ghost {
   padding: 12px 26px;
   border-radius: 999px;
   cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
   font-weight: 700;
   border: 1px solid rgba(255, 255, 255, 0.85);
   background: rgba(255, 255, 255, 0.4);
@@ -254,6 +272,15 @@ select:focus {
   color: #fff;
   font-size: 0.82rem;
   font-weight: 700;
+}
+
+/* Sits inside a nav pill or a dropdown row, where the cart's 24px badge is
+   too heavy. */
+.badge--tiny {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 0.72rem;
 }
 
 .stepper {
@@ -304,13 +331,15 @@ select:focus {
   }
 
   input,
-  textarea,
-  select {
+  textarea {
     padding: 13px 15px;
     border-radius: var(--radius-field);
     border: var(--field-border);
     background: var(--field-bg);
     font-size: 1rem;
+    /* Explicit, so <app-select>'s trigger can match it exactly; `normal`
+       resolves differently inside an input than inside a span. */
+    line-height: 1.2;
     color: var(--ink);
   }
 
@@ -322,6 +351,126 @@ select:focus {
     font-size: 0.78rem;
     color: var(--accent);
     font-weight: 700;
+  }
+
+  .hint {
+    font-size: 0.8rem;
+    opacity: 0.7;
+  }
+}
+
+/* Second field in a single-column dialog, where the grid gap does not apply. */
+.dialog-field--spaced {
+  margin-top: 16px;
+}
+
+/* ------------------------------------------------------------------ Dropdowns
+   The panel and rows shared by the navbar's admin menu and <app-select>.
+   Positioning is left to each caller. */
+
+/* ------------------------------------------------------ Custom control triggers
+   Shared by <app-select> and <app-time-picker>: both replace a native control
+   whose popup the browser draws, and both have to sit in a .field grid next to
+   ordinary inputs without looking a pixel different. */
+
+/* Mirrors `.field input` above so the control is the same size as the
+   inputs beside it in a dialog grid. */
+.select-trigger {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 13px 15px;
+  border-radius: var(--radius-field);
+  border: var(--field-border);
+  background: var(--field-bg);
+  font-size: 1rem;
+  font-family: inherit;
+  line-height: 1.2;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.select-trigger--placeholder .select-label {
+  color: var(--ink-soft);
+}
+
+.select-label {
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select-caret {
+  flex: none;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+
+.dropdown-panel {
+  padding: 6px;
+  border-radius: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  /* Opaque, not the .glass tint (0.34 alpha) meant for large panels over the
+     photo background: an overlay lands on page text, other fields or the
+     background photo, and has to stay readable over all of them. */
+  background: #fff;
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.dropdown-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* Neutralised here rather than in a component stylesheet: a scoped
+     `background: transparent` outranks .dropdown-option--active below and the
+     selected row would lose its accent. Rows are <a> in the navbar and
+     <button> in <app-select>. */
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  padding: 10px 14px;
+  border-radius: 0.9rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--ink);
+  }
+
+  i {
+    font-size: 0.9rem;
+    opacity: 0.75;
+  }
+}
+
+.dropdown-option--active,
+.dropdown-option--active:hover {
+  background: rgba(168, 65, 42, 0.92);
+  color: #fff;
+
+  i {
+    opacity: 1;
   }
 }
 
@@ -346,15 +495,53 @@ select:focus {
   backdrop-filter: blur(6px);
 }
 
+/* A column, not a scrolling box: the title and the actions stay put while
+   .dialog-body below takes the overflow. */
 .dialog-panel {
   position: relative;
+  display: flex;
+  flex-direction: column;
   width: min(720px, 100%);
-  max-height: 100%;
-  overflow-y: auto;
+  /* Viewport units, not a percentage: a percentage max-height against a flex
+     container leaves the panel's own height intrinsic, and the form below then
+     sized itself from its content instead of from the cap — the overflow was
+     clipped, taking the title with it, and left blank panel under the buttons.
+     Mirrors .dialog's padding; the mobile breakpoint repeats it. */
+  max-height: calc(100dvh - 56px);
+  /* clip, not hidden: `hidden` is still a scroll container, and a flex column
+     whose items are shrunk below their content reports scrollable overflow the
+     layout never shows. Focusing the file input then scrolls the panel — the
+     title is pushed out of sight and blank panel appears under the buttons,
+     with no way to scroll back. `clip` cannot be scrolled at all. */
+  overflow: clip;
   box-sizing: border-box;
   padding: 26px;
   border-radius: var(--radius-card);
   animation: riseIn 0.28s ease both;
+}
+
+/* The form is the middle of that column: it has to both fill the panel and be
+   allowed to shrink below its content, or .dialog-body never gets a bounded
+   height to scroll inside. */
+.dialog-panel form {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.dialog-body {
+  /* 1 1 auto, not the `flex: 1` shorthand: that sets flex-basis to 0, which
+     hides this box's real content height from the panel — the panel then sizes
+     itself independently of what is inside, scrolling while there is still room
+     on screen and leaving blank space under the buttons. */
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  /* Room for the focus ring and the dropdown panels, which the clipping would
+     otherwise shave. */
+  padding: 2px;
+  margin: -2px;
 }
 
 .dialog-panel--narrow {
@@ -362,6 +549,7 @@ select:focus {
 }
 
 .dialog-title {
+  flex: none;
   font-family: var(--font-display);
   font-size: 1.5rem;
   font-weight: 600;
@@ -369,6 +557,7 @@ select:focus {
 }
 
 .dialog-actions {
+  flex: none;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -402,6 +591,8 @@ select:focus {
 
   .dialog-panel {
     padding: 18px;
+    /* Matches the 12px .dialog padding above. */
+    max-height: calc(100dvh - 24px);
   }
 
   .dialog-actions button {
@@ -423,8 +614,9 @@ select:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  /* Falls back to its own size wherever the wrapper is used outside the bar. */
+  width: var(--navbar-control, 42px);
+  height: var(--navbar-control, 42px);
   border-radius: 999px;
   transition: 0.25s;
   background: rgba(255, 255, 255, 0.28);
@@ -499,5 +691,264 @@ select:focus {
 
   .social-wrapper {
     display: none;
+  }
+}
+
+/* ------------------------------------------------------ Admin lists (shared)
+   Used by every /admin child page, so these live here next to .page, .glass
+   and .dialog-* rather than being duplicated in each component's stylesheet. */
+
+.admin-section {
+  padding: 22px 24px;
+  border-radius: var(--radius-card);
+  margin-bottom: 24px;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+
+  h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+}
+
+/* Shared by the requests filter and the list pager. */
+.chip {
+  padding: 7px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.chip--active,
+.chip--active:hover {
+  background: rgba(168, 65, 42, 0.92);
+  border-color: rgba(168, 65, 42, 0.95);
+  color: #fff;
+}
+
+.btn-small {
+  padding: 10px 18px;
+  font-size: 0.88rem;
+}
+
+/* A <label> wearing a button's look, driving a hidden file input — the native
+   control is drawn by the OS and cannot be themed. */
+.file-button {
+  display: inline-flex;
+  align-items: center;
+
+  input[type='file'] {
+    /* Clipped rather than display:none, so it stays focusable by keyboard. */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+.file-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.row-thumb {
+  flex: none;
+  width: 56px;
+  height: 42px;
+  border-radius: 0.7rem;
+  overflow: hidden;
+  background: var(--placeholder);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.row-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.row-title {
+  font-weight: 700;
+  font-size: 0.98rem;
+}
+
+.row-meta {
+  font-size: 0.82rem;
+  opacity: 0.7;
+}
+
+.row-actions {
+  flex: none;
+  display: flex;
+  gap: 6px;
+}
+
+.icon-btn.tiny {
+  width: 36px;
+  height: 36px;
+  font-size: 0.85rem;
+}
+
+.icon-btn.danger:hover {
+  background: #a3271b;
+  color: #fff;
+}
+
+/* Guarded, unlike .danger above: this one is disabled while its update is
+   in flight, and a disabled button must not read as hoverable. */
+.icon-btn.success:hover:not(:disabled) {
+  background: #2f7d4f;
+  color: #fff;
+}
+
+.rows-empty {
+  padding: 26px;
+  text-align: center;
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 759px) {
+  .admin-section {
+    padding: 16px;
+  }
+
+  .icon-btn.tiny {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ---------------------------------------------------------- PrimeNG DatePicker
+   PrimeNG is loaded into a CSS layer (see providePrimeNG in app.config.ts), so
+   these plain rules override the widget without !important. The trigger input
+   already inherits `.field input` above — only the overlay needs dressing. */
+
+.field-datepicker {
+  display: block;
+  width: 100%;
+
+  /* PrimeNG sizes its input intrinsically; inside a .field it has to fill the
+     column like every other control. */
+  .p-datepicker-input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Room for the in-field calendar icon. */
+  .p-datepicker-input-icon-container + .p-datepicker-input,
+  .p-datepicker-input {
+    padding-right: 42px;
+  }
+
+  .p-datepicker-input-icon {
+    color: var(--ink);
+    opacity: 0.6;
+  }
+}
+
+.p-datepicker-panel {
+  /* Same reasoning as .dropdown-panel: the 0.34 --glass-bg tint is unreadable
+     once the overlay sits on top of page text. */
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 1.1rem;
+  padding: 10px;
+  color: var(--ink);
+}
+
+.p-datepicker-header {
+  background: transparent;
+  border: none;
+  padding: 4px 4px 10px;
+  font-family: var(--font-display);
+}
+
+.p-datepicker-title {
+  font-weight: 600;
+}
+
+.p-datepicker-day {
+  border-radius: 0.7rem;
+  font-weight: 600;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.6);
+  }
+}
+
+/* The accent treatment shared with .nav-pill--active and .dropdown-option--active. */
+.p-datepicker-day-selected,
+.p-datepicker-day-selected:hover {
+  background: rgba(168, 65, 42, 0.92);
+  color: #fff;
+}
+
+.p-datepicker-today > .p-datepicker-day:not(.p-datepicker-day-selected) {
+  border: 1px solid rgba(168, 65, 42, 0.55);
+}
+
+.p-datepicker-weekday {
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
+.p-datepicker-prev-button,
+.p-datepicker-next-button {
+  border-radius: 999px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.6);
   }
 }

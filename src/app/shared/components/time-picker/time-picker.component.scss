@@ -1,0 +1,44 @@
+:host {
+  position: relative;
+  display: block;
+}
+
+/* Same placement as .select-panel: anchored under the trigger and above the
+   sibling fields. The dialog overlay itself sits at 60. */
+.time-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  min-width: 100%;
+  box-sizing: border-box;
+}
+
+.time-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  /* Roughly six rows: enough to read as a scrollable column without the panel
+     covering the fields below it. */
+  max-height: 232px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* The minutes are a fixed four, so the column is sized to its content and the
+   hours take the rest. */
+.time-column--minutes {
+  flex: none;
+  overflow-y: visible;
+}
+
+/* Narrower than a dropdown row, and centred: these are two-digit numbers, not
+   labels. */
+.time-cell {
+  justify-content: center;
+  padding: 9px 14px;
+  font-variant-numeric: tabular-nums;
+}

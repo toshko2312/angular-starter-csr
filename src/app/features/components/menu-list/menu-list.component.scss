@@ -94,10 +94,10 @@
   border-top: var(--hairline);
 }
 
+/* No gap: the unit reads as a suffix of the amount ('12,50 €' + '/порция'). */
 .menu-price {
   display: flex;
   align-items: baseline;
-  gap: 5px;
 }
 
 .menu-price-value {

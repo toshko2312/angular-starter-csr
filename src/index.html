@@ -2,23 +2,117 @@
 <html lang="bg">
   <head>
     <meta charset="utf-8" />
-    <title>Central Catering</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="title"
-      content="Central Catering | Професионални кетъринг услуги"
-    />
+
+    <!-- Per-page title, description, canonical, Open Graph and hreflang are
+         written by SeoService and baked into each prerendered page. These are
+         the defaults for anything it does not reach. -->
+    <title>Central Catering | Професионален кетъринг в София и цяла България</title>
     <meta
       name="description"
-      content="Central Catering предлага първокласни кетъринг услуги за корпоративни събития, сватби, рождени дни и частни партита в цяла България. Свържете се с нас за персонално меню и отлично обслужване."
-    />
-    <meta
-      name="keywords"
-      content="кетъринг, Central Catering, храна, събития, кетъринг София, кетъринг България, корпоративен кетъринг, кетъринг услуги"
+      content="Кетъринг за сватби, корпоративни събития и частни партита. Персонални менюта, свежи продукти и професионално обслужване в София и цяла България."
     />
     <meta name="author" content="Central Catering" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#a8412a" />
+
+    <meta property="og:site_name" content="Central Catering" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://centralcatering.bg/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <!-- Linked here rather than @import-ed from styles.scss: an @import is only
+         discovered after that stylesheet downloads and parses. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@400;600;700&display=swap"
+    />
+
+    <!-- ===================================================================
+         TODO — fill in before this helps local search. Every "TODO:" value
+         below is a placeholder and must be replaced with the real details:
+           * legalName            registered company name
+           * telephone            public phone, E.164 e.g. +359888123456
+           * email                public contact address
+           * streetAddress /      the business address
+             addressLocality /
+             postalCode
+           * geo                  latitude/longitude of that address
+           * openingHours         real opening hours
+           * sameAs               add the real Instagram URL
+         Until they are real, this block claims nothing specific. Local
+         ranking depends far more on a matching Google Business Profile than
+         on this markup.
+         =================================================================== -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://centralcatering.bg/#website",
+            "url": "https://centralcatering.bg/",
+            "name": "Central Catering",
+            "inLanguage": ["bg", "en"],
+            "publisher": { "@id": "https://centralcatering.bg/#business" }
+          },
+          {
+            "@type": ["Organization", "Caterer"],
+            "@id": "https://centralcatering.bg/#business",
+            "name": "Central Catering",
+            "legalName": "TODO: registered company name",
+            "url": "https://centralcatering.bg/",
+            "logo": "https://centralcatering.bg/logo.png",
+            "image": "https://centralcatering.bg/og-image.jpg",
+            "description": "Кетъринг за сватби, корпоративни събития и частни партита в София и цяла България.",
+            "telephone": "TODO: +359...",
+            "email": "TODO: contact@centralcatering.bg",
+            "priceRange": "€€",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "TODO: street and number",
+              "addressLocality": "TODO: city",
+              "postalCode": "TODO: postal code",
+              "addressCountry": "BG"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": "TODO: latitude",
+              "longitude": "TODO: longitude"
+            },
+            "openingHoursSpecification": [
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": [
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday"
+                ],
+                "opens": "TODO: 09:00",
+                "closes": "TODO: 18:00"
+              }
+            ],
+            "areaServed": [
+              { "@type": "Country", "name": "Bulgaria" },
+              { "@type": "City", "name": "Sofia" }
+            ],
+            "sameAs": [
+              "https://www.facebook.com/profile.php?id=100054324889846",
+              "TODO: https://www.instagram.com/<handle>"
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <app-root></app-root>

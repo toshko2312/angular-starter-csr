@@ -1,0 +1,58 @@
+<section class="admin-section glass">
+  <header class="section-head">
+    <h2>{{ CONSTANTS.ADMIN_CATEGORIES_SECTION | translate }}</h2>
+    <button
+      type="button"
+      class="btn-accent btn-small"
+      (click)="categoryDialog.set({ category: null })"
+    >
+      {{ CONSTANTS.ADMIN_ADD_CATEGORY | translate }}
+    </button>
+  </header>
+
+  @if (error()) {
+  <div class="dialog-error">{{ CONSTANTS.ADMIN_CATEGORY_IN_USE | translate }} {{ error() }}</div>
+  }
+
+  <div class="rows">
+    @for (category of visibleCategories(); track category.id) {
+    <div class="row">
+      <div class="row-text">
+        <div class="row-title">{{ category.name }}</div>
+        <div class="row-meta">
+          {{ CONSTANTS.ADMIN_FIELD_SORT_ORDER | translate }}: {{ category.sort_order }}
+        </div>
+      </div>
+      <div class="row-actions">
+        <button type="button" class="icon-btn tiny" (click)="categoryDialog.set({ category })">
+          <i class="pi pi-pencil"></i>
+        </button>
+        <button type="button" class="icon-btn tiny danger" (click)="askDelete(category)">
+          <i class="pi pi-trash"></i>
+        </button>
+      </div>
+    </div>
+    } @empty {
+    <div class="rows-empty">{{ CONSTANTS.ADMIN_NO_ROWS | translate }}</div>
+    }
+  </div>
+
+  <app-pagination [total]="categories().length" [(page)]="page" />
+</section>
+
+@if (categoryDialog(); as open) {
+<app-category-dialog
+  [category]="open.category"
+  (saved)="onDialogSaved()"
+  (cancelled)="categoryDialog.set(null)"
+/>
+}
+
+@if (pendingDelete(); as category) {
+<app-confirm-dialog
+  [message]="category.name"
+  [busy]="deleting()"
+  (confirmed)="confirmDelete()"
+  (cancelled)="pendingDelete.set(null)"
+/>
+}

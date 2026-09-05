@@ -9,30 +9,36 @@
     @if (name === CONSTANTS.ALL_CATEGORIES) {
     {{ CONSTANTS.MENU_ALL_CATEGORIES | translate }}
     } @else {
-    {{ name }}
+    {{ categoryLabel(name) }}
     }
   </button>
   }
 </div>
 
 <div class="card-grid card-grid--menu">
-  @for (item of visibleItems(); track item.id) {
+  @for (item of visibleItems(); track item.id; let cardIndex = $index) {
   <article class="menu-card glass">
     <div class="menu-media">
       @if (item.image_path) {
-      <img [src]="item.image_path" [alt]="item.name" />
+      <img
+        [src]="item.image_path"
+        [alt]="nameOf(item)"
+        [attr.loading]="cardIndex === 0 ? null : 'lazy'"
+        [attr.fetchpriority]="cardIndex === 0 ? 'high' : null"
+        decoding="async"
+      />
       }
-      <div class="menu-category">{{ item.category }}</div>
+      <div class="menu-category">{{ categoryLabel(item.category) }}</div>
     </div>
 
     <div class="menu-body">
-      <div class="menu-name">{{ item.name }}</div>
-      <div class="menu-description">{{ item.description }}</div>
+      <div class="menu-name">{{ nameOf(item) }}</div>
+      <div class="menu-description">{{ descriptionOf(item) }}</div>
 
       <div class="menu-foot">
         <div class="menu-price">
           <span class="menu-price-value">{{ priceLabel(item) }}</span>
-          <span class="menu-price-unit">{{ item.unit }}</span>
+          <span class="menu-price-unit">{{ unitLabel(item) }}</span>
         </div>
 
         @if (cart.qtyOf(item.id) > 0) {

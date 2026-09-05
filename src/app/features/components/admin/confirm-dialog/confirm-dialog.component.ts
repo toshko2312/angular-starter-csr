@@ -3,9 +3,13 @@ import {
   Component,
   EventEmitter,
   HostListener,
+  inject,
   Input,
+  OnDestroy,
   Output,
+  type OnInit,
 } from '@angular/core';
+import { ScrollLockService } from '@core/services/scroll-lock.service';
 import { CONSTANTS } from '@shared/constants';
 import { SharedModule } from '@shared/shared.module';
 
@@ -16,13 +20,23 @@ import { SharedModule } from '@shared/shared.module';
   styleUrl: './confirm-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConfirmDialogComponent {
+export class ConfirmDialogComponent implements OnInit, OnDestroy {
+  private scrollLock = inject(ScrollLockService);
+
   @Input() message = '';
   @Input() busy = false;
   @Output() confirmed = new EventEmitter<void>();
   @Output() cancelled = new EventEmitter<void>();
 
   readonly CONSTANTS = CONSTANTS;
+
+  ngOnInit(): void {
+    this.scrollLock.lock();
+  }
+
+  ngOnDestroy(): void {
+    this.scrollLock.release();
+  }
 
   @HostListener('document:keydown.escape')
   onEscape(): void {

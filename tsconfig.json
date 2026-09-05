@@ -12,6 +12,8 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "esModuleInterop": true,
+    /* The translate loader imports the locale JSON directly. */
+    "resolveJsonModule": true,
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "importHelpers": true,

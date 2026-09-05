@@ -7,70 +7,97 @@
     </div>
 
     <form [formGroup]="form" (ngSubmit)="submit()">
-      <div class="dialog-grid">
-        <div class="field">
-          <label for="mi-id">{{ 'ADMIN.FIELD_ID' | translate }}</label>
-          <input id="mi-id" formControlName="id" />
-          @if (invalid('id')) {
-          <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
-          }
-        </div>
+      <div class="dialog-body">
+        <div class="dialog-grid">
+          <div class="field">
+            <label for="mi-name">{{ 'ADMIN.FIELD_NAME' | translate }}</label>
+            <input id="mi-name" formControlName="name" />
+            @if (invalid('name')) {
+            <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
+            }
+          </div>
 
-        <div class="field">
-          <label for="mi-name">{{ 'ADMIN.FIELD_NAME' | translate }}</label>
-          <input id="mi-name" formControlName="name" />
-          @if (invalid('name')) {
-          <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
-          }
-        </div>
+          <div class="field">
+            <label for="mi-name-en">{{ CONSTANTS.ADMIN_FIELD_NAME_EN | translate }}</label>
+            <input id="mi-name-en" formControlName="name_en" />
+            <span class="hint">{{ CONSTANTS.ADMIN_EN_OPTIONAL_HINT | translate }}</span>
+          </div>
 
-        <div class="field">
-          <label for="mi-category">{{ 'ADMIN.FIELD_CATEGORY' | translate }}</label>
-          <input id="mi-category" formControlName="category" />
-          @if (invalid('category')) {
-          <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
-          }
-        </div>
+          <div class="field">
+            <label for="mi-category">{{ 'ADMIN.FIELD_CATEGORY' | translate }}</label>
+            <app-select
+              inputId="mi-category"
+              formControlName="category"
+              [options]="categoryOptions()"
+              [placeholder]="CONSTANTS.ADMIN_CATEGORY_PLACEHOLDER | translate"
+            />
+            @if (!categories().length) {
+            <span class="hint">{{ CONSTANTS.ADMIN_CATEGORIES_EMPTY_HINT | translate }}</span>
+            }
+            @if (invalid('category')) {
+            <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
+            }
+          </div>
 
-        <div class="field">
-          <label for="mi-price">{{ 'ADMIN.FIELD_PRICE' | translate }}</label>
-          <input id="mi-price" type="number" step="0.01" formControlName="price" />
-          @if (invalid('price')) {
-          <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
-          }
-        </div>
+          <div class="field">
+            <label for="mi-price">{{ 'ADMIN.FIELD_PRICE' | translate }}</label>
+            <input id="mi-price" type="number" step="0.01" formControlName="price" />
+            @if (invalid('price')) {
+            <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
+            }
+          </div>
 
-        <div class="field">
-          <label for="mi-unit">{{ 'ADMIN.FIELD_UNIT' | translate }}</label>
-          <input id="mi-unit" formControlName="unit" placeholder="€/бр." />
-          @if (invalid('unit')) {
-          <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
-          }
-        </div>
+          <div class="field">
+            <label for="mi-unit">{{ 'ADMIN.FIELD_UNIT' | translate }}</label>
+            <input
+              id="mi-unit"
+              formControlName="unit"
+              [placeholder]="CONSTANTS.ADMIN_UNIT_PLACEHOLDER | translate"
+            />
+            @if (invalid('unit')) {
+            <span class="field-error">{{ CONSTANTS.CONTACTS_REQUIRED | translate }}</span>
+            }
+          </div>
 
-        <div class="field field--full">
-          <label for="mi-description">{{ 'ADMIN.FIELD_DESCRIPTION' | translate }}</label>
-          <textarea id="mi-description" rows="3" formControlName="description"></textarea>
-        </div>
+          <div class="field field--full">
+            <label for="mi-description">{{ 'ADMIN.FIELD_DESCRIPTION' | translate }}</label>
+            <textarea id="mi-description" rows="3" formControlName="description"></textarea>
+          </div>
 
-        <div class="field field--full">
-          <label>{{ 'ADMIN.FIELD_IMAGE' | translate }}</label>
-          <div class="image-row">
-            <div class="image-thumb">
-              @if (imagePath()) {
-              <img [src]="imagePath()" alt="" />
-              }
-            </div>
-            <div class="image-actions">
-              <input type="file" accept="image/*" (change)="onFile($event)" [disabled]="uploading()" />
-              @if (imagePath()) {
-              <button type="button" class="btn-ghost btn-small" (click)="clearImage()">
-                {{ CONSTANTS.ADMIN_REMOVE | translate }}
-              </button>
-              }
-              @if (uploading()) {
-              <span class="hint">{{ CONSTANTS.ADMIN_UPLOADING | translate }}</span>
-              }
+          <div class="field field--full">
+            <label for="mi-description-en">
+              {{ CONSTANTS.ADMIN_FIELD_DESCRIPTION_EN | translate }}
+            </label>
+            <textarea id="mi-description-en" rows="3" formControlName="description_en"></textarea>
+          </div>
+
+          <div class="field field--full">
+            <label>{{ 'ADMIN.FIELD_IMAGE' | translate }}</label>
+            <div class="image-row">
+              <div class="image-thumb">
+                @if (previewSrc(); as src) {
+                <!-- Not lazy: this appears the moment a file is picked, and a lazy
+                     image added in place is not always fetched until a scroll. -->
+                <img [src]="src" alt="" decoding="async" />
+                }
+              </div>
+              <div class="image-actions">
+                <label class="btn-ghost btn-small file-button">
+                  {{ CONSTANTS.ADMIN_CHOOSE_IMAGE | translate }}
+                  <input type="file" accept="image/*" (change)="onFile($event)" [disabled]="busy()" />
+                </label>
+                @if (pendingName(); as name) {
+                <span class="file-name">{{ name }}</span>
+                }
+                @if (previewSrc()) {
+                <button type="button" class="btn-ghost btn-small" (click)="clearImage()">
+                  {{ CONSTANTS.ADMIN_REMOVE | translate }}
+                </button>
+                }
+                @if (uploading()) {
+                <span class="hint">{{ CONSTANTS.ADMIN_UPLOADING | translate }}</span>
+                }
+              </div>
             </div>
           </div>
         </div>

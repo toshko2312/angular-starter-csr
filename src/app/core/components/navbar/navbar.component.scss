@@ -1,3 +1,8 @@
+/* Every control in the bar lines up with the nav pills, which set the height. */
+:host {
+  --navbar-control: 46px;
+}
+
 .navbar {
   display: flex;
   align-items: center;
@@ -6,6 +11,13 @@
   margin: 0.7rem 0.5rem 1.6rem;
   border-radius: 2rem;
   flex-wrap: nowrap;
+  /* .glass applies backdrop-filter, which makes this element its own stacking
+     context — the admin dropdown's z-index is trapped inside it. Without a
+     z-index here the whole bar sits in normal flow, so page content painted
+     later covers the open dropdown. Kept below the cart drawer (40), image
+     viewer (50) and dialogs (60), which are meant to cover the navbar. */
+  position: relative;
+  z-index: 30;
 }
 
 .navbar-logo {
@@ -23,12 +35,14 @@
   display: flex;
   gap: 8px;
   flex: 1;
+  flex-wrap: wrap;
 }
 
 .nav-pill {
   position: relative;
   display: flex;
   align-items: center;
+  min-height: var(--navbar-control);
   justify-content: flex-start;
   gap: 8px;
   box-sizing: border-box;
@@ -60,10 +74,91 @@
   font-size: 1rem;
 }
 
+.nav-pill-caret {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+/* An accent badge would vanish against the accent fill of an active pill or
+   row, so it inverts there. */
+.nav-pill--active .badge,
+.dropdown-option--active .badge {
+  background: #fff;
+  color: var(--accent);
+}
+
+/* Pushed to the trailing edge of the row, away from the label. */
+.dropdown-badge {
+  margin-left: auto;
+}
+
+/* ------------------------------------------------------------- Admin menu */
+
+.nav-admin {
+  position: relative;
+}
+
+.admin-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 20;
+  min-width: 210px;
+}
+
+/* Two-segment pill: both languages visible, the active half filled with the
+   same accent as .nav-pill--active. */
+.lang-toggle {
+  flex: none;
+  display: flex;
+  align-items: stretch;
+  height: var(--navbar-control);
+  box-sizing: border-box;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.lang-option {
+  min-width: 38px;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.55);
+  }
+}
+
+.lang-option--active,
+.lang-option--active:hover {
+  background: rgba(168, 65, 42, 0.92);
+  color: #fff;
+}
+
+.logout-button {
+  flex: none;
+  width: var(--navbar-control);
+  height: var(--navbar-control);
+  font-size: 1.05rem;
+}
+
 .cart-button {
   position: relative;
   display: flex;
   align-items: center;
+  min-height: var(--navbar-control);
+  box-sizing: border-box;
   gap: 10px;
   margin-left: auto;
   flex: none;
@@ -123,6 +218,17 @@
     display: none;
   }
 
+  /* Four pills in a three-column grid would leave a lone stub on row two, so
+     the admin pill deliberately spans the whole row instead. */
+  .nav-admin {
+    grid-column: 1 / -1;
+  }
+
+  .admin-dropdown {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   .cart-button {
     padding: 9px 14px;
     min-height: 44px;
@@ -130,5 +236,19 @@
 
   .cart-button-label {
     display: none;
+  }
+
+  /* Stay on row one next to the cart; only .navbar-links is pushed down. */
+  .lang-toggle {
+    order: 2;
+  }
+
+  .lang-option {
+    min-width: 34px;
+    padding: 8px;
+  }
+
+  .logout-button {
+    order: 2;
   }
 }

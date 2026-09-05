@@ -3,7 +3,8 @@
     "HOME": "Начало",
     "MENU": "Меню",
     "CONTACT": "Контакти",
-    "CART": "Количка"
+    "CART": "Количка",
+    "LANGUAGE": "Език"
   },
   "PRODUCTS_LIST": {
     "KICKER": "Кетъринг за вашия повод",
@@ -61,7 +62,13 @@
       "BIRTHDAY": "Рожден ден",
       "COCKTAIL": "Коктейл",
       "OTHER": "Друго"
-    }
+    },
+    "DATE_TODAY": "Днес",
+    "DATE_CLEAR": "Изчисти",
+    "EVENT_TIME": "Час на събитието",
+    "EVENT_TIME_UNKNOWN": "Още не зная",
+    "TIME_HOURS": "Часове",
+    "TIME_MINUTES": "Минути"
   },
   "VIEWER": {
     "CLOSE": "Затвори",
@@ -89,7 +96,6 @@
     "REMOVE": "Премахни",
     "UPLOADING": "Качване…",
     "NO_ROWS": "Няма записи.",
-    "FIELD_ID": "Идентификатор",
     "FIELD_NAME": "Име",
     "FIELD_CATEGORY": "Категория",
     "FIELD_PRICE": "Цена",
@@ -102,6 +108,60 @@
     "TAGS_HINT": "Разделени със запетая",
     "GALLERY": "Галерия",
     "NO_IMAGES": "Няма добавени снимки.",
-    "CAPTION_PLACEHOLDER": "Описание на снимката"
+    "CAPTION_PLACEHOLDER": "Описание на снимката",
+    "NAV_ADMIN": "Админ",
+    "NAV_MENU": "Меню",
+    "NAV_LANDING": "Начална страница",
+    "NAV_REQUESTS": "Заявки",
+    "SESSION_EXPIRED": "Сесията изтече. Влезте отново.",
+    "REQUESTS_SECTION": "Получени заявки",
+    "REQUESTS_FILTER_OPEN": "Необработени",
+    "REQUESTS_FILTER_HANDLED": "Обработени",
+    "REQUESTS_FILTER_ALL": "Всички",
+    "REQUESTS_MARK_HANDLED": "Отбележи като обработена",
+    "REQUESTS_REOPEN": "Върни към необработени",
+    "REQUESTS_HANDLED": "Обработена",
+    "REQUESTS_GUESTS": "Гости",
+    "REQUESTS_EVENT_DATE": "Дата на събитието",
+    "REQUESTS_CART": "Прикачена количка",
+    "REQUESTS_NO_CART": "Без прикачена количка",
+    "REQUESTS_NO_ROWS": "Няма заявки.",
+    "REQUESTS_LOAD_ERROR": "Заявките не могат да бъдат заредени",
+    "NAV_CATEGORIES": "Категории",
+    "CATEGORIES_SECTION": "Категории в менюто",
+    "ADD_CATEGORY": "Нова категория",
+    "EDIT_CATEGORY": "Редакция на категория",
+    "CATEGORY_PLACEHOLDER": "Изберете категория",
+    "CATEGORIES_EMPTY_HINT": "Няма категории. Добавете от раздел „Категории“.",
+    "CATEGORY_IN_USE": "Категорията се използва от артикули и не може да бъде изтрита:",
+    "FIELD_SORT_ORDER": "Подредба",
+    "SORT_ORDER_HINT": "По-малко число излиза по-напред.",
+    "FIELD_NAME_EN": "Име (EN)",
+    "FIELD_TITLE_EN": "Заглавие (EN)",
+    "FIELD_DESCRIPTION_EN": "Описание (EN)",
+    "EN_OPTIONAL_HINT": "По желание — при празно поле се показва българският текст.",
+    "UNIT_PLACEHOLDER": "€/бр.",
+    "TAGS_PLACEHOLDER": "120 гости, Коктейл",
+    "REQUESTS_OPEN_BADGE": "{{count}} необработени заявки",
+    "REQUESTS_EVENT_TIME": "Час",
+    "REQUESTS_TIME_UNKNOWN": "не е уточнен",
+    "CHOOSE_IMAGE": "Избери снимка",
+    "PAGINATION": "Страници",
+    "PAGE_PREV": "Предишна страница",
+    "PAGE_NEXT": "Следваща страница"
+  },
+  "SEO": {
+    "HOME": {
+      "TITLE": "Кетъринг за сватби и корпоративни събития | Central Catering",
+      "DESCRIPTION": "Професионален кетъринг в София и цяла България. Персонални менюта за сватби, корпоративни събития и частни партита. Вижте реализирани събития и поискайте оферта."
+    },
+    "MENU": {
+      "TITLE": "Кетъринг меню и цени | Central Catering",
+      "DESCRIPTION": "Разгледайте нашето кетъринг меню: хапки, салати, основни ястия, десерти и напитки с цени. Съставете списък и го изпратете като запитване за оферта."
+    },
+    "CONTACTS": {
+      "TITLE": "Контакти и запитване за оферта | Central Catering",
+      "DESCRIPTION": "Свържете се с Central Catering за оферта. Опишете вашето събитие — брой гости, дата и локация — и ще се върнем с персонално предложение до 24 часа."
+    }
   }
 }

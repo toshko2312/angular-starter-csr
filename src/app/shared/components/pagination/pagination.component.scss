@@ -1,0 +1,22 @@
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: var(--hairline);
+}
+
+/* Square-ish rather than the wider filter chips: these hold one or two digits. */
+.chip {
+  min-width: 36px;
+  padding: 7px 10px;
+  text-align: center;
+}
+
+.icon-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

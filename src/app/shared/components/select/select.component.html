@@ -1,0 +1,38 @@
+<button
+  type="button"
+  class="select-trigger"
+  [class.select-trigger--placeholder]="!selectedLabel()"
+  [id]="inputId"
+  [disabled]="disabled()"
+  [attr.aria-expanded]="open()"
+  aria-haspopup="listbox"
+  (click)="toggle()"
+>
+  <span class="select-label">
+    @if (selectedLabel(); as label) {
+      {{ translateLabels ? (label | translate) : label }}
+    } @else {
+      {{ placeholder }}
+    }
+  </span>
+  <i class="pi pi-chevron-down select-caret"></i>
+</button>
+
+@if (open()) {
+<div class="dropdown-panel select-panel" role="listbox">
+  @for (option of options(); track option.value; let i = $index) {
+  <button
+    type="button"
+    class="dropdown-option"
+    [class.dropdown-option--active]="isSelected(option)"
+    [class.dropdown-option--highlighted]="i === highlighted()"
+    role="option"
+    [attr.aria-selected]="isSelected(option)"
+    (click)="select(option)"
+    (mouseenter)="highlighted.set(i)"
+  >
+    {{ translateLabels ? (option.label | translate) : option.label }}
+  </button>
+  }
+</div>
+}
