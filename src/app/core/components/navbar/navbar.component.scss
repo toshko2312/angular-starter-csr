@@ -38,10 +38,22 @@
   display: flex;
   flex: none;
 
-  img {
-    width: 74px;
+  /* The mark is a raster with a clean alpha channel, painted through a mask so
+     it takes --ink and follows the theme instead of carrying its own colour. */
+  .logo-mark {
+    width: 105px; /* 74px tall at the artwork's 1.41 aspect */
     height: 74px;
-    object-fit: contain;
+    -webkit-mask: url('/logo-mark.png') center / contain no-repeat;
+    mask: url('/logo-mark.png') center / contain no-repeat;
+  }
+
+  /* Without mask support the bare background would paint a solid ink block,
+     so only apply the colour where the mask actually lands. */
+  @supports (mask-image: url('/logo-mark.png')) or
+    (-webkit-mask-image: url('/logo-mark.png')) {
+    .logo-mark {
+      background-color: var(--ink);
+    }
   }
 }
 
@@ -220,8 +232,8 @@
     margin: 0.5rem 0.25rem 1rem;
   }
 
-  .navbar-logo img {
-    width: 48px;
+  .navbar-logo .logo-mark {
+    width: 68px;
     height: 48px;
   }
 

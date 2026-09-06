@@ -20,9 +20,17 @@ const RESEND_ENDPOINT = 'https://api.resend.com/emails';
 /**
  * Resend's sandbox sender needs no DNS setup but only delivers to the address
  * that owns the Resend account. Override with a verified domain via the
- * RESEND_FROM secret once centralcatering.bg is verified.
+ * RESEND_FROM secret once centralfoodcatering.com is verified.
  */
 const DEFAULT_FROM = 'Central Catering <onboarding@resend.dev>';
+
+/**
+ * Public site origin, for the admin deep link in the notification. A Deno
+ * function cannot import the Angular sources, so this duplicates
+ * CONSTANTS.SITE_ORIGIN in src/app/shared/constants.ts — change both together.
+ * Override with the SITE_URL secret to point a build at another origin.
+ */
+const DEFAULT_SITE_URL = 'https://centralfoodcatering.com';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -107,7 +115,8 @@ Deno.serve(async (request) => {
   // The prices in cart_lines are the visitor's snapshot, not a fresh lookup
   // against menu_items — the email reports what they were quoted, which is
   // also what /admin/requests shows for the same row.
-  const { subject, html, text } = renderEnquiryEmail(row, { supabaseUrl });
+  const siteUrl = (Deno.env.get('SITE_URL') || DEFAULT_SITE_URL).replace(/\/+$/, '');
+  const { subject, html, text } = renderEnquiryEmail(row, { supabaseUrl, siteUrl });
 
   const response = await fetch(RESEND_ENDPOINT, {
     method: 'POST',

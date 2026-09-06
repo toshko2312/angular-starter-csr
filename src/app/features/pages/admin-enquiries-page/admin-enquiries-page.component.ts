@@ -8,8 +8,9 @@ import {
   signal,
   type OnInit,
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { CONSTANTS } from '@shared/constants';
-import { clampPage, pageSlice } from '@shared/utils/paginate';
+import { ADMIN_PAGE_SIZE, clampPage, pageSlice } from '@shared/utils/paginate';
 import { EnquiryCartLine, EnquiryRecord } from '@shared/models/enquiry.model';
 import { SharedModule } from '@shared/shared.module';
 import { money, priceWithUnit } from '@shared/utils/money';
@@ -31,6 +32,14 @@ export class AdminEnquiriesPageComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private enquiriesService = inject(EnquiriesService);
   private menuService = inject(MenuService);
+  private route = inject(ActivatedRoute);
+
+  /**
+   * The request the notification email deep-links to. Read once from the
+   * snapshot — a deep link is a one-shot, and re-reading would re-expand the
+   * row every time the list reloads. Cleared by revealTarget() once used.
+   */
+  private targetId = this.route.snapshot.queryParamMap.get(CONSTANTS.REQUEST_ID_PARAM);
 
   readonly CONSTANTS = CONSTANTS;
 
@@ -48,6 +57,8 @@ export class AdminEnquiriesPageComponent implements OnInit, OnDestroy {
    * carried one. Empty until the menu lands, and empty if the read fails.
    */
   readonly menuImages = signal<Record<string, string | null>>({});
+  /** Briefly tints the deep-linked row so it is obvious which one opened. */
+  readonly highlightedId = signal<string | null>(null);
 
   /** The rows the current filter admits, before paging. */
   readonly filtered = computed(() => {
@@ -85,7 +96,7 @@ export class AdminEnquiriesPageComponent implements OnInit, OnDestroy {
       .load()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: () => {},
+        next: () => this.revealTarget(),
         // Unlike the menu and project lists, a failed read is not silently an
         // empty inbox — most likely the session is gone or RLS denied it.
         error: (err) => {
@@ -115,6 +126,34 @@ export class AdminEnquiriesPageComponent implements OnInit, OnDestroy {
   setFilter(mode: EnquiryFilter): void {
     this.filter.set(mode);
     this.page.set(1);
+  }
+
+  /**
+   * Opens the request named by ?id=. Expanding it is not enough on its own:
+   * the default 'open' filter hides a handled request, and paging hides
+   * anything past the first ten, so the view has to move to wherever the row
+   * actually is before it can render at all.
+   */
+  private revealTarget(): void {
+    const id = this.targetId;
+    if (!id) return;
+    // Deleted since the email went out, or never ours — leave the list alone.
+    if (!this.enquiries().some((row) => row.id === id)) return;
+    this.targetId = null;
+
+    // 'all' is the only filter guaranteed to hold the row whatever its state.
+    this.filter.set('all');
+    const index = this.filtered().findIndex((row) => row.id === id);
+    this.page.set(Math.floor(index / ADMIN_PAGE_SIZE) + 1);
+    this.expandedId.set(id);
+    this.highlightedId.set(id);
+
+    // The row only exists in the DOM once the page above has rendered.
+    setTimeout(() => document.getElementById(`enquiry-${id}`)?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    }));
+    setTimeout(() => this.highlightedId.set(null), 2400);
   }
 
   toggleExpanded(id: string): void {

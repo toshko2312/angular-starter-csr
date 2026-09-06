@@ -1,16 +1,10 @@
 <nav class="navbar glass">
-  <a class="navbar-logo" [routerLink]="localePath(CONSTANTS.HOME_PAGE)">
-    <picture>
-      <source srcset="logo.webp" type="image/webp" />
-      <img
-        src="logo.png"
-        alt="Central Catering"
-        width="160"
-        height="160"
-        fetchpriority="high"
-        decoding="async"
-      />
-    </picture>
+  <a
+    class="navbar-logo"
+    [routerLink]="localePath(CONSTANTS.HOME_PAGE)"
+    aria-label="Central Catering"
+  >
+    <span class="logo-mark" aria-hidden="true"></span>
   </a>
 
   <div class="navbar-links">

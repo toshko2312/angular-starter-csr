@@ -6,7 +6,7 @@ export class CONSTANTS {
   static LANGUAGE_EN = 'en'
   /** URL prefix that selects English; Bulgarian lives at the root. */
   static LANGUAGE_EN_PREFIX = 'en'
-  static SITE_ORIGIN = 'https://centralcatering.bg'
+  static SITE_ORIGIN = 'https://centralfoodcatering.com'
   static OG_IMAGE = '/og-image.jpg'
   static SEO_HOME_TITLE = 'SEO.HOME.TITLE'
   static SEO_HOME_DESCRIPTION = 'SEO.HOME.DESCRIPTION'
@@ -70,6 +70,10 @@ export class CONSTANTS {
   static ADMIN_CATEGORIES_PAGE = '/admin/categories'
   static ADMIN_LANDING_PAGE = '/admin/landing'
   static ADMIN_REQUESTS_PAGE = '/admin/requests'
+  /** Carries the blocked destination through the login screen. */
+  static RETURN_URL_PARAM = 'returnUrl'
+  /** Names the request the notification email deep-links to. */
+  static REQUEST_ID_PARAM = 'id'
   static ADMIN_KICKER = 'ADMIN.KICKER'
   static ADMIN_TITLE = 'ADMIN.TITLE'
   static ADMIN_LOGIN_TITLE = 'ADMIN.LOGIN_TITLE'
@@ -129,7 +133,7 @@ export class CONSTANTS {
   static ADMIN_TAGS_PLACEHOLDER = 'ADMIN.TAGS_PLACEHOLDER'
   static ADMIN_REQUESTS_OPEN_BADGE = 'ADMIN.REQUESTS_OPEN_BADGE'
   /** Used when ADMIN_EMAIL is not set in the environment. */
-  static ADMIN_EMAIL_FALLBACK = 'admin@centralcatering.bg'
+  static ADMIN_EMAIL_FALLBACK = 'admin@centralfoodcatering.com'
 
   /** Remembers the light/dark choice; read by the inline script in index.html. */
   static THEME_KEY = 'theme'

@@ -43,7 +43,12 @@
 
   <div class="rows">
     @for (row of visible(); track row.id) {
-    <div class="row enquiry-row" [class.enquiry-row--handled]="row.handled">
+    <div
+      class="row enquiry-row"
+      [id]="'enquiry-' + row.id"
+      [class.enquiry-row--handled]="row.handled"
+      [class.enquiry-row--target]="highlightedId() === row.id"
+    >
       <div class="enquiry-summary">
         <button type="button" class="enquiry-toggle" (click)="toggleExpanded(row.id)">
           <i class="pi" [class.pi-chevron-right]="expandedId() !== row.id"

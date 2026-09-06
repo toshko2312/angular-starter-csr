@@ -9,50 +9,50 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
 >
   <url>
-    <loc>https://centralcatering.bg/</loc>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://centralcatering.bg/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://centralcatering.bg/en" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralcatering.bg/" />
+    <loc>https://centralfoodcatering.com/</loc>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://centralfoodcatering.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://centralfoodcatering.com/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralfoodcatering.com/" />
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://centralcatering.bg/menu</loc>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://centralcatering.bg/menu" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://centralcatering.bg/en/menu" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralcatering.bg/menu" />
+    <loc>https://centralfoodcatering.com/menu</loc>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://centralfoodcatering.com/menu" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://centralfoodcatering.com/en/menu" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralfoodcatering.com/menu" />
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://centralcatering.bg/contacts</loc>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://centralcatering.bg/contacts" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://centralcatering.bg/en/contacts" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralcatering.bg/contacts" />
+    <loc>https://centralfoodcatering.com/contacts</loc>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://centralfoodcatering.com/contacts" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://centralfoodcatering.com/en/contacts" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralfoodcatering.com/contacts" />
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://centralcatering.bg/en</loc>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://centralcatering.bg/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://centralcatering.bg/en" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralcatering.bg/" />
+    <loc>https://centralfoodcatering.com/en</loc>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://centralfoodcatering.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://centralfoodcatering.com/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralfoodcatering.com/" />
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://centralcatering.bg/en/menu</loc>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://centralcatering.bg/menu" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://centralcatering.bg/en/menu" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralcatering.bg/menu" />
+    <loc>https://centralfoodcatering.com/en/menu</loc>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://centralfoodcatering.com/menu" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://centralfoodcatering.com/en/menu" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralfoodcatering.com/menu" />
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://centralcatering.bg/en/contacts</loc>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://centralcatering.bg/contacts" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://centralcatering.bg/en/contacts" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralcatering.bg/contacts" />
+    <loc>https://centralfoodcatering.com/en/contacts</loc>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://centralfoodcatering.com/contacts" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://centralfoodcatering.com/en/contacts" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralfoodcatering.com/contacts" />
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

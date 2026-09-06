@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { LanguageService } from '@core/services/language.service';
 import { CONSTANTS } from '@shared/constants';
@@ -16,6 +16,7 @@ import { SharedModule } from '@shared/shared.module';
 export class AdminLoginPageComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private language = inject(LanguageService);
 
   readonly CONSTANTS = CONSTANTS;
@@ -63,6 +64,23 @@ export class AdminLoginPageComponent {
   }
 
   private goToPanel(): void {
-    void this.router.navigateByUrl(this.language.localize(CONSTANTS.ADMIN_MENU_PAGE));
+    const requested = this.safeReturnUrl(
+      this.route.snapshot.queryParamMap.get(CONSTANTS.RETURN_URL_PARAM)
+    );
+    void this.router.navigateByUrl(
+      requested ?? this.language.localize(CONSTANTS.ADMIN_MENU_PAGE)
+    );
+  }
+
+  /**
+   * Only same-origin admin paths. An unvalidated returnUrl would let a crafted
+   * link bounce a freshly signed-in admin to an arbitrary host, so anything
+   * absolute ('https://…') or protocol-relative ('//host') is refused, as is
+   * any path outside the admin section.
+   */
+  private safeReturnUrl(raw: string | null): string | null {
+    if (!raw || !raw.startsWith('/') || raw.startsWith('//')) return null;
+    const path = raw.split(/[?#]/)[0];
+    return /^\/(en\/)?admin(\/|$)/.test(path) ? raw : null;
   }
 }

@@ -23,9 +23,14 @@ export const adminGuard: CanActivateFn = (_route, state) => {
   // completes, so language.current() still reflects the page being left.
   const login = language.localize(`/${CONSTANTS.ADMIN_PAGE}`, language.languageOf(state.url));
 
+  // Carry the blocked destination so the login page can return to it. The
+  // login page validates it before navigating — see safeReturnUrl() there.
+  const redirect = router.parseUrl(login);
+  redirect.queryParams[CONSTANTS.RETURN_URL_PARAM] = state.url;
+
   return toObservable(auth.isReady).pipe(
     filter(Boolean),
     take(1),
-    map(() => auth.isAuthenticated() || router.parseUrl(login))
+    map(() => auth.isAuthenticated() || redirect)
   );
 };

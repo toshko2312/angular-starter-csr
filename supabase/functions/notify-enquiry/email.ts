@@ -33,6 +33,8 @@ export interface EnquiryRow {
 export interface RenderOptions {
   /** Storage origin that a thumbnail URL must sit under. See safeImage(). */
   supabaseUrl: string;
+  /** Public site origin, no trailing slash. Used for the admin deep link. */
+  siteUrl: string;
 }
 
 export interface RenderedEmail {
@@ -206,7 +208,7 @@ function cartHtml(lines: EnquiryCartLine[], supabaseUrl: string): string {
   </table>`;
 }
 
-function textBody(row: EnquiryRow): string {
+function textBody(row: EnquiryRow, adminUrl: string): string {
   const lines = fields(row).map(([label, value]) => `${label}: ${value}`);
 
   lines.push('', 'Съобщение:', row.message, '');
@@ -223,6 +225,8 @@ function textBody(row: EnquiryRow): string {
     lines.push('Без прикачена количка');
   }
 
+  lines.push('', 'Отвори заявката:', adminUrl);
+
   return lines.join('\n');
 }
 
@@ -231,6 +235,10 @@ export function renderEnquiryEmail(row: EnquiryRow, options: RenderOptions): Ren
   // The total rides in the subject so the inbox list is triageable without
   // opening anything.
   const who = headerSafe(row.name);
+  // row.id is a UUID the caller already matched against its own regex, so this
+  // needs no encoding — it is escaped below only because every interpolated
+  // value in this template is.
+  const adminUrl = `${options.siteUrl}/admin/requests?id=${row.id}`;
   const subject = row.cart_lines.length
     ? `Ново запитване от ${who} — ${money(total)}`
     : `Ново запитване от ${who}`;
@@ -259,13 +267,18 @@ export function renderEnquiryEmail(row: EnquiryRow, options: RenderOptions): Ren
       </td>
     </tr>
     <tr>
-      <td style="padding:20px 24px 24px">
+      <td style="padding:20px 24px 0">
         <div style="color:${MUTED};font-size:13px;padding-bottom:8px">Прикачена количка</div>
         ${cartHtml(row.cart_lines, options.supabaseUrl)}
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:20px 24px 24px">
+        <a href="${escape(adminUrl)}" style="display:inline-block;background:${INK};color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;padding:12px 20px;border-radius:8px">Отвори заявката</a>
       </td>
     </tr>
   </table>
 </div>`;
 
-  return { subject, html, text: textBody(row) };
+  return { subject, html, text: textBody(row, adminUrl) };
 }

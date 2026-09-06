@@ -27,6 +27,21 @@
   opacity: 0.62;
 }
 
+/* The row a notification email deep-linked to. Fades out on its own so it
+   reads as an arrival cue, not as a persistent selection. */
+.enquiry-row--target {
+  animation: enquiry-target-fade 2.4s ease-out;
+}
+
+@keyframes enquiry-target-fade {
+  from {
+    background: var(--option-hover);
+  }
+  to {
+    background: transparent;
+  }
+}
+
 .enquiry-summary {
   display: flex;
   align-items: center;
