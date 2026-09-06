@@ -57,9 +57,14 @@
 
             <div class="field">
               <label for="event_date">{{ 'CONTACTS.EVENT_DATE' | translate }}</label>
+              <!-- readonlyInput: a typeable field raises the mobile keyboard over the
+                   calendar, and the date is only ever picked, never typed. The
+                   overlay still opens on tap — PrimeNG guards that on showOnFocus,
+                   not on readonly. -->
               <p-datepicker
                 inputId="event_date"
                 formControlName="event_date"
+                [readonlyInput]="true"
                 [minDate]="today"
                 [showIcon]="true"
                 iconDisplay="input"
