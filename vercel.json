@@ -5,11 +5,19 @@
   "rewrites": [
     {
       "source": "/admin/:path*",
-      "destination": "/index.html"
+      "destination": "/index.csr"
     },
     {
       "source": "/admin",
-      "destination": "/index.html"
+      "destination": "/index.csr"
+    },
+    {
+      "source": "/en/admin/:path*",
+      "destination": "/index.csr"
+    },
+    {
+      "source": "/en/admin",
+      "destination": "/index.csr"
     }
   ],
   "headers": [
