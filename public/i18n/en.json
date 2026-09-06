@@ -8,6 +8,32 @@
     "THEME_DARK": "Dark theme",
     "THEME_LIGHT": "Light theme"
   },
+  "HERO": {
+    "KICKER": "Catering in Kardzhali",
+    "TITLE": "Catering for every occasion",
+    "LEAD": "Central Catering turns your event into an experience your guests remember.",
+    "CTA": "Request a quote"
+  },
+  "ABOUT": {
+    "TITLE": "Why Central Catering",
+    "CONSULTING": "Central Catering builds tailored menus for weddings, corporate events and private parties in Kardzhali and across Bulgaria. Fresh produce, professional service, and a quote within 24 hours.",
+    "EXTRAS": "Central Catering builds tailored menus for weddings, corporate events and private parties in Kardzhali and across Bulgaria. Fresh produce, professional service, and a quote within 24 hours.",
+    "SERVICES_TITLE": "We specialise in organising and running:",
+    "SERVICE_WEDDING": "weddings",
+    "SERVICE_CORPORATE": "corporate events",
+    "SERVICE_TEAMBUILDING": "company parties and team building",
+    "SERVICE_PRIVATE": "private parties",
+    "SERVICE_KIDS": "children's parties",
+    "SERVICE_FAMILY": "family celebrations"
+  },
+  "FOOTER": {
+    "PHONE_LABEL": "Phone",
+    "ADDRESS_LABEL": "Address",
+    "ADDRESS_VALUE": "bul. „Bulgaria“ 37-B, Kardzhali 6600",
+    "HOURS_LABEL": "Opening hours",
+    "HOURS_VALUE": "Every day, 24/7",
+    "TAGLINE": "Catering for weddings, corporate and private events in Kardzhali and across Bulgaria."
+  },
   "PRODUCTS_LIST": {
     "KICKER": "Catering for your occasion",
     "TITLE": "Events we have catered",
@@ -155,8 +181,8 @@
   },
   "SEO": {
     "HOME": {
-      "TITLE": "Wedding & Corporate Catering in Sofia | Central Catering",
-      "DESCRIPTION": "Professional catering across Sofia and Bulgaria. Tailored menus for weddings, corporate events and private parties. Browse past events and request a quote."
+      "TITLE": "Wedding & Corporate Catering in Kardzhali | Central Catering",
+      "DESCRIPTION": "Professional catering across Kardzhali and Bulgaria. Tailored menus for weddings, corporate events and private parties. Browse past events and request a quote."
     },
     "MENU": {
       "TITLE": "Catering Menu and Prices | Central Catering",

@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node set-env.js && ng serve",
-    "build": "node set-env.js && ng build --configuration production",
+    "build": "node set-env.js && node scripts/generate-sitemap.js && ng build --configuration production",
     "watch": "node set-env.js && ng build --watch --configuration development",
     "test": "ng test",
     "db:link": "supabase link --project-ref iyztahopwvhjyasaoqeg",

@@ -3,6 +3,7 @@ import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { supabase } from '@core/configs/supabase.client';
 import { MenuItemModel } from '@shared/models/menu-item.model';
 import { catchError, from, map, Observable, of } from 'rxjs';
+import { untilStable } from '@shared/utils/until-stable';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,8 @@ export class MenuService {
   /** sessionStorage does not exist while prerendering in Node. */
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly menuStorageKey = 'menu_items';
+  /** Blocks prerender stability until the rows land. See untilStable(). */
+  private readonly blockStability = untilStable<MenuItemModel[]>();
 
   getMenuItems(): Observable<MenuItemModel[]> {
     const cachedRaw = this.isBrowser && sessionStorage.getItem(this.menuStorageKey);
@@ -36,7 +39,7 @@ export class MenuService {
         console.error('Error fetching menu items:', err);
         return of([]);
       })
-    );
+    ).pipe(this.blockStability);
   }
 
   /** The id is minted by the database, so a new row does not carry one. */

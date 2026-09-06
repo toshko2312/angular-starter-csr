@@ -3,6 +3,7 @@ import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { supabase } from '@core/configs/supabase.client';
 import { MenuCategoryModel } from '@shared/models/menu-category.model';
 import { catchError, from, map, Observable, of } from 'rxjs';
+import { untilStable } from '@shared/utils/until-stable';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,8 @@ export class CategoriesService {
   /** sessionStorage does not exist while prerendering in Node. */
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly storageKey = 'menu_categories';
+  /** Blocks prerender stability until the rows land. See untilStable(). */
+  private readonly blockStability = untilStable<MenuCategoryModel[]>();
 
   getCategories(): Observable<MenuCategoryModel[]> {
     const cachedRaw = this.isBrowser && sessionStorage.getItem(this.storageKey);
@@ -38,7 +41,7 @@ export class CategoriesService {
         console.error('Error fetching menu categories:', err);
         return of([]);
       })
-    );
+    ).pipe(this.blockStability);
   }
 
   create(category: Omit<MenuCategoryModel, 'id'>): Observable<void> {

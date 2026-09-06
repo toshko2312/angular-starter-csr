@@ -1,0 +1,72 @@
+.site-footer {
+  box-sizing: border-box;
+  padding: 8px 18px 32px;
+}
+
+.site-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  /* The contact fields sit against the middle of the brand block rather than
+     its first line — the tagline makes that column taller than the fields. */
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px 40px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 26px 30px;
+  border-radius: var(--radius-card);
+}
+
+.footer-name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.footer-tagline {
+  margin: 6px 0 0;
+  max-width: 46ch;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  opacity: 0.75;
+}
+
+.footer-nap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 34px;
+  margin: 0;
+
+  dt {
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    opacity: 0.6;
+  }
+
+  dd {
+    margin: 3px 0 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration: underline;
+    }
+  }
+}
+
+@media (max-width: 759px) {
+  /* Hidden below the breakpoint: the floating tab bar already occupies the
+     bottom of the viewport, and a second block competing for that space read
+     as clutter. The stacked layout rules went with it rather than sitting
+     here unreachable. */
+  .site-footer {
+    display: none;
+  }
+}

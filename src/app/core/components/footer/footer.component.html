@@ -1,0 +1,23 @@
+<footer class="site-footer">
+  <div class="site-footer-inner glass">
+    <div class="footer-brand">
+      <div class="footer-name">Central Кетъринг</div>
+      <p class="footer-tagline">{{ CONSTANTS.FOOTER_TAGLINE | translate }}</p>
+    </div>
+
+    <dl class="footer-nap">
+      <div>
+        <dt>{{ CONSTANTS.FOOTER_PHONE_LABEL | translate }}</dt>
+        <dd><a [href]="'tel:' + CONSTANTS.PHONE_E164">{{ CONSTANTS.PHONE_DISPLAY }}</a></dd>
+      </div>
+      <div>
+        <dt>{{ CONSTANTS.FOOTER_ADDRESS_LABEL | translate }}</dt>
+        <dd>{{ CONSTANTS.FOOTER_ADDRESS_VALUE | translate }}</dd>
+      </div>
+      <div>
+        <dt>{{ CONSTANTS.FOOTER_HOURS_LABEL | translate }}</dt>
+        <dd>{{ CONSTANTS.FOOTER_HOURS_VALUE | translate }}</dd>
+      </div>
+    </dl>
+  </div>
+</footer>

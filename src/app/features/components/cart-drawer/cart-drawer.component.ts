@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LanguageService } from '@core/services/language.service';
 import { CONSTANTS } from '@shared/constants';
 import { SharedModule } from '@shared/shared.module';
+import { localePath } from '@shared/utils/locale-path';
 import { localized } from '@shared/utils/localized';
 import { priceWithUnit } from '@shared/utils/money';
 import { CartLine } from '@shared/models/cart.model';
@@ -18,6 +19,11 @@ export class CartDrawerComponent {
   readonly CONSTANTS = CONSTANTS;
   readonly cart = inject(CartService);
   private language = inject(LanguageService);
+
+  /** Public links must be absolute and language-scoped — see localePath(). */
+  path(page: string): string {
+    return localePath(page, this.language.current());
+  }
 
   nameOf(line: CartLine): string {
     return localized(line.item.name, line.item.name_en, this.language.current());

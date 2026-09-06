@@ -3,6 +3,7 @@ import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { supabase } from '@core/configs/supabase.client';
 import { ProjectModel } from '@shared/models/project.model';
 import { catchError, from, map, Observable, of } from 'rxjs';
+import { untilStable } from '@shared/utils/until-stable';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,8 @@ export class ProductsService {
   /** sessionStorage does not exist while prerendering in Node. */
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly projectsStorageKey = 'projects';
+  /** Blocks prerender stability until the rows land. See untilStable(). */
+  private readonly blockStability = untilStable<ProjectModel[]>();
 
   getProjects(): Observable<ProjectModel[]> {
     const cachedRaw = this.isBrowser && sessionStorage.getItem(this.projectsStorageKey);
@@ -41,7 +44,7 @@ export class ProductsService {
         console.error('Error fetching projects:', err);
         return of([]);
       })
-    );
+    ).pipe(this.blockStability);
   }
 
   create(project: Omit<ProjectModel, 'id'>): Observable<void> {

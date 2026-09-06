@@ -12,6 +12,7 @@ import { SharedModule } from '@shared/shared.module';
 import { DatePicker } from 'primeng/datepicker';
 import { TimePickerComponent } from '@shared/components/time-picker/time-picker.component';
 import { startOfToday, toIsoDate } from '@shared/utils/date';
+import { localePath } from '@shared/utils/locale-path';
 import { localized } from '@shared/utils/localized';
 import { priceWithUnit } from '@shared/utils/money';
 import { CartService } from '../../services/cart.service';
@@ -102,6 +103,11 @@ export class ContactsPageComponent {
     return count
       ? this.translate.instant(CONSTANTS.CONTACTS_SENT_WITH_CART, { count })
       : this.translate.instant(CONSTANTS.CONTACTS_SENT_PLAIN);
+  }
+
+  /** Public links must be absolute and language-scoped — see localePath(). */
+  path(page: string): string {
+    return localePath(page, this.language.current());
   }
 
   nameOf(line: CartLine): string {

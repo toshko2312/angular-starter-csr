@@ -1,0 +1,138 @@
+/* Mirrors .page-head in styles.scss — same centred rhythm and display face —
+   but the hero carries body copy and the NAP, which .page-head never did. */
+.hero {
+  padding: 56px 20px 8px;
+}
+
+.hero-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 600;
+  margin: 10px 0 0;
+}
+
+.hero-lead {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  opacity: 0.8;
+  margin: 14px auto 0;
+  max-width: 62ch;
+}
+
+.hero-cta {
+  display: inline-block;
+  margin-top: 22px;
+  padding: 13px 28px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--accent-hover);
+  }
+}
+
+
+
+.about {
+  padding: 30px 20px 4px;
+}
+
+.about-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about h2 {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 600;
+  margin: 0 0 14px;
+}
+
+.about p {
+  font-size: 1rem;
+  line-height: 1.65;
+  opacity: 0.8;
+  margin: 0 auto 12px;
+  max-width: 64ch;
+}
+
+.about-services-title {
+  font-weight: 600;
+  opacity: 0.9 !important;
+  margin-top: 20px !important;
+}
+
+/* Centred pills rather than bullets: the list reads as a set of offerings,
+   and bullet markers do not centre cleanly. */
+.about-services {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+
+  li {
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: var(--surface-1);
+    border: 1px solid var(--border-soft);
+    font-size: 0.92rem;
+  }
+}
+
+@media (max-width: 759px) {
+  /* The about copy runs about a screenful on a phone, which pushed the events
+     gallery — the best proof of past work — entirely below the fold. Reordered
+     visually only: the DOM keeps hero → about → events, so crawlers and screen
+     readers still meet the copy first. */
+  :host {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .about {
+    order: 1;
+  }
+
+  .hero {
+    padding: 28px 16px 4px;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero-lead {
+    font-size: 0.98rem;
+  }
+
+  /* Last element now, so it carries the clearance for the floating tab bar
+     (12 offset + 6 + 56 row + 6 + 12 gap). The small top padding is because
+     .page inside the gallery already contributes 92px above this seam. */
+  .about {
+    padding: 4px 16px 92px;
+  }
+
+  .about h2 {
+    font-size: 1.5rem;
+  }
+
+  .about p {
+    font-size: 0.95rem;
+  }
+}

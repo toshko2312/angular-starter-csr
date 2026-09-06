@@ -14,6 +14,7 @@ import { AuthService } from '@core/services/auth.service';
 import { LanguageService } from '@core/services/language.service';
 import { ThemeService } from '@core/services/theme.service';
 import { CONSTANTS } from '@shared/constants';
+import { localePath } from '@shared/utils/locale-path';
 import { SocialLinksComponent } from '@shared/components/social-links/social-links.component';
 import { SharedModule } from '@shared/shared.module';
 import { filter, map } from 'rxjs';
@@ -94,10 +95,7 @@ export class NavbarComponent {
 
   /** Keeps the public links inside the active language branch. */
   localePath(page: string): string {
-    const path = page === CONSTANTS.HOME_PAGE ? '' : `/${page}`;
-    return this.language.current() === CONSTANTS.LANGUAGE_EN
-      ? `/${CONSTANTS.LANGUAGE_EN_PREFIX}${path}`
-      : path || '/';
+    return localePath(page, this.language.current());
   }
 
   /** The admin pages are mounted in both language branches, like the public ones. */

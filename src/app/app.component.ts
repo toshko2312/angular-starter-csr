@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from './core/services/language.service';
 import { CONSTANTS } from './shared/constants';
 import { NavbarComponent } from './core/components/navbar/navbar.component';
+import { FooterComponent } from './core/components/footer/footer.component';
 import { CartDrawerComponent } from './features/components/cart-drawer/cart-drawer.component';
 import { injectSpeedInsights } from '@vercel/speed-insights';
 // Aliased: the bare name collides with Angular's own inject().
@@ -12,7 +13,7 @@ import { inject as injectAnalytics } from '@vercel/analytics';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent, CartDrawerComponent],
+  imports: [RouterOutlet, NavbarComponent, FooterComponent, CartDrawerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

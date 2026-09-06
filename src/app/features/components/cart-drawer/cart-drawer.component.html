@@ -31,7 +31,7 @@
       } @empty {
       <div class="cart-empty">
         {{ CONSTANTS.CART_EMPTY | translate }}<br />
-        <a [routerLink]="CONSTANTS.MENU_PAGE" (click)="cart.closeDrawer()">
+        <a [routerLink]="path(CONSTANTS.MENU_PAGE)" (click)="cart.closeDrawer()">
           {{ CONSTANTS.CART_BROWSE_MENU | translate }}
         </a>
       </div>
@@ -45,7 +45,7 @@
       </div>
       <a
         class="btn-accent drawer-continue"
-        [routerLink]="CONSTANTS.CONTACTS_PAGE"
+        [routerLink]="path(CONSTANTS.CONTACTS_PAGE)"
         (click)="cart.closeDrawer()"
       >
         {{ CONSTANTS.CART_CONTINUE | translate }}

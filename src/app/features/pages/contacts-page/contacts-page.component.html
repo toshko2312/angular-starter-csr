@@ -174,7 +174,7 @@
           } @empty {
           <div class="cart-empty">
             {{ CONSTANTS.CART_EMPTY | translate }}<br />
-            <a [routerLink]="CONSTANTS.MENU_PAGE">{{ CONSTANTS.CART_BROWSE_MENU | translate }}</a>
+            <a [routerLink]="path(CONSTANTS.MENU_PAGE)">{{ CONSTANTS.CART_BROWSE_MENU | translate }}</a>
           </div>
           }
         </div>

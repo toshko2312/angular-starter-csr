@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { CONSTANTS } from '@shared/constants';
+import { localePath } from '@shared/utils/locale-path';
 import { LanguageService } from './language.service';
 
 export interface SeoPage {
@@ -69,10 +70,7 @@ export class SeoService {
   }
 
   private pathFor(page: string, lang: string): string {
-    const suffix = page ? `/${page}` : '';
-    return lang === CONSTANTS.LANGUAGE_EN
-      ? `/${CONSTANTS.LANGUAGE_EN_PREFIX}${suffix}`
-      : suffix || '/';
+    return localePath(page, lang);
   }
 
   private absolute(path: string): string {

@@ -1,1 +1,32 @@
+<!-- The positioning statement used to live only in <meta name="description">,
+     where no reader and no content extractor ever saw it. -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="kicker">{{ CONSTANTS.HERO_KICKER | translate }}</div>
+    <h1>{{ CONSTANTS.HERO_TITLE | translate }}</h1>
+    <p class="hero-lead">{{ CONSTANTS.HERO_LEAD | translate }}</p>
+
+    <a class="hero-cta" [routerLink]="path(CONSTANTS.CONTACTS_PAGE)">
+      {{ CONSTANTS.HERO_CTA | translate }}
+    </a>
+  </div>
+</section>
+
+<!-- A real list rather than styled divs: these are the six things people
+     actually search for, and a list is what an answer engine can lift. -->
+<section class="about">
+  <div class="about-inner">
+    <h2>{{ CONSTANTS.ABOUT_TITLE | translate }}</h2>
+    <p>{{ CONSTANTS.ABOUT_CONSULTING | translate }}</p>
+    <p>{{ CONSTANTS.ABOUT_EXTRAS | translate }}</p>
+
+    <p class="about-services-title">{{ CONSTANTS.ABOUT_SERVICES_TITLE | translate }}</p>
+    <ul class="about-services">
+      @for (service of CONSTANTS.ABOUT_SERVICES; track service) {
+      <li>{{ service | translate }}</li>
+      }
+    </ul>
+  </div>
+</section>
+
 <app-products-list></app-products-list>
