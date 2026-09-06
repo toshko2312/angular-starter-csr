@@ -22,6 +22,24 @@
   ],
   "headers": [
     {
+      "source": "/(en/)?admin/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/(en/)?admin",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
       "source": "/(.*)\\.(js|css|webp|png|jpg|ico|woff2)",
       "headers": [
         {

@@ -8,4 +8,4 @@ Allow: /
 Disallow: /admin
 Disallow: /en/admin
 
-Sitemap: https://centralfoodcatering.com/sitemap.xml
+Sitemap: https://www.centralfoodcatering.com/sitemap.xml

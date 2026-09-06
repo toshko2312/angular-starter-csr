@@ -6,7 +6,7 @@ export class CONSTANTS {
   static LANGUAGE_EN = 'en'
   /** URL prefix that selects English; Bulgarian lives at the root. */
   static LANGUAGE_EN_PREFIX = 'en'
-  static SITE_ORIGIN = 'https://centralfoodcatering.com'
+  static SITE_ORIGIN = 'https://www.centralfoodcatering.com'
   static OG_IMAGE = '/og-image.jpg'
   static SEO_HOME_TITLE = 'SEO.HOME.TITLE'
   static SEO_HOME_DESCRIPTION = 'SEO.HOME.DESCRIPTION'

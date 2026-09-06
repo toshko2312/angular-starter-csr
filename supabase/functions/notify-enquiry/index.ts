@@ -30,7 +30,7 @@ const DEFAULT_FROM = 'Central Catering <onboarding@resend.dev>';
  * CONSTANTS.SITE_ORIGIN in src/app/shared/constants.ts — change both together.
  * Override with the SITE_URL secret to point a build at another origin.
  */
-const DEFAULT_SITE_URL = 'https://centralfoodcatering.com';
+const DEFAULT_SITE_URL = 'https://www.centralfoodcatering.com';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 

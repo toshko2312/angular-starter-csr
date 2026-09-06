@@ -1,59 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Keep in step with the public routes in src/app/app.routes.ts.
-  Each URL lists every language version of itself, including itself, which is
-  what Google requires of hreflang annotations.
+  Keep in step with the public routes in src/app/app.routes.ts and
+  prerender-routes.txt. Each URL lists every language version of itself,
+  including itself, which is what Google requires of hreflang annotations.
+
+  Host: www.centralfoodcatering.com only. The apex 308-redirects to www, so
+  every <loc> and every hreflang href must use www — pointing them at the
+  apex makes Google treat these entries as redirect targets, not canonical
+  URLs, and a redirecting hreflang target gets the whole annotation ignored.
+
+  priority/changefreq are intentionally omitted: Google has ignored both
+  since at least 2020, and they were never anything more than a weak, easily
+  stale hint elsewhere. Not worth hand-maintaining for six URLs.
+
+  lastmod is the date of the most recent commit that changed each page's
+  visible content (its template plus public/i18n/bg.json and en.json, which
+  drive both language versions from the same strings), not a build/deploy
+  timestamp or a fixed placeholder. Regenerate from git history when content
+  changes, from the last commit touching each page's template and i18n files.
 -->
 <urlset
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
 >
   <url>
-    <loc>https://centralfoodcatering.com/</loc>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://centralfoodcatering.com/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://centralfoodcatering.com/en" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralfoodcatering.com/" />
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
+    <loc>https://www.centralfoodcatering.com/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.centralfoodcatering.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.centralfoodcatering.com/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.centralfoodcatering.com/" />
   </url>
   <url>
-    <loc>https://centralfoodcatering.com/menu</loc>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://centralfoodcatering.com/menu" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://centralfoodcatering.com/en/menu" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralfoodcatering.com/menu" />
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.centralfoodcatering.com/menu</loc>
+    <lastmod>2026-09-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.centralfoodcatering.com/menu" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.centralfoodcatering.com/en/menu" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.centralfoodcatering.com/menu" />
   </url>
   <url>
-    <loc>https://centralfoodcatering.com/contacts</loc>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://centralfoodcatering.com/contacts" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://centralfoodcatering.com/en/contacts" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralfoodcatering.com/contacts" />
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://www.centralfoodcatering.com/contacts</loc>
+    <lastmod>2026-09-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.centralfoodcatering.com/contacts" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.centralfoodcatering.com/en/contacts" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.centralfoodcatering.com/contacts" />
   </url>
   <url>
-    <loc>https://centralfoodcatering.com/en</loc>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://centralfoodcatering.com/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://centralfoodcatering.com/en" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralfoodcatering.com/" />
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://www.centralfoodcatering.com/en</loc>
+    <lastmod>2026-09-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.centralfoodcatering.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.centralfoodcatering.com/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.centralfoodcatering.com/" />
   </url>
   <url>
-    <loc>https://centralfoodcatering.com/en/menu</loc>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://centralfoodcatering.com/menu" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://centralfoodcatering.com/en/menu" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralfoodcatering.com/menu" />
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://www.centralfoodcatering.com/en/menu</loc>
+    <lastmod>2026-09-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.centralfoodcatering.com/menu" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.centralfoodcatering.com/en/menu" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.centralfoodcatering.com/menu" />
   </url>
   <url>
-    <loc>https://centralfoodcatering.com/en/contacts</loc>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://centralfoodcatering.com/contacts" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://centralfoodcatering.com/en/contacts" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://centralfoodcatering.com/contacts" />
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://www.centralfoodcatering.com/en/contacts</loc>
+    <lastmod>2026-09-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.centralfoodcatering.com/contacts" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.centralfoodcatering.com/en/contacts" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.centralfoodcatering.com/contacts" />
   </url>
 </urlset>
