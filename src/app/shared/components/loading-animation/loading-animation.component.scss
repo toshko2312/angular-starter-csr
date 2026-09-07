@@ -1,0 +1,196 @@
+/* Timeline, as % of the 2.5s loop. Cues from the design's scene list:
+   Lift 0s (0%) -> Steam 0.8s (32%) -> Settle 1.6s (64%) -> Reset 2.2s (88%).
+   Easings are the engine's own curves as cubic-beziers: easeInQuad,
+   easeOutCubic, easeOutBack (c1 = 1.70158). */
+$dur: 2.5s;
+$ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+$ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+$ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+.loader {
+  --loader-width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding: 48px 20px 56px;
+}
+
+/* The three layers share the 320x227 source canvas, so they stack at inset 0
+   and need no individual positioning. */
+.loader-mark {
+  position: relative;
+  width: var(--loader-width);
+  aspect-ratio: 320 / 227;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+}
+
+/* Masked rather than inverted: painting the silhouette with --ink is how the
+   navbar mark already themes, so this follows light/dark with no extra rule. */
+@supports (mask-image: url('/loading/lid.png')) or (-webkit-mask-image: url('/loading/lid.png')) {
+  .layer {
+    background-color: var(--ink);
+  }
+}
+
+.layer--utensils {
+  -webkit-mask: url('/loading/utensils.png') center / contain no-repeat;
+  mask: url('/loading/utensils.png') center / contain no-repeat;
+}
+
+.layer--lid {
+  -webkit-mask: url('/loading/lid.png') center / contain no-repeat;
+  mask: url('/loading/lid.png') center / contain no-repeat;
+  /* Base centre of the dome within the 320x227 canvas, so it pivots on the
+     plate rather than the canvas middle. */
+  transform-origin: 49.69% 21.59%;
+  animation: loader-lid $dur linear infinite;
+}
+
+.layer--wordmark {
+  -webkit-mask: url('/loading/wordmark.png') center / contain no-repeat;
+  mask: url('/loading/wordmark.png') center / contain no-repeat;
+  animation: loader-wordmark $dur linear infinite;
+}
+
+/* ---------------------------------------------------------------- lid */
+
+@keyframes loader-lid {
+  /* anticipation dip */
+  0% { transform: translateY(0) rotate(0deg) scaleY(1); animation-timing-function: $ease-in-quad; }
+  5.6% { transform: translateY(3px) rotate(0deg) scaleY(0.94); animation-timing-function: $ease-out-back; }
+  /* lift off, with the overshoot the design's easeOutBack gives */
+  32% { transform: translateY(-26px) rotate(-3deg) scaleY(1); animation-timing-function: linear; }
+  /* hover: sampled from -26 - 5*sin(k*PI) with the rotation wobble */
+  40% { transform: translateY(-29.8px) rotate(-0.6deg) scaleY(1); }
+  48% { transform: translateY(-31px) rotate(0.9deg) scaleY(1); }
+  56% { transform: translateY(-29.8px) rotate(-0.3deg) scaleY(1); }
+  64% { transform: translateY(-26px) rotate(-5.35deg) scaleY(1); animation-timing-function: $ease-in-quad; }
+  /* fall back to the plate */
+  77.6% { transform: translateY(0) rotate(0deg) scaleY(1); animation-timing-function: $ease-out-cubic; }
+  /* squash settle */
+  81% { transform: translateY(0) rotate(0deg) scaleY(0.88); animation-timing-function: $ease-out-cubic; }
+  87.2%, 100% { transform: translateY(0) rotate(0deg) scaleY(1); }
+}
+
+/* ------------------------------------------------------------ wordmark */
+
+@keyframes loader-wordmark {
+  /* wipe in from the left ... */
+  0%, 8% { clip-path: inset(0 100% 0 0); animation-timing-function: $ease-out-cubic; }
+  54%, 88% { clip-path: inset(0 0 0 0); animation-timing-function: $ease-out-cubic; }
+  /* ... hold, then wipe back out to the right so the loop restarts clean */
+  100% { clip-path: inset(0 0 0 100%); }
+}
+
+/* --------------------------------------------------------------- steam */
+
+.steam {
+  position: absolute;
+  inset: 0;
+}
+
+.puff {
+  position: absolute;
+  top: 15%;
+  width: 5%;
+  aspect-ratio: 1;
+  border-radius: 50% 50% 45% 55%;
+  background: var(--ink);
+  filter: blur(1.5px);
+  opacity: 0;
+  transform: translate(-50%, 0);
+}
+
+/* x positions and stagger from the design (138/160/182 of 320, 0.30/0.48/0.68s
+   into a 1.05s rise). Each puff carries the full 2.5s cycle rather than a
+   delay, so all three stay locked to the same loop. */
+.puff--1 { left: 43.1%; animation: loader-puff-1 $dur linear infinite; }
+.puff--2 { left: 50%; animation: loader-puff-2 $dur linear infinite; }
+.puff--3 { left: 56.9%; animation: loader-puff-3 $dur linear infinite; }
+
+@mixin puff($start, $end, $scale) {
+  #{$start} { opacity: 0; transform: translate(-50%, 0) scale($scale * 0.45); }
+  #{$start + ($end - $start) * 0.5} { opacity: 0.34; }
+  #{$end}, 100% { opacity: 0; transform: translate(-50%, -46%) scale($scale * 1.4); }
+}
+
+@keyframes loader-puff-1 { @include puff(12%, 54%, 0.9); }
+@keyframes loader-puff-2 { @include puff(19.2%, 61.2%, 1.15); }
+@keyframes loader-puff-3 { @include puff(27.2%, 69.2%, 0.85); }
+
+/* --------------------------------------------------------------- label */
+
+.loader-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.loader-text {
+  font-family: ui-monospace, "SFMono-Regular", "Menlo", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.75;
+}
+
+.loader-dots {
+  display: flex;
+  gap: 5px;
+  margin-top: 1px;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ink);
+  animation: loader-dot $dur linear infinite;
+}
+
+/* 0.7rad of phase between dots is ~11% of the cycle. */
+.dot--2 { animation-delay: $dur * -0.11; }
+.dot--3 { animation-delay: $dur * -0.22; }
+
+@keyframes loader-dot {
+  0%, 100% { opacity: 0.25; }
+  25% { opacity: 0.85; }
+  50% { opacity: 0.25; }
+}
+
+@media (max-width: 759px) {
+  .loader {
+    --loader-width: 150px;
+    gap: 22px;
+    padding: 32px 16px 40px;
+  }
+}
+
+/* A loop the viewer cannot stop is exactly what this query is for: freeze the
+   composite in its resting state — lid down, wordmark fully drawn, no steam. */
+@media (prefers-reduced-motion: reduce) {
+  .layer--lid,
+  .layer--wordmark,
+  .puff,
+  .dot {
+    animation: none;
+  }
+
+  .layer--wordmark {
+    clip-path: none;
+  }
+
+  .puff {
+    opacity: 0;
+  }
+
+  .dot {
+    opacity: 0.55;
+  }
+}

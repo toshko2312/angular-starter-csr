@@ -9,6 +9,8 @@
  *
  * Deploy:  npx supabase functions deploy notify-enquiry
  * Secrets: npx supabase secrets set RESEND_API_KEY=... ADMIN_EMAIL=...
+ *          ADMIN_EMAIL takes one address or several separated by commas —
+ *          every one of them gets the same notification.
  *          (SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are injected by the
  *          platform and must not be set by hand.)
  */
@@ -33,6 +35,18 @@ const DEFAULT_FROM = 'Central Catering <onboarding@resend.dev>';
 const DEFAULT_SITE_URL = 'https://www.centralfoodcatering.com';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * ADMIN_EMAIL holds one recipient or a comma-separated list of them. Resend
+ * takes an array in `to`, so the split is all that is needed; blanks from a
+ * trailing comma are dropped rather than sent as an empty address.
+ */
+function recipients(value: string): string[] {
+  return value
+    .split(',')
+    .map((address) => address.trim())
+    .filter(Boolean);
+}
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -81,8 +95,8 @@ Deno.serve(async (request) => {
   if (request.method !== 'POST') return json({ error: 'method not allowed' }, 405);
 
   const apiKey = Deno.env.get('RESEND_API_KEY');
-  const to = Deno.env.get('ADMIN_EMAIL');
-  if (!apiKey || !to) {
+  const to = recipients(Deno.env.get('ADMIN_EMAIL') || '');
+  if (!apiKey || !to.length) {
     console.error('RESEND_API_KEY or ADMIN_EMAIL is not set');
     return json({ error: 'notifications are not configured' }, 500);
   }
@@ -123,7 +137,7 @@ Deno.serve(async (request) => {
     headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       from: Deno.env.get('RESEND_FROM') || DEFAULT_FROM,
-      to: [to],
+      to,
       subject,
       html,
       text,

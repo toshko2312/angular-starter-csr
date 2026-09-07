@@ -14,6 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { CONSTANTS } from '@shared/constants';
 import { MenuCategoryModel } from '@shared/models/menu-category.model';
 import { MenuItemModel } from '@shared/models/menu-item.model';
+import { LoadingAnimationComponent } from '@shared/components/loading-animation/loading-animation.component';
 import { SharedModule } from '@shared/shared.module';
 import { localized } from '@shared/utils/localized';
 import { money, unitSuffix } from '@shared/utils/money';
@@ -24,7 +25,7 @@ import { MenuService } from '../../services/menu.service';
 
 @Component({
   selector: 'app-menu-list',
-  imports: [SharedModule],
+  imports: [SharedModule, LoadingAnimationComponent],
   templateUrl: './menu-list.component.html',
   styleUrl: './menu-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,6 +41,11 @@ export class MenuListComponent implements OnInit, OnDestroy {
   readonly CONSTANTS = CONSTANTS;
   readonly cart = inject(CartService);
   readonly items = signal<MenuItemModel[]>([]);
+  /**
+   * An empty `items` cannot tell "still fetching" from "nothing here", so the
+   * list used to render the no-items message while a request was in flight.
+   */
+  readonly loading = signal(true);
   readonly category = signal<string>(CONSTANTS.ALL_CATEGORIES);
   /** Only for their English names — the chips themselves come from the items. */
   readonly categoryRows = signal<MenuCategoryModel[]>([]);
@@ -102,10 +108,15 @@ export class MenuListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // Both services swallow their errors into an empty list, so a completion is
+    // the only signal either way — clear the flag when the items land.
     this.menuService
       .getMenuItems()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((items) => this.items.set(items));
+      .subscribe((items) => {
+        this.items.set(items);
+        this.loading.set(false);
+      });
 
     this.categoriesService
       .getCategories()

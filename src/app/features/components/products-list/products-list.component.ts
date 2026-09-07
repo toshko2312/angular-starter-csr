@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { LanguageService } from '@core/services/language.service';
 import { CONSTANTS } from '@shared/constants';
+import { LoadingAnimationComponent } from '@shared/components/loading-animation/loading-animation.component';
 import { SharedModule } from '@shared/shared.module';
 import { ProductsService } from '../../services/products.service';
 import { ProjectImage, ProjectModel } from '@shared/models/project.model';
@@ -22,7 +23,7 @@ interface ViewerState {
 
 @Component({
   selector: 'app-products-list',
-  imports: [SharedModule, ImageViewerComponent],
+  imports: [SharedModule, ImageViewerComponent, LoadingAnimationComponent],
   templateUrl: './products-list.component.html',
   styleUrl: './products-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

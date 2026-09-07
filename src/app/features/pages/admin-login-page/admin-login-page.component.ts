@@ -26,7 +26,7 @@ export class AdminLoginPageComponent {
   readonly signingIn = signal(false);
 
   readonly loginForm = this.fb.nonNullable.group({
-    username: ['admin', Validators.required],
+    username: [CONSTANTS.ADMIN_LOGIN_USERNAME, Validators.required],
     password: ['', Validators.required],
   });
 
@@ -52,7 +52,7 @@ export class AdminLoginPageComponent {
     this.auth.signIn(username, password).subscribe({
       next: () => {
         this.signingIn.set(false);
-        this.loginForm.reset({ username: 'admin', password: '' });
+        this.loginForm.reset({ username: CONSTANTS.ADMIN_LOGIN_USERNAME, password: '' });
         this.goToPanel();
       },
       error: (err) => {

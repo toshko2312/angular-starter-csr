@@ -34,6 +34,9 @@
     "HOURS_VALUE": "Every day, 24/7",
     "TAGLINE": "Catering for weddings, corporate and private events in Kardzhali and across Bulgaria."
   },
+  "LOADING": {
+    "LABEL": "Loading"
+  },
   "PRODUCTS_LIST": {
     "KICKER": "Catering for your occasion",
     "TITLE": "Events we have catered",

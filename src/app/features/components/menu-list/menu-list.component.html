@@ -15,6 +15,9 @@
   }
 </div>
 
+@if (loading()) {
+<app-loading-animation />
+} @else {
 <div class="card-grid card-grid--menu">
   @for (item of visibleItems(); track item.id; let cardIndex = $index) {
   <article class="menu-card glass">
@@ -59,3 +62,4 @@
   <div class="menu-empty">{{ CONSTANTS.MENU_EMPTY | translate }}</div>
   }
 </div>
+}

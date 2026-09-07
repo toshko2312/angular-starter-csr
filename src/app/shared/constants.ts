@@ -45,6 +45,7 @@ export class CONSTANTS {
   static FOOTER_HOURS_LABEL = 'FOOTER.HOURS_LABEL'
   static FOOTER_HOURS_VALUE = 'FOOTER.HOURS_VALUE'
   static FOOTER_TAGLINE = 'FOOTER.TAGLINE'
+  static LOADING_LABEL = 'LOADING.LABEL'
   /** Single source for the click-to-call number. Mirrors the JSON-LD telephone. */
   static PHONE_E164 = '+359887739400'
   static PHONE_DISPLAY = '0887 739 400'
@@ -161,6 +162,8 @@ export class CONSTANTS {
   static ADMIN_REQUESTS_OPEN_BADGE = 'ADMIN.REQUESTS_OPEN_BADGE'
   /** Used when ADMIN_EMAIL is not set in the environment. */
   static ADMIN_EMAIL_FALLBACK = 'admin@centralfoodcatering.com'
+  /** Seeds the login username field; contains '@', so AuthService.toEmail() uses it verbatim. */
+  static ADMIN_LOGIN_USERNAME = 'mtm.milusheva@abv.bg'
 
   /** Remembers the light/dark choice; read by the inline script in index.html. */
   static THEME_KEY = 'theme'

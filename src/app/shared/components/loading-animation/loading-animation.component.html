@@ -1,0 +1,21 @@
+<div class="loader" role="status" [attr.aria-label]="labelKey | translate">
+  <div class="loader-mark" aria-hidden="true">
+    <div class="layer layer--utensils"></div>
+    <div class="steam">
+      <span class="puff puff--1"></span>
+      <span class="puff puff--2"></span>
+      <span class="puff puff--3"></span>
+    </div>
+    <div class="layer layer--lid"></div>
+    <div class="layer layer--wordmark"></div>
+  </div>
+
+  <div class="loader-label" aria-hidden="true">
+    <span class="loader-text">{{ labelKey | translate }}</span>
+    <span class="loader-dots">
+      <i class="dot dot--1"></i>
+      <i class="dot dot--2"></i>
+      <i class="dot dot--3"></i>
+    </span>
+  </div>
+</div>
