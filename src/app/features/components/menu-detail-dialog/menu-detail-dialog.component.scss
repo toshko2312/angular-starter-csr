@@ -1,0 +1,110 @@
+/* The close button floats over the image, so the panel is the frame it is
+   positioned against and the media has to stay inside the rounded corners. */
+.dialog-panel {
+  position: relative;
+  padding: 0;
+  overflow: clip;
+}
+
+.detail-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  /* Above .detail-media, which is painted after it in source order. */
+  z-index: 1;
+  background: var(--surface-3);
+  backdrop-filter: blur(6px);
+}
+
+.dialog-body {
+  /* Top inset for the items that have no image, whose first line would
+     otherwise sit flush against the panel edge and be shaved by the corner
+     radius. The image cancels it again below. */
+  padding: 22px 0 4px;
+}
+
+.detail-media {
+  aspect-ratio: 16 / 10;
+  background: var(--placeholder);
+  /* Back out of .dialog-body's top inset so the image runs edge to edge. */
+  margin-top: -22px;
+  margin-bottom: 18px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.detail-category {
+  padding: 0 26px;
+  margin-bottom: 6px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  opacity: 0.7;
+}
+
+.detail-title {
+  padding: 0 26px;
+  margin-bottom: 12px;
+}
+
+/* The card clamps this to two lines; here it runs to whatever length it is. */
+.detail-description {
+  padding: 0 26px;
+  margin: 0;
+  line-height: 1.55;
+  opacity: 0.85;
+  text-wrap: pretty;
+}
+
+/* .dialog-actions is flex-end by default; the price belongs on the left, the
+   way it sits in the card foot. */
+.detail-actions {
+  justify-content: space-between;
+  margin-top: 18px;
+  padding: 16px 26px 22px;
+}
+
+/* No gap: the unit reads as a suffix of the amount ('12,50 €' + '/порция'). */
+.detail-price {
+  display: flex;
+  align-items: baseline;
+}
+
+.detail-price-value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+
+.detail-price-unit {
+  font-size: 0.8rem;
+  opacity: 0.65;
+}
+
+.detail-add {
+  padding: 10px 18px;
+}
+
+@media (max-width: 759px) {
+  .detail-category,
+  .detail-title,
+  .detail-description {
+    padding: 0 18px;
+  }
+
+  .detail-actions {
+    padding: 14px 18px 18px;
+  }
+
+  /* The shell makes dialog buttons fill the row; here the button shares the
+     row with the price, so it keeps its own width and just the touch floor. */
+  .detail-actions button {
+    flex: none;
+    min-height: 44px;
+  }
+}

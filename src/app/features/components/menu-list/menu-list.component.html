@@ -4,7 +4,7 @@
     type="button"
     class="menu-chip"
     [class.menu-chip--active]="name === category()"
-    (click)="category.set(name)"
+    (click)="categoryControl.setValue(name)"
   >
     @if (name === CONSTANTS.ALL_CATEGORIES) {
     {{ CONSTANTS.MENU_ALL_CATEGORIES | translate }}
@@ -15,12 +15,21 @@
   }
 </div>
 
+<!-- Mobile only; the chip row above is hidden at the same breakpoint. -->
+<div class="menu-category-select">
+  <app-select
+    [options]="categoryOptions()"
+    [formControl]="categoryControl"
+    inputId="menu-category"
+  />
+</div>
+
 @if (loading()) {
 <app-loading-animation />
 } @else {
 <div class="card-grid card-grid--menu">
   @for (item of visibleItems(); track item.id; let cardIndex = $index) {
-  <article class="menu-card glass">
+  <article class="menu-card glass" (click)="openDetail(item)">
     <div class="menu-media">
       @if (item.image_path) {
       <img
@@ -46,12 +55,12 @@
 
         @if (cart.qtyOf(item.id) > 0) {
         <div class="stepper">
-          <button type="button" (click)="cart.decrement(item.id)" aria-label="-">−</button>
+          <button type="button" (click)="cart.decrement(item.id); $event.stopPropagation()" aria-label="-">−</button>
           <span class="stepper-qty">{{ cart.qtyOf(item.id) }}</span>
-          <button type="button" (click)="cart.increment(item.id)" aria-label="+">+</button>
+          <button type="button" (click)="cart.increment(item.id); $event.stopPropagation()" aria-label="+">+</button>
         </div>
         } @else {
-        <button type="button" class="btn-accent menu-add" (click)="cart.add(item)">
+        <button type="button" class="btn-accent menu-add" (click)="cart.add(item); $event.stopPropagation()">
           {{ CONSTANTS.MENU_ADD | translate }}
         </button>
         }
@@ -62,4 +71,12 @@
   <div class="menu-empty">{{ CONSTANTS.MENU_EMPTY | translate }}</div>
   }
 </div>
+}
+
+@if (detail(); as item) {
+<app-menu-detail-dialog
+  [item]="item"
+  [categoryLabel]="categoryLabel(item.category)"
+  (closed)="closeDetail()"
+/>
 }

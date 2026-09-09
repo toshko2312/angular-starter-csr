@@ -1,0 +1,48 @@
+<div class="dialog">
+  <div class="dialog-scrim" (click)="closed.emit()"></div>
+
+  <div class="dialog-panel dialog-panel--narrow glass">
+    <button
+      type="button"
+      class="icon-btn detail-close"
+      (click)="closed.emit()"
+      [attr.aria-label]="CONSTANTS.VIEWER_CLOSE | translate"
+    >
+      <i class="pi pi-times"></i>
+    </button>
+
+    <div class="dialog-body">
+      <div class="detail-media">
+        @if (item.image_path) {
+        <img [src]="item.image_path" [alt]="name" decoding="async" />
+        }
+      </div>
+
+      @if (categoryLabel) {
+      <div class="detail-category">{{ categoryLabel }}</div>
+      }
+
+      <div class="dialog-title detail-title">{{ name }}</div>
+      <p class="detail-description">{{ description }}</p>
+    </div>
+
+    <div class="dialog-actions detail-actions">
+      <div class="detail-price">
+        <span class="detail-price-value">{{ priceLabel }}</span>
+        <span class="detail-price-unit">{{ unitLabel }}</span>
+      </div>
+
+      @if (cart.qtyOf(item.id) > 0) {
+      <div class="stepper">
+        <button type="button" (click)="cart.decrement(item.id)" aria-label="-">−</button>
+        <span class="stepper-qty">{{ cart.qtyOf(item.id) }}</span>
+        <button type="button" (click)="cart.increment(item.id)" aria-label="+">+</button>
+      </div>
+      } @else {
+      <button type="button" class="btn-accent detail-add" (click)="cart.add(item)">
+        {{ CONSTANTS.MENU_ADD | translate }}
+      </button>
+      }
+    </div>
+  </div>
+</div>
