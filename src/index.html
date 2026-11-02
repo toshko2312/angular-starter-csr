@@ -24,6 +24,12 @@
       name="description"
       content="Кетъринг за сватби, корпоративни събития и частни партита. Персонални менюта, свежи продукти и професионално обслужване в Кърджали и цяла България."
     />
+    <!-- Google ignores keywords; Bing/Yandex read it lightly. The city
+         variants that matter for Google live in the JSON-LD alternateName. -->
+    <meta
+      name="keywords"
+      content="кетъринг Кърджали, кетъринг, сватбен кетъринг, корпоративен кетъринг, catering Kardzhali, catering Kardjali, catering Kircaali, Кърджали, Кырджали, Kardzhali, Kardzhaly, Kardjali, Kardjhali, Kardjaly, Kardzali, Kardžali, Kărdžali, Kurdzhali, Kurdjali, Kyrdzhali, Kırcaali, Kircaali, Kirdzhali, Kardschali, Κάρτζαλι"
+    />
     <meta name="author" content="Central Catering" />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#a8412a" />
@@ -95,7 +101,25 @@
             ],
             "areaServed": [
               { "@type": "Country", "name": "Bulgaria" },
-              { "@type": "City", "name": "Kardzhali" }
+              {
+                "@type": "City",
+                "name": "Kardzhali",
+                "alternateName": [
+                  "Кърджали",
+                  "Кырджали",
+                  "Kardzhaly",
+                  "Kardjali",
+                  "Kardjhali",
+                  "Kardzali",
+                  "Kardžali",
+                  "Kurdzhali",
+                  "Kurdjali",
+                  "Kırcaali",
+                  "Kircaali",
+                  "Kardschali",
+                  "Κάρτζαλι"
+                ]
+              }
             ],
             "sameAs": ["https://www.facebook.com/profile.php?id=100054324889846"]
           }
