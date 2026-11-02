@@ -24,7 +24,10 @@ const routesFile = path.join(root, 'prerender-routes.txt');
 const constantsFile = path.join(root, 'src/app/shared/constants.ts');
 const outFile = path.join(root, 'public/sitemap.xml');
 
-const I18N = ['public/i18n/bg.json', 'public/i18n/en.json'];
+const I18N = ['public/i18n/bg.json', 'public/i18n/en.json', 'public/i18n/tr.json', 'public/i18n/el.json'];
+
+/** Every language but Bulgarian lives under its own prefix; Bulgarian is the root. */
+const PREFIXED = ['en', 'tr', 'el'];
 
 /** Template(s) whose git history counts as a change to a given public path. */
 const TEMPLATES = {
@@ -66,31 +69,32 @@ const routes = fs
   .map((line) => line.trim())
   .filter(Boolean);
 
-// Bulgarian lives at the root, English under /en. Pair them so each URL can
-// list every language version of itself, including itself, which is what
-// Google requires of hreflang annotations.
-const bgRoutes = routes.filter((r) => !r.startsWith('/en'));
-const enOf = (bg) => (bg === '/' ? '/en' : `/en${bg}`);
+// Bulgarian lives at the root, every other language under its prefix. Pair
+// them so each URL can list every language version of itself, including
+// itself, which is what Google requires of hreflang annotations.
+const isPrefixed = (r) => PREFIXED.some((l) => r === `/${l}` || r.startsWith(`/${l}/`));
+const bgRoutes = routes.filter((r) => !isPrefixed(r));
+const localeOf = (bg, lang) => (lang === 'bg' ? bg : bg === '/' ? `/${lang}` : `/${lang}${bg}`);
 
-const missing = bgRoutes.map(enOf).filter((en) => !routes.includes(en));
+const missing = bgRoutes.flatMap((bg) => PREFIXED.map((l) => localeOf(bg, l))).filter((r) => !routes.includes(r));
 if (missing.length) {
-  console.error(`\n✖ prerender-routes.txt is missing the English counterpart(s): ${missing.join(', ')}\n`);
+  console.error(`\n✖ prerender-routes.txt is missing the translated counterpart(s): ${missing.join(', ')}\n`);
   process.exit(1);
 }
 
 const url = (p) => origin + (p === '/' ? '/' : p);
+const LANGS = ['bg', ...PREFIXED];
 
 const entries = [];
 for (const bg of bgRoutes) {
   const stamp = lastmod(bg);
-  for (const p of [bg, enOf(bg)]) {
+  for (const lang of LANGS) {
     entries.push(
       [
         '  <url>',
-        `    <loc>${url(p)}</loc>`,
+        `    <loc>${url(localeOf(bg, lang))}</loc>`,
         `    <lastmod>${stamp}</lastmod>`,
-        `    <xhtml:link rel="alternate" hreflang="bg" href="${url(bg)}" />`,
-        `    <xhtml:link rel="alternate" hreflang="en" href="${url(enOf(bg))}" />`,
+        ...LANGS.map((l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${url(localeOf(bg, l))}" />`),
         `    <xhtml:link rel="alternate" hreflang="x-default" href="${url(bg)}" />`,
         '  </url>',
       ].join('\n')

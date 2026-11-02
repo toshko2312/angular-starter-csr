@@ -2,17 +2,19 @@ import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import bg from '../../../public/i18n/bg.json';
 import en from '../../../public/i18n/en.json';
+import tr from '../../../public/i18n/tr.json';
+import el from '../../../public/i18n/el.json';
 
 type Translations = Record<string, unknown>;
 
-const LOCALES: Record<string, Translations> = { bg, en };
+const LOCALES: Record<string, Translations> = { bg, en, tr, el };
 
 /**
- * Serves the two locale files from the bundle instead of fetching them.
+ * Serves the locale files from the bundle instead of fetching them.
  *
  * TranslateHttpLoader asks for the relative './i18n/<lang>.json', which has no
  * meaning while prerendering in Node and would hang the build. Bundling also
- * removes a render-blocking request on the client; both files together are a
+ * removes a render-blocking request on the client; all of them together are a
  * few kilobytes.
  */
 export class StaticTranslateLoader implements TranslateLoader {

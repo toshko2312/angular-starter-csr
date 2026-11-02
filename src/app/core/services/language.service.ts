@@ -10,7 +10,7 @@ import { primeNgTranslation } from '@shared/utils/primeng-translation';
 
 /**
  * The URL is the single source of truth for language: Bulgarian at the root,
- * English under /en. That is what makes the English pages indexable at all —
+ * every other language under its own prefix (/en, /tr, /el). That is what makes the English pages indexable at all —
  * a localStorage toggle is invisible to a crawler — and it removes any chance
  * of the prerendered HTML disagreeing with what the browser then renders.
  */
@@ -31,15 +31,10 @@ export class LanguageService {
     { initialValue: this.router.url }
   );
 
-  readonly current = computed(() =>
-    this.isEnglishUrl(this.url()) ? CONSTANTS.LANGUAGE_EN : CONSTANTS.LANGUAGE_BG
-  );
-
-  /** Mirrors the current page in the other language, for the navbar toggle. */
-  readonly otherLanguageUrl = computed(() => this.swapLanguage(this.url()));
+  readonly current = computed(() => this.languageOf(this.url()));
 
   constructor() {
-    this.translate.addLangs([CONSTANTS.LANGUAGE_BG, CONSTANTS.LANGUAGE_EN]);
+    this.translate.addLangs(CONSTANTS.LANGUAGES);
     this.translate.setDefaultLang(CONSTANTS.LANGUAGE_BG);
     this.apply(this.current());
 
@@ -64,36 +59,33 @@ export class LanguageService {
    * not the one the router has navigated to yet, such as inside a guard.
    */
   localize(path: string, lang: string = this.current()): string {
-    return lang === CONSTANTS.LANGUAGE_EN
-      ? `/${CONSTANTS.LANGUAGE_EN_PREFIX}${path}`
-      : path;
+    const prefix = CONSTANTS.LANGUAGE_PREFIXES[lang];
+    return prefix ? `/${prefix}${path}` : path;
   }
 
-  /** True for a URL inside the English branch, /en included. */
+  /** The language branch a URL sits in; Bulgarian when it has no prefix. */
   languageOf(url: string): string {
-    return this.isEnglishUrl(url) ? CONSTANTS.LANGUAGE_EN : CONSTANTS.LANGUAGE_BG;
+    const path = url.split(/[?#]/)[0];
+    const match = Object.entries(CONSTANTS.LANGUAGE_PREFIXES).find(
+      ([, prefix]) => path === `/${prefix}` || path.startsWith(`/${prefix}/`)
+    );
+    return match ? match[0] : CONSTANTS.LANGUAGE_BG;
+  }
+
+  /** Mirrors a URL in another language, for the navbar's language dropdown. */
+  urlFor(url: string, lang: string): string {
+    const [path, ...rest] = url.split(/(?=[?#])/);
+    const tail = rest.join('');
+
+    const prefix = CONSTANTS.LANGUAGE_PREFIXES[this.languageOf(path)];
+    const stripped = prefix ? path.slice(`/${prefix}`.length) || '/' : path;
+    const target = this.localize(stripped === '/' ? '' : stripped, lang);
+    return (target || '/') + tail;
   }
 
   /** Applied by AppComponent on every navigation. */
   apply(lang: string): void {
     if (this.translate.currentLang !== lang) this.translate.use(lang);
     this.document.documentElement.lang = lang;
-  }
-
-  private isEnglishUrl(url: string): boolean {
-    const path = url.split(/[?#]/)[0];
-    return path === `/${CONSTANTS.LANGUAGE_EN_PREFIX}` ||
-      path.startsWith(`/${CONSTANTS.LANGUAGE_EN_PREFIX}/`);
-  }
-
-  private swapLanguage(url: string): string {
-    const [path, ...rest] = url.split(/(?=[?#])/);
-    const tail = rest.join('');
-
-    if (this.isEnglishUrl(path)) {
-      const stripped = path.slice(`/${CONSTANTS.LANGUAGE_EN_PREFIX}`.length);
-      return (stripped || '/') + tail;
-    }
-    return `/${CONSTANTS.LANGUAGE_EN_PREFIX}${path === '/' ? '' : path}` + tail;
   }
 }

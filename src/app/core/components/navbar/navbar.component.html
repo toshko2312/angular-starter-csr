@@ -74,26 +74,12 @@
     <span class="badge">{{ cart.count() }}</span>
   </button>
 
-  <div class="lang-toggle" role="group" [attr.aria-label]="CONSTANTS.NAVBAR_LANGUAGE | translate">
-    <button
-      type="button"
-      class="lang-option"
-      [class.lang-option--active]="language.current() === CONSTANTS.LANGUAGE_BG"
-      [attr.aria-pressed]="language.current() === CONSTANTS.LANGUAGE_BG"
-      (click)="switchLanguage(CONSTANTS.LANGUAGE_BG)"
-    >
-      BG
-    </button>
-    <button
-      type="button"
-      class="lang-option"
-      [class.lang-option--active]="language.current() === CONSTANTS.LANGUAGE_EN"
-      [attr.aria-pressed]="language.current() === CONSTANTS.LANGUAGE_EN"
-      (click)="switchLanguage(CONSTANTS.LANGUAGE_EN)"
-    >
-      EN
-    </button>
-  </div>
+  <app-select
+    class="lang-select"
+    [options]="languageOptions"
+    [formControl]="languageControl"
+    [ariaLabel]="CONSTANTS.NAVBAR_LANGUAGE | translate"
+  />
 
   <button
     type="button"

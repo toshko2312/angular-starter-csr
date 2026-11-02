@@ -6,8 +6,8 @@ import { CONSTANTS } from './shared/constants';
 import { MenuPageComponent } from './features/pages/menu-page/menu-page.component';
 
 /**
- * The public pages, mounted twice: at the root for Bulgarian and under /en for
- * English. Each language needs its own URL to be indexable, and both branches
+ * The public pages, mounted once per language: at the root for Bulgarian and under /en,
+ * /tr and /el for the others. Each language needs its own URL to be indexable, and both branches
  * are prerendered (see prerender-routes.txt).
  */
 const publicRoutes: Routes = [
@@ -99,12 +99,15 @@ function adminRoute(): Route {
 }
 
 export const routes: Routes = [
-  {
-    path: CONSTANTS.LANGUAGE_EN_PREFIX,
-    // Admin before the public pages: the empty path would swallow /en/admin.
-    children: [adminRoute(), ...publicRoutes],
-  },
+  // One branch per prefixed language (/en, /tr, /el).
+  ...Object.values(CONSTANTS.LANGUAGE_PREFIXES).map(
+    (prefix): Route => ({
+      path: prefix,
+      // Admin before the public pages: the empty path would swallow /<prefix>/admin.
+      children: [adminRoute(), ...publicRoutes],
+    })
+  ),
   adminRoute(),
-  // Bulgarian last: its empty path would otherwise swallow /en and /admin.
+  // Bulgarian last: its empty path would otherwise swallow /en, /tr, /el and /admin.
   ...publicRoutes,
 ];

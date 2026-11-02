@@ -4,8 +4,20 @@ export class CONSTANTS {
   static MENU_PAGE = 'menu'
   static LANGUAGE_BG = 'bg'
   static LANGUAGE_EN = 'en'
+  static LANGUAGE_TR = 'tr'
+  static LANGUAGE_EL = 'el'
   /** URL prefix that selects English; Bulgarian lives at the root. */
   static LANGUAGE_EN_PREFIX = 'en'
+  static LANGUAGE_TR_PREFIX = 'tr'
+  static LANGUAGE_EL_PREFIX = 'el'
+  /** Every language the site is served in, Bulgarian (the default) first. */
+  static LANGUAGES = ['bg', 'en', 'tr', 'el']
+  /** URL prefix per language; Bulgarian has none because it lives at the root. */
+  static LANGUAGE_PREFIXES: Record<string, string> = {
+    en: 'en',
+    tr: 'tr',
+    el: 'el',
+  }
   static SITE_ORIGIN = 'https://www.centralfoodcatering.com'
   static OG_IMAGE = '/og-image.jpg'
   static SEO_HOME_TITLE = 'SEO.HOME.TITLE'

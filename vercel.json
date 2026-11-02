@@ -18,11 +18,27 @@
     {
       "source": "/en/admin",
       "destination": "/index.csr"
+    },
+    {
+      "source": "/tr/admin/:path*",
+      "destination": "/index.csr"
+    },
+    {
+      "source": "/tr/admin",
+      "destination": "/index.csr"
+    },
+    {
+      "source": "/el/admin/:path*",
+      "destination": "/index.csr"
+    },
+    {
+      "source": "/el/admin",
+      "destination": "/index.csr"
     }
   ],
   "headers": [
     {
-      "source": "/(en/)?admin/:path*",
+      "source": "/(en/|tr/|el/)?admin/:path*",
       "headers": [
         {
           "key": "X-Robots-Tag",
@@ -31,7 +47,7 @@
       ]
     },
     {
-      "source": "/(en/)?admin",
+      "source": "/(en/|tr/|el/)?admin",
       "headers": [
         {
           "key": "X-Robots-Tag",

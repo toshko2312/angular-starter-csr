@@ -4,3 +4,9 @@
 /en
 /en/menu
 /en/contacts
+/tr
+/tr/menu
+/tr/contacts
+/el
+/el/menu
+/el/contacts

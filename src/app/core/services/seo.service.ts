@@ -6,6 +6,13 @@ import { CONSTANTS } from '@shared/constants';
 import { localePath } from '@shared/utils/locale-path';
 import { LanguageService } from './language.service';
 
+const OG_LOCALE: Record<string, string> = {
+  [CONSTANTS.LANGUAGE_BG]: 'bg_BG',
+  [CONSTANTS.LANGUAGE_EN]: 'en_GB',
+  [CONSTANTS.LANGUAGE_TR]: 'tr_TR',
+  [CONSTANTS.LANGUAGE_EL]: 'el_GR',
+};
+
 export interface SeoPage {
   /** Translation key for the <title>. */
   titleKey: string;
@@ -48,7 +55,7 @@ export class SeoService {
     this.meta.updateTag({ property: 'og:type', content: 'website' });
     this.meta.updateTag({
       property: 'og:locale',
-      content: lang === CONSTANTS.LANGUAGE_EN ? 'en_GB' : 'bg_BG',
+      content: OG_LOCALE[lang] ?? OG_LOCALE[CONSTANTS.LANGUAGE_BG],
     });
 
     this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
@@ -57,14 +64,9 @@ export class SeoService {
     this.meta.updateTag({ name: 'twitter:image', content: image });
 
     this.setLink('canonical', canonical);
-    this.setAlternate(
-      CONSTANTS.LANGUAGE_BG,
-      this.absolute(this.pathFor(config.page, CONSTANTS.LANGUAGE_BG))
-    );
-    this.setAlternate(
-      CONSTANTS.LANGUAGE_EN,
-      this.absolute(this.pathFor(config.page, CONSTANTS.LANGUAGE_EN))
-    );
+    for (const code of CONSTANTS.LANGUAGES) {
+      this.setAlternate(code, this.absolute(this.pathFor(config.page, code)));
+    }
     // Bulgarian is the default for anyone Google cannot place.
     this.setAlternate('x-default', this.absolute(this.pathFor(config.page, CONSTANTS.LANGUAGE_BG)));
   }

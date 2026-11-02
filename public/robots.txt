@@ -7,5 +7,7 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /en/admin
+Disallow: /tr/admin
+Disallow: /el/admin
 
 Sitemap: https://www.centralfoodcatering.com/sitemap.xml

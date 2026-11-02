@@ -3,7 +3,8 @@ import { CONSTANTS } from '@shared/constants';
 /**
  * The English text when there is one and English is active, the Bulgarian
  * otherwise. Content is filled in gradually, so a blank English field must
- * fall back rather than render empty.
+ * fall back rather than render empty. Turkish and Greek have no content
+ * fields at all: those pages show the Bulgarian text.
  */
 export function localized(
   bg: string | null | undefined,

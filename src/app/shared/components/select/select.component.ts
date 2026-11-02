@@ -48,6 +48,8 @@ export class SelectComponent implements ControlValueAccessor {
   readonly options = input.required<SelectOption[]>();
   @Input() placeholder = '';
   @Input() inputId = '';
+  /** Names the trigger when there is no visible <label> for it (the navbar). */
+  @Input() ariaLabel = '';
   /** Labels are translation keys (contacts) rather than literals (categories). */
   @Input() translateLabels = false;
 

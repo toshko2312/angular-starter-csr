@@ -8,7 +8,8 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { FormControl } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { LanguageService } from '@core/services/language.service';
@@ -16,6 +17,7 @@ import { ThemeService } from '@core/services/theme.service';
 import { CONSTANTS } from '@shared/constants';
 import { localePath } from '@shared/utils/locale-path';
 import { SocialLinksComponent } from '@shared/components/social-links/social-links.component';
+import { SelectOption } from '@shared/components/select/select.component';
 import { SharedModule } from '@shared/shared.module';
 import { filter, map } from 'rxjs';
 import { CartService } from '../../../features/services/cart.service';
@@ -56,7 +58,20 @@ export class NavbarComponent {
   );
   readonly adminMenuOpen = signal(false);
 
+  /** Short codes: the navbar has no room for language names on a phone. */
+  readonly languageOptions: SelectOption[] = CONSTANTS.LANGUAGES.map((code) => ({
+    value: code,
+    label: code.toUpperCase(),
+  }));
+  readonly languageControl = new FormControl<string>(this.language.current(), { nonNullable: true });
+
   constructor() {
+    // The URL owns the language: the control follows it, and a pick navigates.
+    effect(() => this.languageControl.setValue(this.language.current(), { emitEvent: false }));
+    this.languageControl.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe((lang) => this.switchLanguage(lang));
+
     // The badge needs the rows before the requests page is ever opened, and
     // the read is denied to anon by RLS — so it waits for a session. Runs
     // again after a fresh sign-in; never on the server, where no session
@@ -106,7 +121,7 @@ export class NavbarComponent {
   /** Language lives in the URL now, so switching is a navigation. */
   switchLanguage(lang: string): void {
     if (this.language.current() === lang) return;
-    void this.router.navigateByUrl(this.language.otherLanguageUrl());
+    void this.router.navigateByUrl(this.language.urlFor(this.router.url, lang));
   }
 
   signOut(): void {

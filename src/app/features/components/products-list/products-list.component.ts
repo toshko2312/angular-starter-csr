@@ -13,6 +13,7 @@ import { SharedModule } from '@shared/shared.module';
 import { ProductsService } from '../../services/products.service';
 import { ProjectImage, ProjectModel } from '@shared/models/project.model';
 import { localized } from '@shared/utils/localized';
+import { INTL_LOCALE } from '@shared/utils/primeng-translation';
 import { Subject, takeUntil } from 'rxjs';
 import { ImageViewerComponent } from '../image-viewer/image-viewer.component';
 
@@ -40,7 +41,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   private readonly monthYear = computed(
     () =>
       new Intl.DateTimeFormat(
-        this.language.current() === CONSTANTS.LANGUAGE_EN ? 'en-GB' : 'bg-BG',
+        INTL_LOCALE[this.language.current()] ?? INTL_LOCALE[CONSTANTS.LANGUAGE_BG],
         { month: 'long', year: 'numeric' }
       )
   );

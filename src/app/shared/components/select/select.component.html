@@ -4,6 +4,7 @@
   [class.select-trigger--placeholder]="!selectedLabel()"
   [id]="inputId"
   [disabled]="disabled()"
+  [attr.aria-label]="ariaLabel || null"
   [attr.aria-expanded]="open()"
   aria-haspopup="listbox"
   (click)="toggle()"

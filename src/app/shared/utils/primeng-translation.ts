@@ -1,9 +1,11 @@
 import { Translation } from 'primeng/api';
 import { CONSTANTS } from '@shared/constants';
 
-const INTL_LOCALE: Record<string, string> = {
+export const INTL_LOCALE: Record<string, string> = {
   [CONSTANTS.LANGUAGE_BG]: 'bg-BG',
   [CONSTANTS.LANGUAGE_EN]: 'en-GB',
+  [CONSTANTS.LANGUAGE_TR]: 'tr-TR',
+  [CONSTANTS.LANGUAGE_EL]: 'el-GR',
 };
 
 function names(locale: string, dates: Date[], options: Intl.DateTimeFormatOptions): string[] {
@@ -29,10 +31,11 @@ export function primeNgTranslation(lang: string, today: string, clear: string): 
     dayNamesMin: names(locale, week, { weekday: 'narrow' }),
     monthNames: names(locale, months, { month: 'long' }),
     monthNamesShort: names(locale, months, { month: 'short' }),
-    // Monday, per both Bulgarian and British convention.
+    // Monday, per Bulgarian, British, Turkish and Greek convention.
     firstDayOfWeek: 1,
     today,
     clear,
-    dateFormat: lang === CONSTANTS.LANGUAGE_EN ? 'dd/mm/yy' : 'dd.mm.yy',
+    dateFormat:
+      lang === CONSTANTS.LANGUAGE_EN || lang === CONSTANTS.LANGUAGE_EL ? 'dd/mm/yy' : 'dd.mm.yy',
   };
 }

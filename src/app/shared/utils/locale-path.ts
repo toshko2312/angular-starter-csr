@@ -10,7 +10,6 @@ import { CONSTANTS } from '@shared/constants';
  */
 export function localePath(page: string, lang: string): string {
   const suffix = page && page !== CONSTANTS.HOME_PAGE ? `/${page}` : '';
-  return lang === CONSTANTS.LANGUAGE_EN
-    ? `/${CONSTANTS.LANGUAGE_EN_PREFIX}${suffix}`
-    : suffix || '/';
+  const prefix = CONSTANTS.LANGUAGE_PREFIXES[lang];
+  return prefix ? `/${prefix}${suffix}` : suffix || '/';
 }
